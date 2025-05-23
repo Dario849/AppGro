@@ -4,3 +4,35 @@ a {
 
 	@apply hover:no-underline;
 }
+
+
+.home{
+		// background-color: cyan;
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	&__navbar{
+		// background-color: blue;
+		height: 100%;
+		width: 15%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		padding: 2rem;
+		border-right: 1px solid black;
+		&-list{
+			// background-color: yellow;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
+		}
+		
+		&-item{
+			// background-color: green;
+		}
+	}
+
+	
+}
