@@ -1,4 +1,5 @@
 # AppGro
+![0980e4ab-f078-4471-bf5c-84ed2572822f](https://github.com/user-attachments/assets/876e192a-299c-4c8c-b139-e36db82526e7)
 
 AppGro es un proyecto inicial basado en [php-vite-starter](https://github.com/nititech/php-vite-starter) por @nititech y potenciado con [vite-plugin-php](https://github.com/donnikitos/vite-plugin-php) por @donnikitos.
 
