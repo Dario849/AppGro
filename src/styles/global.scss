@@ -2,6 +2,7 @@
 	display: flex;
 	height: 100vh;
 	&__navbar {
+		background-color: #2b383e;
 		height: auto;
 		display: flex;
 		flex-direction: column;
@@ -21,12 +22,17 @@
 	}
 
 	&__navbar-item {
-		transition: transform 0.2s ease-in-out;
+		text-align: center;
+		position: relative; // crea un nuevo contexto de apilamiento
+		-webkit-text-fill-color: azure;
+		border: 1px solid #ccc;
+		border-radius: 10px;
+		transition: box-shadow 0.3s;
+		padding: 1vh;
+		// float: left;
 		&:hover {
-			transform: scale(1.05);
 			box-shadow:
-				0 10px 15px -3px rgba(0, 0, 0, 0.1),
-				0 4px 6px -2px rgba(0, 0, 0, 0.05);
+inset rgb(255 255 255 / 19%) 0px -2px 20px 19px
 		}
 	}
 }
@@ -35,7 +41,7 @@
 	&__content {
 		margin-left: -100;
 		flex: 1;
-		overflow:auto;
+		overflow: auto;
 		background-color: antiquewhite;
 	}
 }
