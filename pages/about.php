@@ -8,16 +8,16 @@ $layout = new HTML(title: 'PHP via Vite');
 	<?php include('partials/nav.php'); ?>
 
 	<div class="w-full max-w-lg text-base">
-		This is a PHP-Vite starter repo.<br />
+		Este es un menú plantilla para visualizar información detallada sobre el funcionamiento de la página AppGro<br />
 		<br />
-		It contains all the basic needs to start developing modern PHP applications:
+		Contiene las siguientes funcionalidades:
 		<ul class="list-disc pl-10">
-			<li>TypeScript/ JavaScript transpilation</li>
-			<li>Tailwind CSS implementation</li>
-			<li>Out of the box SASS/ SCSS support</li>
-			<li>EJS template language support</li>
-			<li>Image transform tools</li>
-			<li>SVG loader</li>
+			<li>Menú de pre-visualización de tareas, mapa, clima</li>
+			<li>Creación y manejo de tareas diarias/mensuales</li>
+			<li>Registro de ganados, creación, actualización</li>
+			<li>Registro de gastos, ganancias</li>
+			<li>Registro de cultivos</li>
+			<li>Registro de herramientas</li>
 		</ul>
 	</div>
 </div>
