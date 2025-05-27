@@ -12,6 +12,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ipsum', function ($ROUTE_PARAMS) {
 		include('pages/ipsum.php');
 	});
+	$r->addRoute('GET', '/dashboard', function ($ROUTE_PARAMS) {
+		include('pages/dashboard.php');
+	});
 });
 
 // Fetch method and URI from somewhere

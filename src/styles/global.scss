@@ -29,10 +29,8 @@
 		border-radius: 10px;
 		transition: box-shadow 0.3s;
 		padding: 1vh;
-		// float: left;
 		&:hover {
-			box-shadow:
-inset rgb(255 255 255 / 19%) 0px -2px 20px 19px
+			box-shadow: inset rgb(255 255 255 / 19%) 0px -2px 20px 19px;
 		}
 	}
 }
@@ -43,5 +41,29 @@ inset rgb(255 255 255 / 19%) 0px -2px 20px 19px
 		flex: 1;
 		overflow: auto;
 		background-color: antiquewhite;
+	}
+}
+.main_container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	// align-items: center;
+	// justify-content: center;
+	flex-wrap: wrap;
+	&Tiempo {
+		height: 50%;
+		width: 100%;
+		justify-content: center;
+		background-color: aquamarine;
+	}
+	&Tareas {
+		height: 50%;
+		width: 40%;
+		background-color: burlywood;
+	}
+	&Mapa {
+		height: 50%;
+		width: 60%;
+		background-color: plum;
 	}
 }
