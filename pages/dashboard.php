@@ -1,8 +1,11 @@
 <?php
 require('system/main.php');
-renderNavbar();
-
+renderNavbar(); //BARRA DE NAVEGACION
+//DB CONNECTION
+require_once __DIR__.('/../../system/database.php');
 $layout = new HTML(title: 'PHP via Vite');
+$db        = new Database();
+$connection = $db->connect();//CONECTADO
 ?>
 
 <main class="main__content">
