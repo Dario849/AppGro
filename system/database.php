@@ -1,4 +1,5 @@
 <?php
+namespace App;
 class Database
 {
     private string $servername = '127.0.0.1';
