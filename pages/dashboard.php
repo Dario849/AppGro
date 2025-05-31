@@ -2,12 +2,9 @@
 require('system/main.php');
 renderNavbar();
 
-// Ajusta la ruta según corresponda a tu estructura real:
-require_once __DIR__ . '/../../system/database.php';
-
 $layout = new HTML(title: 'PHP via Vite');
 
-// Usa siempre $conn
+use App\resources\Database;
 $db   = new Database();
 $conn = $db->connect();
 

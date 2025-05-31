@@ -1,11 +1,10 @@
 <?php
-namespace App;
-class Database
-{
+namespace App\resources;
+class Database{
     private string $servername = '127.0.0.1';
     private string $username   = 'root';
     private string $password   = '';
-       private string  $dbname     = 'app_campo';
+    private string  $dbname     = 'app_campo';
     private ?\mysqli $conn     = null;
 
     /**
