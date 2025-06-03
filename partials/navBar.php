@@ -1,5 +1,6 @@
 <?php
-function renderNavbar(): void {
+function renderNavbar(): void
+{
 ?>
   <div class="home">
     <div class="home__navbar" id="sidebar">
