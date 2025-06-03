@@ -16,26 +16,103 @@ if ($result === false) {
     die("Error en la consulta: " . $conn->error);
 }
 ?>
+
+
 <script>
-    addEventListener("DOMContentLoaded", (event) => {
-        var json = JSON.parse($("#climaJson").val());
-        $("#containerTiempo").html(json.location.name +" <br><strong>"+json.current.condition.text+"</strong> <br>"+json.current.last_updated+"<img src="+json.current.condition.icon+" alt='Girl in a jacket' width='10%' height='10%'>");
+    $(function() {
+        $('#btnClima').on('click', function() {
+            $('#displayClima').html('<p>Obteniendo ubicación…</p>');
+
+            if (!navigator.geolocation) {
+                $('#displayClima').html('<p>Geolocalización no soportada.</p>');
+                return;
+            }
+
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    var apiKey = 'fe64220e13714edf99e215240253105';
+                    var urlClima = 'https://api.weatherapi.com/v1/current.json?key=' + apiKey + '&q=' + lat + ',' + lon + '&lang=es';
+                    $.getJSON(urlClima, function(data) {
+                            // —————— LOCATION ——————
+                            var locationName = data.location.name; // "Buenos Aires"
+                            var locationRegion = data.location.region; // "Distrito Federal"
+                            var locationCountry = data.location.country; // "Argentina"
+                            var locationLat = data.location.lat; // -34.588
+                            var locationLon = data.location.lon; // -58.673
+                            var locationTzId = data.location.tz_id; // "America/Argentina/Buenos_Aires"
+                            var locationLocaltimeEpoch = data.location.localtime_epoch; // 1748969288
+                            var locationLocaltime = data.location.localtime; // "2025-06-03 13:48"
+                            // —————— CURRENT ——————
+                            var currentLastUpdatedEpoch = data.current.last_updated_epoch; // 1748969100
+                            var currentLastUpdated = data.current.last_updated; // "2025-06-03 13:45"
+                            var currentTempC = data.current.temp_c; // 17.1
+                            var currentTempF = data.current.temp_f; // 62.8
+                            var currentIsDay = data.current.is_day; // 1
+                            // CONDITION (subobjeto)
+                            var conditionText = data.current.condition.text; // "Soleado"
+                            var conditionIcon = 'https:' + data.current.condition.icon; // "//cdn.weatherapi.com/…png"
+                            var conditionCode = data.current.condition.code; // 1000
+                            var currentWindMph = data.current.wind_mph; // 4.3
+                            var currentWindKph = data.current.wind_kph; // 6.8
+                            var currentWindDegree = data.current.wind_degree; // 15
+                            var currentWindDir = data.current.wind_dir; // "NNE"
+                            var currentPressureMb = data.current.pressure_mb; // 1016
+                            var currentPressureIn = data.current.pressure_in; // 30
+                            var currentPrecipMm = data.current.precip_mm; // 0
+                            var currentPrecipIn = data.current.precip_in; // 0
+                            var currentHumidity = data.current.humidity; // 55
+                            var currentCloud = data.current.cloud; // 0
+                            var currentFeelsLikeC = data.current.feelslike_c; // 17.1
+                            var currentFeelsLikeF = data.current.feelslike_f; // 62.8
+                            var currentWindchillC = data.current.windchill_c; // 14.3
+                            var currentWindchillF = data.current.windchill_f; // 57.8
+                            var currentHeatindexC = data.current.heatindex_c; // 14.4
+                            var currentHeatindexF = data.current.heatindex_f; // 57.9
+                            var currentDewpointC = data.current.dewpoint_c; // 6.7
+                            var currentDewpointF = data.current.dewpoint_f; // 44
+                            var currentVisKm = data.current.vis_km; // 10
+                            var currentVisMiles = data.current.vis_miles; // 6
+                            var currentUv = data.current.uv; // 2.2
+                            var currentGustMph = data.current.gust_mph; // 5.4
+                            var currentGustKph = data.current.gust_kph; // 8.7
+                            $('#displayClima').html(
+                                '<h4>Clima en ' + locationName + ', ' + locationRegion + ' (' + locationCountry + ')</h4>' +
+                                '<p><img src="' + conditionIcon + '" alt="' + conditionText + '" /> <strong>' + conditionText + '</strong></p>' +
+                                '<ul style="list-style:none; padding:0; margin:0;">' +
+                                '<li>Horario: <strong>' + locationLocaltime + '</strong></li>' +
+                                '<li>Temperatura: <strong>' + currentTempC + ' °C</strong></li>' +
+                                '<li>Humedad: <strong>' + currentHumidity + '%</strong></li>' +
+                                '<li>Viento: <strong>' + currentWindKph + ' km/h (' + currentWindDir + ')</strong></li>' +
+                                '<li>Visibilidad: <strong>' + currentVisKm + ' km</strong></li>' +
+                                '<li>Sensación: <strong>' + currentFeelsLikeC + ' °C</strong></li>' +
+                                '<li>Punto de rocío: <strong>' + currentDewpointC + ' °C</strong></li>' +
+                                '<li>Índice UV: <strong>' + currentUv + '</strong></li>' +
+                                '<li>Ráfagas: <strong>' + currentGustKph + ' km/h</strong></li>' +
+                                '</ul>'
+                            );
+                        })
+                        .fail(function() {
+                            $('#displayClima').html('<p>Error al consultar WeatherAPI.</p>');
+                        });
+                },
+                function() {
+                    $('#displayClima').html('<p>No se pudo obtener la ubicación.</p>');
+                }, {
+                    timeout: 10000
+                }
+            );
+        });
     });
 </script>
 <main class="main__content">
     <div class="main_container">
         <div id="containerTiempo" class="main_containerTiempo">
-<input type="hidden" name="climaJson" id="climaJson" value='<?php
-if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
-    $ip = $_SERVER['HTTP_CLIENT_IP'];
-} elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-} else {
-    $ip = $_SERVER['REMOTE_ADDR'];
-}
-$url = "https://api.weatherapi.com/v1/current.json?q=".$ip."&lang=es&key=fe64220e13714edf99e215240253105";
- echo file_get_contents(filename: $url); 
- ?>'>
+            <input type="hidden" name="climaJson" id="climaJson">
+            <input type="button" value="CargarClima" id="btnClima" class="buttonMostrarClima">
+            <div id="demo"></div>
+            <div id="displayClima"></div>
         </div>
         <div class="main_containerTareas">
             <?php
@@ -50,9 +127,8 @@ $url = "https://api.weatherapi.com/v1/current.json?q=".$ip."&lang=es&key=fe64220
                 echo '<div class="text-gray-500">No se encontraron usuarios.</div>';
             }
             ?>
-
         </div>
-        
+
         <div class="main_containerMapa">
 
         </div>
