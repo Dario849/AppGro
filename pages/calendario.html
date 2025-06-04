@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calendario</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #1e1e1e;
+      color: #eee;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 200px;
+      background-color: #2c2f33;
+      padding-top: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sidebar nav a {
+      color: #bbb;
+      text-decoration: none;
+      display: block;
+      padding: 12px 20px;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    .sidebar nav a:hover {
+      background-color: #40444b;
+      color: #fff;
+    }
+    .sidebar nav a.active {
+      background-color: #7289da;
+      color: #fff;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .modo-selector {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+    .modo-btn {
+      padding: 8px 16px;
+      border: 1px solid #ccc;
+      background-color: #2c2f33;
+      color: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .modo-btn.activo {
+      background-color: #2ecc71;
+      color: #fff;
+    }
+
+    .calendario {
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      margin: auto;
+      width: 350px;
+      padding: 20px;
+      color: #222;
+    }
+    .calendario h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .calendario .dias-semana,
+    .calendario .dias {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+      text-align: center;
+    }
+    .calendario .dias-semana div {
+      font-weight: bold;
+      color: #555;
+    }
+    .calendario .dias div {
+      padding: 10px 0;
+      background-color: #fff;
+      border-radius: 6px;
+      position: relative;
+    }
+    .punto {
+      width: 6px;
+      height: 6px;
+      background-color: #444;
+      border-radius: 50%;
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#" class="active">Tareas</a>
+      <a href="#">Rendimientos</a>
+      <a href="#">Mapa</a>
+      <a href="#">Informe</a>
+      <a href="#">Administrador</a>
+    </nav>
+  </div>
+
+  <div class="main-content">
+    <div class="modo-selector">
+      <button class="modo-btn">TAREAS</button>
+      <button class="modo-btn activo">CALENDARIO</button>
+    </div>
+
+    <div class="calendario">
+      <h2>Calendario</h2>
+      <h3 style="text-align:center; margin-bottom: 10px;">Abril 2025</h3>
+      <div class="dias-semana">
+        <div>L</div><div>M</div><div>X</div><div>J</div><div>V</div><div>S</div><div>D</div>
+      </div>
+      <div class="dias">
+        <div><span class="punto"></span>1</div>
+        <div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div>
+        <div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div>14</div>
+        <div>15</div>
+        <div><span class="punto"></span>16</div>
+        <div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div><div>23</div>
+        <div>24</div><div>25</div><div>26</div>
+        <div><span class="punto"></span>27</div>
+        <div>28</div><div>29</div><div>30</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

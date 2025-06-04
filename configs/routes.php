@@ -15,6 +15,12 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/dashboard', function ($ROUTE_PARAMS) {
 		include('pages/dashboard.php');
 	});
+	$r->addRoute('GET', '/tareas', function ($ROUTE_PARAMS) {
+		include('pages/tareas.html');
+	});
+	$r->addRoute('GET', '/calendario', function ($ROUTE_PARAMS) {
+		include('pages/calendario.html');
+	});
 });
 
 // Fetch method and URI from somewhere

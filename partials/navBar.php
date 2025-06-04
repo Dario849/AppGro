@@ -9,6 +9,8 @@ function renderNavbar(): void
         <li class="home__navbar-item"><a href="/">Home</a></li>
         <li class="home__navbar-item"><a href="/about">About</a></li>
         <li class="home__navbar-item"><a href="/ipsum">Ipsum</a></li>
+        <li class="home__navbar-item"><a href="/tareas">Tareas</a></li>
+        <li class="home__navbar-item"><a href="/calendario">Calendario</a></li>
         <!-- … resto de items … -->
       </ul>
     </div>
