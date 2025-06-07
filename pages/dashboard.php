@@ -4,17 +4,30 @@ renderNavbar();
 
 $layout = new HTML(title: 'PHP via Vite');
 
-use App\resources\Database;
+// use App\resources\Database;
 
-$db   = new Database();
-$conn = $db->connect();
+// $db   = new Database();
+// $conn = $db->connect();
 
-$sql    = "SELECT nombre FROM Usuarios WHERE id BETWEEN 1 AND 5";
-$result = $conn->query($sql);
+// $result = $conn->query($sql);
 
-if ($result === false) {
-    die("Error en la consulta: " . $conn->error);
-}
+// if ($result === false) {
+//     die("Error en la consulta: " . $conn->error);
+// }
+session_start();
+require 'system\resources\database.php';
+$sql  = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+    'min' => 1,
+    'max' => 5,
+]);
+
+// 3) Obtén resultados
+$usuarios = $stmt->fetchAll(); // array de filas
+
+// 4) Recorre e imprime
+
 ?>
 
 
@@ -106,6 +119,60 @@ if ($result === false) {
         });
     });
 </script>
+<style>
+    .buttonMostrarClima {
+        appearance: none;
+        background-color: #2ea44f;
+        border: 1px solid rgba(27, 31, 35, 0.15);
+        border-radius: 6px;
+        box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        display: inline-block;
+        font-family:
+            -apple-system, system-ui, 'Segoe UI', Helvetica, Arial,
+            sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 20px;
+        padding: 6px 16px;
+        position: relative;
+        text-align: center;
+        text-decoration: none;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+        vertical-align: middle;
+        white-space: nowrap;
+    }
+
+    .buttonMostrarClima:focus:not(:focus-visible):not(.focus-visible) {
+        box-shadow: none;
+        outline: none;
+    }
+
+    .buttonMostrarClima:hover {
+        background-color: #2c974b;
+    }
+
+    .buttonMostrarClima:focus {
+        box-shadow: rgba(46, 164, 79, 0.4) 0 0 0 3px;
+        outline: none;
+    }
+
+    .buttonMostrarClima:disabled {
+        background-color: #94d3a2;
+        border-color: rgba(27, 31, 35, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        cursor: default;
+    }
+
+    .buttonMostrarClima:active {
+        background-color: #298e46;
+        box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+    }
+</style>
 <main class="main__content">
     <div class="main_container">
         <div id="containerTiempo" class="main_containerTiempo">
@@ -116,16 +183,9 @@ if ($result === false) {
         </div>
         <div class="main_containerTareas">
             <?php
-            // 5) Recorremos y mostramos los nombres
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-                    // escapamos por seguridad
-                    $nombre = htmlspecialchars($row['nombre'], ENT_QUOTES, 'UTF-8');
-                    echo $nombre;
-                }
-            } else {
-                echo '<div class="text-gray-500">No se encontraron usuarios.</div>';
-            }
+foreach ($usuarios as $u) {
+    echo '<p>' . htmlspecialchars($u['nombre']) . '</p>';
+}
             ?>
         </div>
 
@@ -134,4 +194,3 @@ if ($result === false) {
         </div>
     </div>
 </main>
-<script src="/src/scripts/repos.ts" type="module"></script>
