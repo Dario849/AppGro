@@ -183,9 +183,12 @@ $usuarios = $stmt->fetchAll(); // array de filas
         </div>
         <div class="main_containerTareas">
             <?php
-foreach ($usuarios as $u) {
-    echo '<p>' . htmlspecialchars($u['nombre']) . '</p>';
-}
+            foreach ($usuarios as $u) {
+                echo '<p>' . htmlspecialchars($u['nombre']) . '</p>';
+            }
+            if (!empty($_SESSION['user_id'])): echo $_SESSION['user_id'];
+                unset($_SESSION['user_id']);
+            endif;
             ?>
         </div>
 
