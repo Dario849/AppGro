@@ -20,11 +20,11 @@ $layout = new HTML(title: 'PHP via Vite');
                   echo $_SESSION['error'];
                   unset($_SESSION['error']);
                   ?><br></span>
-          <span class="font-medium">Ensure that these requirements are met:</span>
+          <span class="font-medium">Ensure that these requirements are met</span>
           <ul class="mt-1.5 list-disc list-inside">
-            <li>At least 10 characters (and up to 100 characters)</li>
+            <!-- <li>At least 10 characters (and up to 100 characters)</li>
             <li>At least one lowercase character</li>
-            <li>Inclusion of at least one special character, e.g., ! @ # ?</li>
+            <li>Inclusion of at least one special character, e.g., ! @ # ?</li> -->
           </ul>
         </div>
       </div>

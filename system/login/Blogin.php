@@ -13,19 +13,21 @@ if (!$email || !$password) {
 }
 
 // 3) Consulta segura
-$sql = "SELECT id, password FROM usuarios WHERE username = :mail LIMIT 1";
+$sql = "SELECT id, password, username FROM usuarios WHERE username = :mail LIMIT 1";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':mail' => $email],);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
+$hash=password_hash($user['password'], PASSWORD_DEFAULT);
 
-if ($user && password_verify($password, $user['password'])) {
+if ($user && password_verify( $password, $hash)) {
     // 4) Credenciales OK
     $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['username'];
     header('Location: /dashboard');
     exit;
-} elseif (!password_verify($password, $user['password'])) {
-    $_SESSION['error'] = 'Email o contraseña incorrectos' . "-" . "PASSWORD_VERIFY_ERROR";
-    header('Location: /');
+// } elseif (!password_verify($password, $user['password'])) {
+//     $_SESSION['error'] = 'Email o contraseña incorrectos' . "-" . "PASSWORD_VERIFY_ERROR";
+//     header('Location: /');
 } else {
     // 5) Credenciales FAIL
     $_SESSION['error'] = 'Email o contraseña incorrectos' . "-" . "ERROR 589";
