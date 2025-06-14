@@ -1,0 +1,616 @@
+<!--
+    ⚠️ Este archivo HTML es solo un ejemplo.
+    No debe ser usado en producción.
+    Usar archivo tareas.php en su lugar.
+-->
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Gestión de Tareas</title>
+		<style>
+			/* Reset básico */
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			body {
+				font-family: Arial, sans-serif;
+				display: flex;
+				height: 100vh;
+				overflow: hidden;
+				background-color: #1e1e1e;
+				color: #eee;
+			}
+
+			/* Barra lateral */
+			.sidebar {
+				width: 200px;
+				background-color: #2c2f33;
+				display: flex;
+				flex-direction: column;
+				padding-top: 20px;
+			}
+			.sidebar nav a {
+				color: #bbb;
+				text-decoration: none;
+				display: block;
+				padding: 12px 20px;
+				font-size: 14px;
+				transition: background-color 0.2s;
+			}
+			.sidebar nav a:hover {
+				background-color: #40444b;
+				color: #fff;
+			}
+			.sidebar nav a.active {
+				background-color: #7289da;
+				color: #fff;
+			}
+
+			/* Contenedor principal */
+			.main-content {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				padding: 20px;
+				overflow-y: auto;
+			}
+
+			/* Filtros + Ordenamiento */
+			.filtros {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				margin-bottom: 16px;
+			}
+			.filtros .buscador {
+				display: flex;
+				align-items: center;
+			}
+			.filtros .buscador input {
+				padding: 6px 10px;
+				border-radius: 4px;
+				border: none;
+				margin-left: 8px;
+			}
+			.filtros .orden {
+				display: flex;
+				gap: 8px;
+			}
+			.filtros .orden button {
+				background-color: #40444b;
+				border: none;
+				color: #fff;
+				padding: 6px 12px;
+				border-radius: 4px;
+				font-size: 12px;
+				cursor: pointer;
+				transition: background-color 0.2s;
+			}
+			.filtros .orden button:hover {
+				background-color: #5865f2;
+			}
+
+			/* Tabla de tareas */
+			.tabla-tareas {
+				width: 100%;
+				border-collapse: collapse;
+			}
+			.tabla-tareas th,
+			.tabla-tareas td {
+				border: 1px solid #40444b;
+				padding: 10px;
+				text-align: center;
+				font-size: 14px;
+				color: #eee;
+			}
+			.tabla-tareas th {
+				background-color: #2f3136;
+				font-weight: 400;
+			}
+			.tabla-tareas td input,
+			.tabla-tareas td select {
+				width: 100%;
+				padding: 6px;
+				border: 1px solid #5865f2;
+				border-radius: 4px;
+				background-color: #2f3136;
+				color: #eee;
+				font-size: 13px;
+			}
+			.tabla-tareas td .status-circle {
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				display: inline-block;
+				cursor: pointer;
+				border: 2px solid #ccc;
+			}
+			/* Colores de estado */
+			.status-circle[data-estado='activa'] {
+				background-color: #f0c419;
+			}
+			.status-circle[data-estado='completada'] {
+				background-color: #43b581;
+			}
+			.status-circle[data-estado='cancelada'] {
+				background-color: #f04747;
+			}
+			/* Botón agregar fila */
+			.btn-agregar {
+				margin-top: 8px;
+				padding: 8px 12px;
+				background-color: #5865f2;
+				border: none;
+				border-radius: 4px;
+				color: #fff;
+				font-size: 14px;
+				cursor: pointer;
+				transition: background-color 0.2s;
+			}
+			.btn-agregar:hover {
+				background-color: #4e5ac1;
+			}
+
+			/* Pie de página: Leyenda de estados + ADMIN */
+			.footer {
+				margin-top: 24px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				flex-wrap: wrap;
+				gap: 16px;
+			}
+			.leyenda-estados {
+				display: flex;
+				align-items: center;
+				gap: 16px;
+			}
+			.leyenda-estados .item-leyenda {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				font-size: 13px;
+			}
+			.leyenda-estados .item-leyenda .circulo {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				display: inline-block;
+			}
+			.circulo.activa {
+				background-color: #f0c419;
+			}
+			.circulo.completada {
+				background-color: #43b581;
+			}
+			.circulo.cancelada {
+				background-color: #f04747;
+			}
+
+			.admin-controls {
+				background-color: #2f3136;
+				padding: 12px 16px;
+				border-radius: 6px;
+				font-size: 13px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.admin-controls select,
+			.admin-controls button {
+				padding: 6px 10px;
+				border: 1px solid #5865f2;
+				border-radius: 4px;
+				background-color: #2f3136;
+				color: #eee;
+				font-size: 13px;
+				cursor: pointer;
+				transition: background-color 0.2s;
+			}
+			.admin-controls button:hover,
+			.admin-controls select:hover {
+				background-color: #4e5ac1;
+			}
+
+			.modo-selector {
+				display: flex;
+				justify-content: flex-end;
+				margin-bottom: 12px;
+				gap: 10px;
+			}
+
+			.modo-btn {
+				padding: 8px 16px;
+				border: 1px solid #ccc;
+				background-color: #2c2f33;
+				color: #eee;
+				border-radius: 4px;
+				cursor: pointer;
+				font-size: 13px;
+				transition: background-color 0.2s;
+			}
+
+			.modo-btn.activo {
+				background-color: #2ecc71;
+				color: #fff;
+			}
+
+			.modo-btn:hover {
+				background-color: #3d3d3d;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Barra lateral -->
+		<div class="sidebar">
+			<nav>
+				<a href="#" class="active">Dashboard</a>
+				<a href="#">Tareas</a>
+				<a href="#">Rendimientos</a>
+				<a href="#">Mapa</a>
+				<a href="#">Informe</a>
+				<a href="#">Administrador</a>
+			</nav>
+		</div>
+
+		<!-- Contenido principal -->
+		<div class="main-content">
+			<!-- Botones tareas / Calendario -->
+			<div class="modo-selector">
+				<button class="modo-btn activo">TAREAS</button>
+				<button class="modo-btn">CALENDARIO</button>
+			</div>
+
+			<!-- Filtros y orden -->
+			<div class="filtros">
+				<div class="buscador">
+					<label for="filtro">FILTRADO:</label>
+					<input
+						type="text"
+						id="filtro"
+						placeholder="Buscar tarea..."
+					/>
+				</div>
+				<div class="orden">
+					<button data-orden="id">ID</button>
+					<button data-orden="estado">ESTADO</button>
+					<button data-orden="inicio">INICIO</button>
+					<button data-orden="vencimiento">VENCIMIENTO</button>
+					<button data-orden="descripcion">DESCRIPCIÓN</button>
+				</div>
+			</div>
+
+			<!-- Tabla de tareas -->
+			<table class="tabla-tareas" id="tablaTareas">
+				<thead>
+					<tr>
+						<th></th>
+						<th>ID</th>
+						<th>ESTADO</th>
+						<th>INICIO</th>
+						<th>VENCIMIENTO</th>
+						<th>DESCRIPCIÓN</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Fila de ejemplo 1 -->
+					<tr>
+						<td>
+							<span
+								class="status-circle"
+								data-estado="activa"
+								title="Marcar como completada"
+							></span>
+						</td>
+						<td>1</td>
+						<td>
+							<select>
+								<option value="activa">activa</option>
+								<option value="completada">completada</option>
+								<option value="cancelada">cancelada</option>
+							</select>
+						</td>
+						<td>
+							<input type="date" value="2023-06-01" />
+						</td>
+						<td>
+							<input type="date" value="2023-06-02" />
+						</td>
+						<td>
+							<input
+								type="text"
+								value="Revisar cercas del lote A"
+							/>
+						</td>
+					</tr>
+					<!-- Fila de ejemplo 2 -->
+					<tr>
+						<td>
+							<span
+								class="status-circle"
+								data-estado="completada"
+								title="Tarea completada (se eliminará)"
+							></span>
+						</td>
+						<td>2</td>
+						<td>
+							<select>
+								<option value="activa">activa</option>
+								<option value="completada" selected>
+									completada
+								</option>
+								<option value="cancelada">cancelada</option>
+							</select>
+						</td>
+						<td>
+							<input type="date" value="2023-05-28" />
+						</td>
+						<td>
+							<input type="date" value="2023-05-29" />
+						</td>
+						<td>
+							<input
+								type="text"
+								value="Alimentar ganado en lote C"
+							/>
+						</td>
+					</tr>
+					<!-- Fila de ejemplo 3 -->
+					<tr>
+						<td>
+							<span
+								class="status-circle"
+								data-estado="cancelada"
+								title="Tarea cancelada"
+							></span>
+						</td>
+						<td>3</td>
+						<td>
+							<select>
+								<option value="activa">activa</option>
+								<option value="completada">completada</option>
+								<option value="cancelada" selected>
+									cancelada
+								</option>
+							</select>
+						</td>
+						<td>
+							<input type="date" value="2023-05-27" />
+						</td>
+						<td>
+							<input type="date" value="2023-05-28" />
+						</td>
+						<td>
+							<input type="text" value="Reparar bomba de riego" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<!-- Botón para agregar una nueva fila -->
+			<button class="btn-agregar" id="btnAgregar">
+				＋ Agregar Tarea
+			</button>
+
+			<!-- Pie de página: Leyenda de estados y ADMIN -->
+			<div class="footer">
+				<div class="leyenda-estados">
+					<div class="item-leyenda">
+						<span class="circulo activa"></span>
+						<span>activa</span>
+					</div>
+					<div class="item-leyenda">
+						<span class="circulo completada"></span>
+						<span>completada</span>
+					</div>
+					<div class="item-leyenda">
+						<span class="circulo cancelada"></span>
+						<span>cancelada</span>
+					</div>
+				</div>
+
+				<div class="admin-controls">
+					<label for="auto-eliminar">ELIMINACIÓN AUTOMÁTICA:</label>
+					<select id="auto-eliminar">
+						<option value="ninguno">NINGUNO</option>
+						<option value="semanal">SEMANAL</option>
+						<option value="mensual">MENSUAL</option>
+						<option value="anual">ANUAL</option>
+					</select>
+					<button id="btnEliminar">ELIMINAR</button>
+				</div>
+			</div>
+		</div>
+
+		<!-- JAVASCRIPT PARA INTERACTIVIDAD -->
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				const tabla = document.querySelector('#tablaTareas tbody');
+				const btnAgregar = document.getElementById('btnAgregar');
+
+				// Función para crear una fila nueva en blanco
+				function crearFilaVacia() {
+					const tr = document.createElement('tr');
+
+					// Celda 1: Círculo de estado
+					const tdEstadoIcon = document.createElement('td');
+					const spanEstado = document.createElement('span');
+					spanEstado.classList.add('status-circle');
+					spanEstado.setAttribute('data-estado', 'activa');
+					spanEstado.setAttribute('title', 'Marcar como completada');
+					spanEstado.addEventListener('click', onClickEliminarFila);
+					tdEstadoIcon.appendChild(spanEstado);
+					tr.appendChild(tdEstadoIcon);
+
+					// Celda 2: ID (se deja vacío para que luego el backend lo asigne)
+					const tdID = document.createElement('td');
+					tdID.textContent = ''; // se llene con PHP en el futuro
+					tr.appendChild(tdID);
+
+					// Celda 3: Select de estado
+					const tdSelect = document.createElement('td');
+					const select = document.createElement('select');
+					['activa', 'completada', 'cancelada'].forEach((estado) => {
+						const op = document.createElement('option');
+						op.value = estado;
+						op.textContent = estado;
+						select.appendChild(op);
+					});
+					select.value = 'activa';
+					tdSelect.appendChild(select);
+					tr.appendChild(tdSelect);
+
+					// Celda 4: Fecha inicio
+					const tdInicio = document.createElement('td');
+					const inputInicio = document.createElement('input');
+					inputInicio.type = 'date';
+					tdInicio.appendChild(inputInicio);
+					tr.appendChild(tdInicio);
+
+					// Celda 5: Fecha vencimiento
+					const tdVenc = document.createElement('td');
+					const inputVenc = document.createElement('input');
+					inputVenc.type = 'date';
+					tdVenc.appendChild(inputVenc);
+					tr.appendChild(tdVenc);
+
+					// Celda 6: Descripción
+					const tdDesc = document.createElement('td');
+					const inputDesc = document.createElement('input');
+					inputDesc.type = 'text';
+					inputDesc.placeholder = 'Descripción de la tarea...';
+					tdDesc.appendChild(inputDesc);
+					tr.appendChild(tdDesc);
+
+					return tr;
+				}
+
+				// Función que se dispara al hacer clic en el círculo (status)
+				// Cuando el usuario marca la tarea como completada o cancelada
+				function onClickEliminarFila(e) {
+					const span = e.currentTarget;
+					const fila = span.closest('tr');
+					const estadoActual = span.getAttribute('data-estado');
+
+					// Si estaba en 'activa', al hacer clic lo marcamos 'completada' y eliminamos la fila
+					if (estadoActual === 'activa') {
+						span.setAttribute('data-estado', 'completada');
+						// Efecto de fade-out antes de eliminar
+						fila.style.transition = 'opacity 0.5s';
+						fila.style.opacity = '0';
+						setTimeout(() => {
+							fila.remove();
+						}, 500);
+					}
+				}
+
+				// Asignar evento de clic a los iconos de las filas de ejemplo
+				document.querySelectorAll('.status-circle').forEach((span) => {
+					span.addEventListener('click', onClickEliminarFila);
+				});
+
+				// Al presionar "Agregar Tarea", creamos una fila nueva en blanco
+				btnAgregar.addEventListener('click', function () {
+					const nuevaFila = crearFilaVacia();
+					tabla.appendChild(nuevaFila);
+				});
+
+				// Botón "ELIMINAR" del footer: elimina todas las filas completadas
+				document
+					.getElementById('btnEliminar')
+					.addEventListener('click', function () {
+						document
+							.querySelectorAll('#tablaTareas tbody tr')
+							.forEach((fila) => {
+								const span =
+									fila.querySelector('.status-circle');
+								if (
+									span.getAttribute('data-estado') ===
+									'completada'
+								) {
+									fila.remove();
+								}
+							});
+					});
+
+				// FILTRADO en tiempo real (por descripción)
+				document
+					.getElementById('filtro')
+					.addEventListener('input', function (e) {
+						const texto = e.target.value.toLowerCase();
+						document
+							.querySelectorAll('#tablaTareas tbody tr')
+							.forEach((fila) => {
+								const desc = fila
+									.querySelector('td:last-child input')
+									.value.toLowerCase();
+								fila.style.display = desc.includes(texto)
+									? ''
+									: 'none';
+							});
+					});
+
+				// ORDENAMIENTO básico al hacer clic en cabeceras
+				document.querySelectorAll('.orden button').forEach((btn) => {
+					btn.addEventListener('click', function () {
+						const criterio = btn.getAttribute('data-orden');
+						const filas = Array.from(tabla.querySelectorAll('tr'));
+						filas.sort((a, b) => {
+							let va, vb;
+							switch (criterio) {
+								case 'id':
+									va =
+										parseInt(a.children[1].textContent) ||
+										0;
+									vb =
+										parseInt(b.children[1].textContent) ||
+										0;
+									return va - vb;
+								case 'estado':
+									va = a.querySelector(
+										'td:nth-child(3) select',
+									).value;
+									vb = b.querySelector(
+										'td:nth-child(3) select',
+									).value;
+									return va.localeCompare(vb);
+								case 'inicio':
+									va = a.querySelector(
+										'td:nth-child(4) input',
+									).value;
+									vb = b.querySelector(
+										'td:nth-child(4) input',
+									).value;
+									return va.localeCompare(vb);
+								case 'vencimiento':
+									va = a.querySelector(
+										'td:nth-child(5) input',
+									).value;
+									vb = b.querySelector(
+										'td:nth-child(5) input',
+									).value;
+									return va.localeCompare(vb);
+								case 'descripcion':
+									va = a
+										.querySelector('td:nth-child(6) input')
+										.value.toLowerCase();
+									vb = b
+										.querySelector('td:nth-child(6) input')
+										.value.toLowerCase();
+									return va.localeCompare(vb);
+								default:
+									return 0;
+							}
+						});
+						// Volvemos a agregar las filas en el orden nuevo
+						filas.forEach((fila) => tabla.appendChild(fila));
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
