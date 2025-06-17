@@ -17,7 +17,7 @@ pnpm-debug.log*
 # environment variables
 *.local
 .env
+.env.example
 # macOS-specific files
 .DS_Store
 .vscode/settings.json
-.gitignore
