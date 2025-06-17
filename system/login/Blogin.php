@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'system\resources\database.php';   // conexión PDO
+require __DIR__ . '/../resources/database.php';   // conexión PDO
 // 1) Recoger y sanitizar
 $email    = filter_input(INPUT_POST, 'Email',    FILTER_SANITIZE_EMAIL);
 $password = trim($_POST['Password'] ?? '');
@@ -25,9 +25,6 @@ if ($user && password_verify( $password, $hash)) {
     $_SESSION['user_name'] = $user['username'];
     header('Location: /dashboard');
     exit;
-// } elseif (!password_verify($password, $user['password'])) {
-//     $_SESSION['error'] = 'Email o contraseña incorrectos' . "-" . "PASSWORD_VERIFY_ERROR";
-//     header('Location: /');
 } else {
     // 5) Credenciales FAIL
     $_SESSION['error'] = 'Email o contraseña incorrectos' . "-" . "ERROR 589";

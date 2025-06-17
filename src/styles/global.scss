@@ -78,8 +78,8 @@
 	}
 }
 .alertBox {
-    padding-bottom: 2vh;
-    padding-top: 2vh;
+	padding-bottom: 2vh;
+	padding-top: 2vh;
 }
 .main_container {
 	height: 100%;
@@ -107,7 +107,7 @@
 	&Login {
 		background-color: eaddd7;
 		// display: flex;
-		// height: auto; 
+		// height: auto;
 		//  width: auto;
 		margin: auto;
 		border-radius: 5%;
@@ -193,6 +193,12 @@
 
 		.cta:active {
 			transform: scale(0.95);
+		}
+		.cta[disabled] {
+			cursor: not-allowed;
+			background: red;
+			background-clip: content-box;
+			border-radius: 4vh;
 		}
 	}
 	&Register {
