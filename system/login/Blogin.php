@@ -7,7 +7,7 @@ $password = trim($_POST['Password'] ?? '');
 
 // 2) Validaciones básicas
 if (!$email || !$password) {
-    $_SESSION['error'] = 'Faltan datos obligatorios';
+    $_SESSION['error'] = 'Faltan datos obligatorios' . "-" . "ERROR 588";
     header('location: /');
     exit;
 }

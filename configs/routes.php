@@ -22,26 +22,34 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/calendario.php');
 	});
 	$r->addRoute('GET', '/tareasdev', function ($ROUTE_PARAMS) {
-		include('pages/tareas.html');
+		include('pages/examples/tareas.html');
 	});
 	$r->addRoute('GET', '/calendariodev', function ($ROUTE_PARAMS) {
-		include('pages/calendario.html');
+		include('pages/examples/calendario.html');
 	});
-	// $r->addRoute('GET', '/recover', function ($ROUTE_PARAMS) {
-	// 	include('pages/recover.php');
+	// $r->addRoute('GET', '/login', function ($ROUTE_PARAMS) {
+	// 	include('pages/login.php');
 	// });
-	// $r->addRoute('GET', '/register', function ($ROUTE_PARAMS) {
-	// 	include('pages/register.php');
-	// });
-    $r->addRoute('GET',  '/login',  fn($ROUTE_PARAMS)=> include 'pages/login.php');
+	$r->addRoute('GET', '/logout', function ($ROUTE_PARAMS) {
+		include('pages/logout.php');
+	});
+	$r->addRoute('GET', '/recover', function ($ROUTE_PARAMS) {
+		include('pages/recover.php');
+	});
+	$r->addRoute('GET', '/register', function ($ROUTE_PARAMS) {
+		include('pages/register.php');
+	});
+    // $r->addRoute('GET',  '/login',  fn($ROUTE_PARAMS)=> include 'pages/login.php'); //TAMBIEN FUNCIONARIA
+
+	
 	// Rutas de backend (POST)
     $r->addRoute('POST', '/login', function($ROUTE_PARAMS){
         require ( 'system/login/Blogin.php');
     });
-	$r->addRoute('POST', 'system/login/Brecover', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/recover', function ($ROUTE_PARAMS) {
 		include('system/login/Brecover.php');
 	});
-	$r->addRoute('POST', 'system/login/Bregister', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/register', function ($ROUTE_PARAMS) {
 		include('system/login/Bregister.php');
 	});
 });
