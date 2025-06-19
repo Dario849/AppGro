@@ -13,11 +13,11 @@ if (!$email || !$password) {
 }
 
 // 3) Consulta segura
-$sql = "SELECT id, password, username FROM usuarios WHERE username = :mail LIMIT 1";
+$sql = "SELECT id, password, username FROM usuarios WHERE username = :username LIMIT 1";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([':mail' => $email],);
+$stmt->execute([':username' => $email],);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-$hash=password_hash($user['password'], PASSWORD_DEFAULT);
+$hash= PASSWORD_HASH($user['password'], PASSWORD_DEFAULT);
 
 if ($user && password_verify( $password, $hash)) {
     // 4) Credenciales OK
