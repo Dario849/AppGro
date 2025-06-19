@@ -1,25 +1,17 @@
 <?php
 require('system/main.php');
+
+sessionCheck();
 renderNavbar();
-
 $layout = new HTML(title: 'PHP via Vite');
-
-/*use App\resources\Database;
-
-$db   = new Database();
-$conn = $db->connect();
-
-$sql    = "SELECT nombre FROM Usuarios WHERE id BETWEEN 1 AND 5";
-$result = $conn->query($sql);
-
-if ($result === false) {
-    die("Error en la consulta: " . $conn->error);
-} */
+//require dirname(__DIR__, 2) .'\system\resources\database.php';
+/*$sql  = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([
+    'min' => 1,
+    'max' => 5,
+])*/
 ?>
-
-<head>
-    <meta charset="UTF-8">
-    <title>Ficha de Animal</title>
     <script>
         function agregarVacuna() {
             const contenedor = document.getElementById('vacunas');
@@ -58,9 +50,6 @@ if ($result === false) {
             contenedor.appendChild(div);
         }
         </script>
-</head>
-<body>
-    
     <form method="POST" action="ganado.php">
         
         <div id="contenedor">
@@ -173,6 +162,3 @@ if ($result === false) {
         padding: 10px; /* Agrega un relleno interno al fieldset */
     }
 </style>
-    
-</body>
-</html>

@@ -40,6 +40,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/register.php');
 	});
     // $r->addRoute('GET',  '/login',  fn($ROUTE_PARAMS)=> include 'pages/login.php'); //TAMBIEN FUNCIONARIA
+	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
+		include('pages/ganado.php');
+	});
 
 	
 	// Rutas de backend (POST)
