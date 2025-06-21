@@ -4,7 +4,6 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/', function ($ROUTE_PARAMS) {
 		include('pages/index.php');
 	});
-
 	$r->addRoute('GET', '/about', function ($ROUTE_PARAMS) {
 		include('pages/about.php');
 	});
@@ -27,9 +26,6 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/calendariodev', function ($ROUTE_PARAMS) {
 		include('pages/examples/calendario.html');
 	});
-	// $r->addRoute('GET', '/login', function ($ROUTE_PARAMS) {
-	// 	include('pages/login.php');
-	// });
 	$r->addRoute('GET', '/logout', function ($ROUTE_PARAMS) {
 		include('pages/logout.php');
 	});

@@ -2,13 +2,13 @@
 session_start();
 require __DIR__ . '/../resources/database.php';   // conexión PDO
 // 1) Recoger y sanitizar
-$email    = filter_input(INPUT_POST, 'Email',    FILTER_SANITIZE_EMAIL);
-$password = trim($_POST['Password'] ?? '');
-// $password = PASSWORD_HASH($_POST['Password'], PASSWORD_DEFAULT);
+$email = filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL);
+// $password = trim($_POST['Password'] ?? ''); // Almacena en variable, el campo sin encriptar
+$password = PASSWORD_HASH(trim($_POST['Password'] ?? ''), PASSWORD_DEFAULT); // elimina espacios, hashea / encripta la contraseña
 $nombre = trim($_POST['Nombre'] ?? '');
 $apellido = trim($_POST['Apellido'] ?? '');
 $fecha_nacimiento = trim($_POST['FechaNacimiento'] ?? '');
-$estado= '3';
+$estado = '3';
 
 // 2) Validaciones básicas
 if (!$email || !$password || !$nombre || !$apellido || !$fecha_nacimiento) {
@@ -16,37 +16,29 @@ if (!$email || !$password || !$nombre || !$apellido || !$fecha_nacimiento) {
     header('location: /register');
     exit;
 }
-
-// 3) Consulta segura
-//-------
-// $query = $con->prepare("INSERT INTO `useracct` (`email`, `password`, `name`) VALUES (?,?,?)");
-// $email = $_POST["email"];
-// $psswd = PASSWORD_HASH($_POST["passd"], PASSWORD_DEFAULT);
-// $name = $_POST["name"];
-
-// $query->bind_param('bbb', $email, $psswd, $name);
-// if ($query->execute()) {
-//     echo "Query executed.";
-// } else {
-//     echo "Query error.";
-// }
-//-------
-// estado = 'activo','inactivo','espera' === 1, 2, 3
-// INSERT INTO `usuarios` 
-// (`username`, `password`, `nombre`, `apellido`, `estado`, `fecha_nacimiento`) 
-// VALUES ("juan1@example.com", "wassword","juan2","Suarez3",1, "2001-12-08")
-$sql = "INSERT INTO `usuarios` (`username`, `password`, `nombre`, `apellido`, `estado`, `fecha_nacimiento`) 
-VALUES (?,?,?,?,?,?)";
-$stmt = $pdo->prepare($sql);
-// $stmt->execute([':username' => $email],);
-// $query->bind_param('bbbbbb', $email, $password, $nombre, $apellido, $estado, $fecha_nacimiento);
-if ($stmt->execute([$email, $password, $nombre, $apellido, $estado, $fecha_nacimiento])) {
-    $_SESSION['error'] = 'Usuario creado, inicie sesión' . "-" . "NO ERROR";
-    header('Location: /');
-
-} else {
-    $_SESSION['error'] = 'Ocurrió un error, inesperado' . "-" . "ERROR 580";
-    header('Location: /register');
-
+try {
+    $check = $pdo->prepare("SELECT COUNT(*) FROM usuarios WHERE username = :username");
+    $check->execute([':username' => $email]);
+    if ($check->fetchColumn() > 0) {
+        $_SESSION['error'] = 'El usuario ya existe.';
+        header('Location: /register');
+        exit;
+    } else {
+        $sql = "INSERT INTO `usuarios` (`username`, `password`, `nombre`, `apellido`, `estado`, `fecha_nacimiento`) VALUES (?,?,?,?,?,?)";
+        $stmt = $pdo->prepare($sql);
+        $result = $stmt->execute([$email, $password, $nombre, $apellido, $estado, $fecha_nacimiento]);
+        if ($result) {
+            $_SESSION['error'] = 'Usuario creado, inicie sesión' . "-" . "NO ERROR";
+            header('Location: /');
+        } else {
+            $_SESSION['error'] = 'Ocurrió un error, inesperado' . "-" . "ERROR 580";
+            header('Location: /register');
+            exit;
+        }
+    }
+} catch (PDOException $e) {
+    // log error
+    $_SESSION['error'] = 'Ocurrió un error inesperado...' . "-" . "ERROR 999";
+    echo "Error en el registro: " . $e->getMessage();
 }
 

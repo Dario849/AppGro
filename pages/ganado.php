@@ -3,7 +3,7 @@ require('system/main.php');
 
 sessionCheck();
 renderNavbar();
-$layout = new HTML(title: 'PHP via Vite');
+$layout = new HTML(title: 'AppGro-Ganado');
 //require dirname(__DIR__, 2) .'\system\resources\database.php';
 /*$sql  = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
 $stmt = $pdo->prepare($sql);

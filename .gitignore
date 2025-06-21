@@ -18,6 +18,7 @@ pnpm-debug.log*
 *.local
 .env
 .env.example
+.config.php
 # macOS-specific files
 .DS_Store
 .vscode/settings.json

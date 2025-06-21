@@ -2,7 +2,7 @@
 require('system/main.php');
 renderNavbar();
 session_start();
-$layout = new HTML(title: 'PHP via Vite');
+$layout = new HTML(title: 'AppGro-Calendario');
 
 // use App\resources\Database;
 

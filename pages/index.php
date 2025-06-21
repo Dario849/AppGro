@@ -2,8 +2,7 @@
 require('system/main.php');
 renderNavbar();
 session_start();
-$layout = new HTML(title: 'PHP via Vite');
-
+$layout = new HTML(title: 'AppGro-Inicio');
 ?>
 <main class="main__content">
   <div class="main_container">
@@ -15,17 +14,16 @@ $layout = new HTML(title: 'PHP via Vite');
           unset($_SESSION['error']);
         endif;
         ?>
-
       </div>
-      <form action="/login" name="formLogin" method="POST">
+      <form action="/login" name="formLogin" autocomplete="on" method="POST">
         <div id="inputs" class="inputs">
           <label for="Email">Correo Electrónico</label>
           <input type="email" name="Email" id="UserName" onkeypress="return validateinputs();">
           <br>
           <label for="Password">Contraseña</label>
-          <input type="password" name="Password" id="Password" onkeypress="return validateinputs();">
+          <input type="password" name="Password" id="Password" oninput="return validateinputs();" onkeypress="return validateinputs();">
           <br>
-          <button id="submitButton" name="submitButton" type="submit" class="cta">
+          <button id="submitButton" name="submitButton" type="submit" class="cta" onmouseover="return validateinputs();">
             <span>Ingresar</span>
             <svg width="15px" height="10px" viewBox="0 0 13 10">
               <path d="M1,5 L11,5"></path>
@@ -46,6 +44,7 @@ $layout = new HTML(title: 'PHP via Vite');
     validateinputs();
   });
   function validateinputs() { //Si campos no están completos, deshibilita presionado de submit button
+
     if ($('#UserName').val().lenght > 3
       || $('#Password').val().length > 3) {
       $('#submitButton').removeAttr('disabled');
@@ -54,5 +53,4 @@ $layout = new HTML(title: 'PHP via Vite');
       $('#submitButton').prop('disabled', 'true');
     }
   }
-
 </script>

@@ -1,15 +1,16 @@
 <?php
-class HTML {
-	public function __construct(public string $title, public string $lang = 'en') {
+class HTML
+{
+	public function __construct(public string $title, public string $lang = 'en')
+	{
 		ob_start();
 	}
-
-	public function __destruct() {
+	public function __destruct()
+	{
 		$output = ob_get_clean();
 
 		ob_start();
-?>
-
+		?>
 		<!DOCTYPE html>
 		<html lang="<?= $this->lang; ?>">
 
@@ -17,7 +18,6 @@ class HTML {
 			<meta charset="UTF-8" />
 			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
 			<title><?= $this->title; ?></title>
 			<script src="../js/jquery-3.7.1.min.js"></script>
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
@@ -29,8 +29,7 @@ class HTML {
 		</body>
 
 		</html>
-
-<?php
+		<?php
 		die(ob_get_clean());
 	}
 }

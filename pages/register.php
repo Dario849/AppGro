@@ -1,39 +1,38 @@
 <?php
 require('system/main.php');
 renderNavbar();
-
-$layout = new HTML(title: 'PHP via Vite');
-
+session_start();
+$layout = new HTML(title: 'AppGro-Registrarse');
 ?>
 <main class="main__content">
   <div class="main_container">
     <div class="main_containerRegister">
-<div class="alertBox">
-              <?php 
-             if (!empty($_SESSION['error'])):
-              alertBox($_SESSION['error']);
-              unset($_SESSION['error']);
-              endif;
-              ?>
-
+      <div class="alertBox">
+        <?php
+        if (!empty($_SESSION['error'])):
+          alertBox($_SESSION['error']);
+          unset($_SESSION['error']);
+        endif;
+        ?>
       </div>
-              <p style="margin-bottom: auto; text-align: center; font-family: auto; text-decoration-line: underline;">Ingrese sus datos para registrar su cuenta</p>
+      <p style="margin-bottom: auto; text-align: center; font-family: auto; text-decoration-line: underline;">Ingrese
+        sus datos para registrar su cuenta</p>
       <form action="/register" name="formRegister" method="POST">
         <div id="inputs" class="inputs">
           <label for="Nombre">Nombre</label>
-          <input type="text" name="Nombre" id="Nombre">
+          <input type="text" name="Nombre" id="Nombre" required>
           <br>
           <label for="Apellido">Apellido</label>
-          <input type="text" name="Apellido" id="Apellido">
+          <input type="text" name="Apellido" id="Apellido" required>
           <br>
           <label for="FechaNacimiento">Fecha_Nacimiento</label>
-          <input type="date" name="FechaNacimiento" id="FechaNacimiento">
+          <input type="date" name="FechaNacimiento" id="FechaNacimiento" required>
           <br>
           <label for="Email">Correo Electrónico</label>
-          <input type="email" name="Email" id="Email">
+          <input type="email" name="Email" id="Email" required>
           <br>
           <label for="Password">Contraseña</label>
-          <input type="password" name="Password" id="Password">
+          <input type="password" name="Password" id="Password" required>
           <br>
           <button type="submit" class="cta">
             <span>Ingresar</span>
@@ -44,7 +43,8 @@ $layout = new HTML(title: 'PHP via Vite');
           </button>
           <br>
         </div>
-        <span >Ya tenes cuenta?<a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500" href="/">Iniciar sesión</a></span> 
+        <span>Ya tenes cuenta?<a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500"
+            href="/">Iniciar sesión</a></span>
       </form>
     </div>
   </div>

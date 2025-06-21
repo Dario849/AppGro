@@ -2,7 +2,7 @@
 require('system/main.php');
 renderNavbar();
 
-$layout = new HTML(title: 'PHP via Vite');
+$layout = new HTML(title: 'AppGro-Tareas');
 
 // use App\resources\Database;
 
