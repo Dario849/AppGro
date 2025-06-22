@@ -1,6 +1,6 @@
 <?php
 require('system/main.php');
-renderNavbar();
+renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'PHP via Vite');
 ?>
 <main class="main__content">
@@ -8,9 +8,10 @@ $layout = new HTML(title: 'PHP via Vite');
 
 		<div class="flex flex-col items-center gap-10 text-2xl">
 			<?php include('partials/nav.php'); ?>
-			
+
 			<div class="w-full max-w-lg text-base">
-				Este es un menú plantilla para visualizar información detallada sobre el funcionamiento de la página AppGro<br />
+				Este es un menú plantilla para visualizar información detallada sobre el funcionamiento de la página
+				AppGro<br />
 				<br />
 				Contiene las siguientes funcionalidades:
 				<ul class="list-disc pl-10">

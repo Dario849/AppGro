@@ -34,42 +34,6 @@
 		}
 	}
 }
-// .home {
-// 	display: flex;
-// 	height: 100vh;
-// 	&__navbar {
-// 		background-color: #2b383e;
-// 		height: 100%;
-// 		display: flex;
-// 		flex-direction: column;
-// 		justify-content: flex-start;
-// 		width: 200px; // ancho inicial
-// 		min-width: 100px;
-// 		max-width: 50%;
-// 		overflow-y: auto;
-// 		border-right: 1px solid #000;
-// 	}
-
-// 	&__navbar-list {
-// 		display: flex;
-// 		flex-direction: column;
-// 		gap: 1rem;
-// 		padding: 1rem;
-// 	}
-
-// 	&__navbar-item {
-// 		text-align: center;
-// 		position: relative; // crea un nuevo contexto de apilamiento
-// 		-webkit-text-fill-color: azure;
-// 		border: 1px solid #ccc;
-// 		border-radius: 10px;
-// 		transition: box-shadow 0.3s;
-// 		padding: 1vh;
-// 		&:hover {
-// 			box-shadow: inset rgb(255 255 255 / 19%) 0px -2px 20px 19px;
-// 		}
-// 	}
-// }
 .main {
 	&__content {
 		flex: 1;
@@ -84,37 +48,39 @@
 .main_container {
 	height: 100%;
 	width: 100%;
-	display: flex;
-	flex-wrap: wrap;
-	&Tiempo {
+	&Dashboard {
 		display: flex;
-		height: 50%;
-		width: 100%;
-		flex-flow: row;
-		align-items: center;
-		background-color: aquamarine;
-	}
-	&Tareas {
-		height: 50%;
-		width: 40%;
-		background-color: burlywood;
-	}
-	&Mapa {
-		height: 50%;
-		width: 60%;
-		background-color: plum;
+		flex-wrap: wrap;
+		&Tiempo {
+			display: flex;
+			height: 50%;
+			width: 100%;
+			flex-flow: row;
+			align-items: center;
+			background-color: aquamarine;
+		}
+		&Tareas {
+			height: 50%;
+			width: 50%;
+			background-color: burlywood;
+		}
+		&Mapa {
+			height: 50%;
+			width: 50%;
+			background-color: plum;
+		}
 	}
 	&Login {
 		background-color: eaddd7;
-		// display: flex;
-		// height: auto;
-		//  width: auto;
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
 		padding-left: 2vh;
 		padding-right: 2vh;
-		//  flex-direction: column;
+		position: absolute;
+		justify-self: anchor-center;
+		align-self: anchor-center;
+		flex-direction: column;
 
 		form {
 			position: relative;
@@ -140,15 +106,15 @@
 	}
 	&Register {
 		background-color: eaddd7;
-		/* display: flex; */
-		/* height: auto; */
-		/* width: auto; */
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
 		padding-left: 2vh;
 		padding-right: 2vh;
-		/* flex-direction: column; */
+		position: absolute;
+		justify-self: anchor-center;
+		align-self: anchor-center;
+		flex-direction: column;
 
 		form {
 			position: relative;
@@ -160,9 +126,18 @@
 		.inputs {
 			[type='text'],
 			[type='password'],
-			[type='email'],
-			[type='date'] {
+			[type='email']{
 				display: flex;
+				border: outset;
+				border-radius: 5px;
+				width: 30vh;
+				transition: box-shadow 0.3s;
+				&:hover {
+					box-shadow: inset rgb(255 255 255 / 19%) 0px -2px 20px 19px;
+				}
+			}
+			[type='date']{
+								display: flex;
 				border: outset;
 				border-radius: 5px;
 				transition: box-shadow 0.3s;
@@ -179,6 +154,10 @@
 		border: solid;
 		padding-left: 2vh;
 		padding-right: 2vh;
+		position: absolute;
+		justify-self: anchor-center;
+		align-self: anchor-center;
+		flex-direction: column;
 		form {
 			position: relative;
 			display: flex;
@@ -187,10 +166,7 @@
 			text-align: center;
 		}
 		.inputs {
-			[type='text'],
-			[type='password'],
-			[type='email'] {
-				display: flex;
+			[type='email']{
 				border: outset;
 				border-radius: 5px;
 				width: 30vh;
@@ -264,5 +240,11 @@
 		background: red;
 		background-clip: content-box;
 		border-radius: 4vh;
+	}
+	&Panel {
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-evenly;
 	}
 }

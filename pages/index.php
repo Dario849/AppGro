@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
-renderNavbar();
 session_start();
+renderNavbar(null);
 $layout = new HTML(title: 'AppGro-Inicio');
 ?>
 <main class="main__content">

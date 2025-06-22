@@ -1,6 +1,6 @@
 <?php
 require('system/main.php');
-renderNavbar();
+renderNavbar($_SESSION['user_id']);
 
 $layout = new HTML(title: 'AppGro-Tareas');
 

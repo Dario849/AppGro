@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
-renderNavbar();
 session_start();
+renderNavbar(null);
 $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
 ?>
 <main class="main__content">
@@ -19,10 +19,10 @@ $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
             <form action="/recover" method="POST" name="formRecover" onsubmit="return oneRequestOnly();">
                 <div id="inputs" class="inputs">
                     <h2>Recuperar contraseña</h2>
-                    <label for="email">Correo electrónico:</label>
-                    <input type="email" name="email" id="email" required>
-                    <button type="submit" class="cta" id="buttonRecover" >
-                        <span id="spanRecover" >Enviar nueva contraseña</span>
+                    <label for="email">Correo electrónico:</label> <br>
+                    <input type="email" name="email" id="email" required> <br>
+                    <button type="submit" class="cta" id="buttonRecover">
+                        <span id="spanRecover">Enviar nueva contraseña</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">
                             <path d="M1,5 L11,5"></path>
                             <polyline points="8 1 12 5 8 9"></polyline>
@@ -34,8 +34,8 @@ $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
     </div>
 </main>
 <script>
-function oneRequestOnly(){
-    $("#buttonRecover").attr("disabled",true);
-       $("#spanRecover").text("Procesando...");
-}
+    function oneRequestOnly() {
+        $("#buttonRecover").attr("disabled", true);
+        $("#spanRecover").text("Procesando...");
+    }
 </script>

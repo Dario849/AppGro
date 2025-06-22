@@ -1,5 +1,5 @@
 <?php
-function renderNavbar(): void
+function renderNavbar($uid): void
 {
 ?>
   <div class="home">
