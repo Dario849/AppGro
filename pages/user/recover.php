@@ -16,7 +16,7 @@ $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
                 ?>
             </div>
 
-            <form action="/recover" method="POST" name="formRecover" onsubmit="return oneRequestOnly();">
+            <form action="/user/recover" method="POST" name="formRecover" onsubmit="return oneRequestOnly();">
                 <div id="inputs" class="inputs">
                     <h2>Recuperar contraseña</h2>
                     <label for="email">Correo electrónico:</label> <br>

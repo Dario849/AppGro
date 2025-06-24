@@ -1,7 +1,7 @@
 <?php
 function renderNavbar($uid): void
 {
-?>
+  ?>
   <div class="home">
     <div class="home__navbar" id="sidebar">
       <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
@@ -19,10 +19,11 @@ function renderNavbar($uid): void
       </ul>
       <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
       <ul class="home__navbar-BottomList">
-        <li class="home__navbar-item"><a href="/logout"><button>Log-out</button></a></li>
+        <li class="home__navbar-item"><a href="/user/profile"><button>Perfil</button></a></li>
+        <li class="home__navbar-item"><a href="/user/logout"><button>Log-out</button></a></li>
 
       </ul>
     </div>
   </div>
-<?php
+  <?php
 }

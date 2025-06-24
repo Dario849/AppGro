@@ -1,5 +1,5 @@
 <?php
-require_once 'system\resources\phpMailer.php'; // función externa de envío
+require_once 'system/resources/phpMailer.php'; // función externa de envío
 require __DIR__ . '/../resources/database.php';   // conexión PDO
 session_start();
 $email = $_POST['email'] ?? '';
@@ -15,9 +15,9 @@ if ($user) {
     $upd->execute([$hashClave, $email]);
 
     enviarMailRecuperacion($email, $nuevaClave); // función definida externamente, envia a $email la clave (sin hashear) para que el usuario pueda ingresar
-}else{
+} else {
     $_SESSION['error'] = 'El correo no está registrado.-ERROR 104';
-    header('Location: /recover'); // o a donde necesites
+    header('Location: /user/user/recover'); // o a donde necesites
     exit;
 }
 $_SESSION['error'] = 'Recibirás un correo para restablecer tu contraseña.-REQUEST COMPLETE';

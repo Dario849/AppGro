@@ -17,7 +17,7 @@ $layout = new HTML(title: 'AppGro-Registrarse');
       </div>
       <p style="margin-bottom: auto; text-align: center; font-family: auto; text-decoration-line: underline;">Ingrese
         sus datos para registrar su cuenta</p>
-      <form action="/register" name="formRegister" method="POST">
+      <form action="/user/register" name="formRegister" method="POST">
         <div id="inputs" class="inputs">
           <label for="Nombre">Nombre</label>
           <input type="text" name="Nombre" id="Nombre" required>

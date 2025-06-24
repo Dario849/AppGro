@@ -21,9 +21,11 @@ $layout = new HTML(title: 'AppGro-Inicio');
           <input type="email" name="Email" id="UserName" onkeypress="return validateinputs();">
           <br>
           <label for="Password">Contraseña</label>
-          <input type="password" name="Password" id="Password" oninput="return validateinputs();" onkeypress="return validateinputs();">
+          <input type="password" name="Password" id="Password" oninput="return validateinputs();"
+            onkeypress="return validateinputs();">
           <br>
-          <button id="submitButton" name="submitButton" type="submit" class="cta" onmouseover="return validateinputs();">
+          <button id="submitButton" name="submitButton" type="submit" class="cta"
+            onmouseover="return validateinputs();">
             <span>Ingresar</span>
             <svg width="15px" height="10px" viewBox="0 0 13 10">
               <path d="M1,5 L11,5"></path>
@@ -32,9 +34,10 @@ $layout = new HTML(title: 'AppGro-Inicio');
           </button>
           <br>
         </div>
-        <a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500" href="/recover">Olvidé mi
+        <a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500" href="/user/recover">Olvidé mi
           contraseña</a>
-        <a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500" href="/register">Registrarme</a>
+        <a class="font-semibold text-indigo-600 hover:underline hover:text-indigo-500"
+          href="/user/register">Registrarme</a>
       </form>
     </div>
   </div>

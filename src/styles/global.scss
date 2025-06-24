@@ -126,7 +126,7 @@
 		.inputs {
 			[type='text'],
 			[type='password'],
-			[type='email']{
+			[type='email'] {
 				display: flex;
 				border: outset;
 				border-radius: 5px;
@@ -136,8 +136,8 @@
 					box-shadow: inset rgb(255 255 255 / 19%) 0px -2px 20px 19px;
 				}
 			}
-			[type='date']{
-								display: flex;
+			[type='date'] {
+				display: flex;
 				border: outset;
 				border-radius: 5px;
 				transition: box-shadow 0.3s;
@@ -166,7 +166,7 @@
 			text-align: center;
 		}
 		.inputs {
-			[type='email']{
+			[type='email'] {
 				border: outset;
 				border-radius: 5px;
 				width: 30vh;
@@ -246,5 +246,42 @@
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-evenly;
+	}
+	&Profile {
+		background-color: eaddd7;
+		margin: auto;
+		border-radius: 5%;
+		border: solid;
+		padding-left: 2vh;
+		padding-right: 2vh;
+		position: absolute;
+		justify-self: anchor-center;
+		align-self: anchor-center;
+		flex-direction: column;
+		overflow: hidden;
+		.UserData{
+			float: left;
+		}
+		.formProfile {
+			float: right;
+			position: relative;
+			display: flex;
+			align-items: center;
+			flex-direction: column;
+			text-align: center;
+			[type='text'],
+			[type='password'],
+			[type='email'] {
+				display: flex;
+				border: outset;
+				border-radius: 5px;
+				width: 30vh;
+				transition: box-shadow 0.3s;
+				&:hover {
+					box-shadow: inset rgb(255 255 255 / 19%) 0px -2px 20px 19px;
+				}
+			}
+		}
+
 	}
 }

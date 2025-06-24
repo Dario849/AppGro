@@ -13,7 +13,7 @@ $estado = '3';
 // 2) Validaciones básicas
 if (!$email || !$password || !$nombre || !$apellido || !$fecha_nacimiento) {
     $_SESSION['error'] = 'Faltan datos obligatorios' . "-" . "ERROR 588";
-    header('location: /register');
+    header('location: /user/register');
     exit;
 }
 try {
@@ -21,7 +21,7 @@ try {
     $check->execute([':username' => $email]);
     if ($check->fetchColumn() > 0) {
         $_SESSION['error'] = 'El usuario ya existe.';
-        header('Location: /register');
+        header('Location: /user/register');
         exit;
     } else {
         $sql = "INSERT INTO `usuarios` (`username`, `password`, `nombre`, `apellido`, `estado`, `fecha_nacimiento`) VALUES (?,?,?,?,?,?)";
@@ -32,7 +32,7 @@ try {
             header('Location: /');
         } else {
             $_SESSION['error'] = 'Ocurrió un error, inesperado' . "-" . "ERROR 580";
-            header('Location: /register');
+            header('Location: /user/register');
             exit;
         }
     }

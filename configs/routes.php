@@ -1,6 +1,7 @@
 <?php
 
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
+	// $r->addRoute('GET',  '/login',  fn($ROUTE_PARAMS)=> include 'pages/login.php'); //TAMBIEN FUNCIONARIA
 	$r->addRoute('GET', '/', function ($ROUTE_PARAMS) {
 		include('pages/index.php');
 	});
@@ -26,16 +27,18 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/calendariodev', function ($ROUTE_PARAMS) {
 		include('pages/examples/calendario.html');
 	});
-	$r->addRoute('GET', '/logout', function ($ROUTE_PARAMS) {
-		include('pages/logout.php');
+	$r->addRoute('GET', '/user/logout', function ($ROUTE_PARAMS) {
+		include('pages/user/logout.php');
 	});
-	$r->addRoute('GET', '/recover', function ($ROUTE_PARAMS) {
-		include('pages/recover.php');
+	$r->addRoute('GET', '/user/recover', function ($ROUTE_PARAMS) {
+		include('pages/user/recover.php');
 	});
-	$r->addRoute('GET', '/register', function ($ROUTE_PARAMS) {
-		include('pages/register.php');
+	$r->addRoute('GET', '/user/register', function ($ROUTE_PARAMS) {
+		include('pages/user/register.php');
 	});
-    // $r->addRoute('GET',  '/login',  fn($ROUTE_PARAMS)=> include 'pages/login.php'); //TAMBIEN FUNCIONARIA
+	$r->addRoute('GET', '/user/profile', function ($ROUTE_PARAMS) {
+		include('pages/user/profile.php');
+	});
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
@@ -43,16 +46,19 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/admin/panel.php');
 	});
 
-	
+
 	// Rutas de backend (POST)
-    $r->addRoute('POST', '/login', function($ROUTE_PARAMS){
-        require ( 'system/login/Blogin.php');
-    });
-	$r->addRoute('POST', '/recover', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/login', function ($ROUTE_PARAMS) {
+		require('system/login/Blogin.php');
+	});
+	$r->addRoute('POST', '/user/recover', function ($ROUTE_PARAMS) {
 		include('system/login/Brecover.php');
 	});
-	$r->addRoute('POST', '/register', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/user/register', function ($ROUTE_PARAMS) {
 		include('system/login/Bregister.php');
+	});
+	$r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
+		include('system/login/Bprofile.php');
 	});
 });
 
@@ -71,7 +77,7 @@ switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
 		http_response_code(404);
 		die('Not found...');
-		// break;
+	// break;
 	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
 	// 	$allowedMethods = $routeInfo[1];
 	// 	... 405 Method Not Allowed
