@@ -3,7 +3,7 @@ require('system/main.php');
 sessionCheck();
 renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'AppGro-Panel de usuario');
-require dirname(__DIR__, 2) . '\system\resources\database.php';
+require dirname(__DIR__, 3) . '\system\resources\database.php';
 $sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM Usuarios WHERE id = :uid";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
