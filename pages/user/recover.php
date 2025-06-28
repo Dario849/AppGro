@@ -10,8 +10,12 @@ $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
             <div id="alertBox" class="alertBox">
                 <?php
                 if (!empty($_SESSION['error'])):
-                    alertBox($_SESSION['error']);
+                    alertBox($_SESSION['error'], null);
                     unset($_SESSION['error']);
+
+                elseif (!empty($_SESSION['success'])):
+                    alertBox(null, $_SESSION['success']);
+                    unset($_SESSION['success']);
                 endif;
                 ?>
             </div>

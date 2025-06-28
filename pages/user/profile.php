@@ -29,6 +29,18 @@ $usuarios = $stmt->fetchAll(); // array de filas
         echo " <br> Has visitado esta página " . $_SESSION['contador'] . " veces.";
         ?>
         <div class="main_containerProfile">
+            <div id="alertBox" class="alertBox">
+                <?php
+                if (!empty($_SESSION['error'])):
+                    alertBox($_SESSION['error'], 0);
+                    unset($_SESSION['error']);
+
+                elseif (!empty($_SESSION['success'])):
+                    alertBox(0, $_SESSION['success']);
+                    unset($_SESSION['success']);
+                endif;
+                ?>
+            </div>
             <div class="UserData">
                 <?php
                 foreach ($usuarios as $u) {
@@ -56,8 +68,8 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 </button>
                 <div id="UserChangeOfMail" class="UserChangeOfMail">
                     <p>Cambiar mi correo</p> <br>
-                    <label for="actualMail">Confirme su correo actual</label>
-                    <br><input type="email" id="actualMail" name="actualMail"> <br>
+                    <label for="confirmPass">Ingrese su contraseña</label>
+                    <br><input type="password" id="confirmPass" name="confirmPass"> <br>
                     <label for="newMail">Ingrese su nuevo correo</label>
                     <input type="email" name="newMail" id="newMail" onkeydown="return validateinputs();">
                     <button id="submitButtonEmail" name="submitButtonEmail" type="submit" class="cta"
@@ -72,12 +84,13 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 </div>
                 <div id="UserChangeOfPswrd" class="UserChangeOfPswrd">
                     <p>Cambiar mi contraseña</p> <br>
-                    <label for="actualMail">Confirme su contraseña actual</label>
-                    <br><input type="password" id="actualPass" name="actualPass" oninput="return validateinputs();"> <br>
-                    <label for="actualMail">Ingrese su nueva contraseña</label>
-                    <input type="password" name="newPass" id="newPass" onkeydown="return validateinputs();">
-                    <label for="actualMail">Confirme su nueva contraseña</label>
-                    <input type="password" name="newPass" id="newPass" onkeydown="return validateinputs();">
+                    <label for="actualPass">Confirme su contraseña actual</label>
+                    <br><input type="password" id="actualPass" name="actualPass" oninput="return validateinputs();">
+                    <br>
+                    <label for="newPass1">Ingrese su nueva contraseña</label>
+                    <input type="password" name="newPass1" id="newPass1" onkeydown="return validateinputs();">
+                    <label for="newPass2">Confirme su nueva contraseña</label>
+                    <input type="password" name="newPass2" id="newPass2" onkeydown="return validateinputs();">
                     <button id="submitButtonPassword" name="submitButtonPassword" type="submit" class="cta"
                         onmouseover="return validateinputs();">
                         <span>Ingresar</span>
@@ -111,27 +124,27 @@ $usuarios = $stmt->fetchAll(); // array de filas
         }
     });
     $("#submitButtonPassword").click(function () {
-      $('#formProfile').prop('method', 'POST');
+        $('#formProfile').prop('method', 'POST');
     });
     $("#submitButtonEmail").click(function () {
-      $('#formProfile').prop('method', 'POST');
+        $('#formProfile').prop('method', 'POST');
     });
 </script>
 <script type="text/javascript" language="javascript">
-  $(document).ready(function () {// Carga documento, llama a verificar inputs, en caso de autocompletado o no, comprueba igual
-    validateinputs();
-  });
-  function validateinputs() { //Si campos no están completos, deshibilita presionado de submit button
+    $(document).ready(function () {// Carga documento, llama a verificar inputs, en caso de autocompletado o no, comprueba igual
+        validateinputs();
+    });
+    function validateinputs() { //Si campos no están completos, deshibilita presionado de submit button
 
-    if ($('#actualMail').val().length > 3
-      || $('#newMail').val().length > 3 || $('#actualPass').val().length > 3
-      || $('#newPass').val().length > 3) {
-      $('#submitButtonEmail').removeAttr('disabled');
-      $('#submitButtonPassword').removeAttr('disabled');
+        if ($('#actualMail').val().length > 3
+            || $('#newMail').val().length > 3 || $('#actualPass').val().length > 3
+            || $('#newPass').val().length > 3) {
+            $('#submitButtonEmail').removeAttr('disabled');
+            $('#submitButtonPassword').removeAttr('disabled');
+        }
+        else {
+            $('#submitButtonEmail').prop('disabled', 'true');
+            $('#submitButtonPassword').prop('disabled', 'true');
+        }
     }
-    else {
-      $('#submitButtonEmail').prop('disabled', 'true');
-      $('#submitButtonPassword').prop('disabled', 'true');
-    }
-  }
 </script>

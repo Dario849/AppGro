@@ -8,12 +8,16 @@ $layout = new HTML(title: 'AppGro-Registrarse');
   <div class="main_container">
     <div class="main_containerRegister">
       <div class="alertBox">
-        <?php
-        if (!empty($_SESSION['error'])):
-          alertBox($_SESSION['error']);
-          unset($_SESSION['error']);
-        endif;
-        ?>
+                <?php
+                if (!empty($_SESSION['error'])):
+                    alertBox($_SESSION['error'], null);
+                    unset($_SESSION['error']);
+
+                elseif (!empty($_SESSION['success'])):
+                    alertBox(null, $_SESSION['success']);
+                    unset($_SESSION['success']);
+                endif;
+                ?>
       </div>
       <p style="margin-bottom: auto; text-align: center; font-family: auto; text-decoration-line: underline;">Ingrese
         sus datos para registrar su cuenta</p>
