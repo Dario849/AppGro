@@ -2,136 +2,102 @@
 require('system/main.php');
 
 sessionCheck();
-renderNavbar($_SESSION['user_id']);
-$layout = new HTML(title: 'AppGro-Ganado');
-//require dirname(__DIR__, 2) .'\system\resources\database.php';
-/*$sql  = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    'min' => 1,
-    'max' => 5,
-])*/
+renderNavbar();
+$layout = new HTML(title: 'Ganado UwU');
+require dirname(__DIR__, 2) .'\system\resources\database.php';
+//require dirname(__DIR__,2) .'\system\ganados\Bganados.php';
+
+//obtener id_ganado desde la url
+$id_ganado = isset($_POST['id']) ? intval($_POST['id']) : 0;
+$ganado = [];
+if ($id_ganado > 0) {
+    $ganado = obtenerGanadoPorId($pdo, $id_ganado);
+}
 ?>
-<script>
-    function agregarVacuna() {
-        const contenedor = document.getElementById('vacunas');
-        const div = document.createElement('div');
-        div.innerHTML = `
-                <input type="text" name="vacuna_id[]" placeholder="ID">
-                <input type="text" name="vacuna_nombre[]" placeholder="Nombre">
-                <input type="date" name="vacuna_fecha[]">
-                <button type="button" onclick="this.parentElement.remove()">Eliminar</button>
-                <br>
-            `;
-        contenedor.appendChild(div);
-    }
+    <form method="post" action="/ganado">
+        
+        <div id="contenedor">
+            <div id="datos">
 
-    function agregarBano() {
-        const contenedor = document.getElementById('banos');
-        const div = document.createElement('div');
-        div.innerHTML = `
+            <input type="hidden" name="id" value="1">
+
+
+                <fieldset>
+                    <legend>Características</legend>
+                    Nacimiento: <input type="date" name="nacimiento" value="<?= $ganado['fecha_nacimiento'] ?? '' ?>"><br>
+                    Tipo: <input type="text" name="tipo" value="<?= $ganado['tipo_ganado'] ?? '' ?>"><br>
+                    Raza: <input type="text" name="raza" value="<?= $ganado['nombre_cientifico'] ?? '' ?>"><br>
+                    Sexo: <input type="text" name="sexo" value="<?= $ganado['sexo'] ?? '' ?>"><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Ubicación</legend>
+                    Caravana: <input type="text" name="caravana" value="<?= $ganado['nro_caravana'] ?? '' ?>"><br>
+                    Subdivisión: <input type="text" name="subdivision" value="<?= $ganado['id_grupo'] ?? '' ?>"><br>
+                    Grupo: <input type="text" name="grupo" value="<?= $ganado['id_grupo'] ?? '' ?>"><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Alimento</legend>
+                    Tipo: <input type="text" name="alimento_tipo"><br>
+                    Ración: <input type="text" name="alimento_racion"><br>
+                </fieldset>
+                
+                <fieldset>
+                    <legend>Defunción</legend>
+                    Razón: <input type="text" name="defuncion_razon"><br>
+                </fieldset>
+                
+            </div>
+            <div id="vacunas_y_baños">
+            
+                <fieldset>
+                    <legend>Vacunas</legend>
+                    <div id="vacunas">
+          <div>
+              <input type="text" name="vacuna_id[]" placeholder="ID">
+              <input type="text" name="vacuna_nombre[]" placeholder="Nombre">
+              <input type="date" name="vacuna_fecha[]"><br>
+            </div>
+        </div>
+        <button type="button" onclick="agregarVacuna()">Agregar Vacuna</button>
+    </fieldset>
+    
+    <fieldset>
+        <legend>Baños</legend>
+        <div id="banos">
+            <div>
                 <input type="text" name="bano_id[]" placeholder="ID">
-                <input type="date" name="bano_fecha[]">
-                <button type="button" onclick="this.parentElement.remove()">Eliminar</button>
-                <br>
-            `;
-        contenedor.appendChild(div);
-    }
-
-    function agregarPeso() {
-        const contenedor = document.getElementById('pesos');
-        const div = document.createElement('div');
-        div.innerHTML = `
-                <input type="text" name="peso_kg[]" placeholder="Kg">
-                <input type="date" name="peso_fecha[]">
-                <button type="button" onclick="this.parentElement.remove()">Eliminar</button>
-                <br>
-            `;
-        contenedor.appendChild(div);
-    }
-</script>
-<form method="POST" action="ganado.php">
-
-    <div id="contenedor">
-        <div id="datos">
-
-            <fieldset>
-                <legend>Características</legend>
-                Nacimiento: <input type="date" name="nacimiento"><br>
-                Peso: <input type="text" name="peso"><br>
-                Tipo: <input type="text" name="tipo"><br>
-                Raza: <input type="text" name="raza"><br>
-                Sexo: <input type="text" name="sexo"><br>
-            </fieldset>
-
-            <fieldset>
-                <legend>Ubicación</legend>
-                Caravana: <input type="text" name="caravana"><br>
-                Subdivisión: <input type="text" name="subdivision"><br>
-                Grupo: <input type="text" name="grupo"><br>
-            </fieldset>
-
-            <fieldset>
-                <legend>Alimento</legend>
-                Tipo: <input type="text" name="alimento_tipo"><br>
-                Ración: <input type="text" name="alimento_racion"><br>
-            </fieldset>
-
-            <fieldset>
-                <legend>Defunción</legend>
-                Razón: <input type="text" name="defuncion_razon"><br>
-            </fieldset>
-
+                <input type="date" name="bano_fecha[]"><br>
+            </div>
         </div>
-        <div id="vacunas_y_baños">
+        <button type="button" onclick="agregarBano()">Agregar Baño</button>
+    </fieldset>
 
-            <fieldset>
-                <legend>Vacunas</legend>
-                <div id="vacunas">
-                    <div>
-                        <input type="text" name="vacuna_id[]" placeholder="ID">
-                        <input type="text" name="vacuna_nombre[]" placeholder="Nombre">
-                        <input type="date" name="vacuna_fecha[]"><br>
-                    </div>
-                </div>
-                <button type="button" onclick="agregarVacuna()">Agregar Vacuna</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Baños</legend>
-                <div id="banos">
-                    <div>
-                        <input type="text" name="bano_id[]" placeholder="ID">
-                        <input type="date" name="bano_fecha[]"><br>
-                    </div>
-                </div>
-                <button type="button" onclick="agregarBano()">Agregar Baño</button>
-            </fieldset>
-
-            <fieldset>
-                <legend>Pesos</legend>
-                <div id="pesos">
-                    <div>
-                        <input type="text" name="peso_kg[]" placeholder="Kg">
-                        <input type="date" name="peso_fecha[]"><br>
-                    </div>
-                </div>
-                <button type="button" onclick="agregarPeso()">Agregar Peso</button>
-            </fieldset>
-
+    <fieldset>
+        <legend>Pesos</legend>
+        <div id="pesos">
+            <div>
+                <input type="text" name="peso_kg[]" value="<?= $ganado['peso'] ?? '' ?>" placeholder="Kg">
+                <input type="date" name="peso_fecha[]"><br>
+            </div>
         </div>
-        <div id="terceracolumna">
+        <button type="button" onclick="agregarPeso()">Agregar Peso</button>
+    </fieldset>
 
-            <fieldset>
-                <legend>Imagen</legend>
-                <img src="../public/imagenes_ganados/vaca.jpg" alt="Imagen de vaca" width="300">
-            </fieldset>
-
-            <fieldset>
-                <legend>Comentario</legend>
-                <textarea name="comentario" rows="5" cols="40"></textarea>
-            </fieldset>
-
+</div>
+<div id="terceracolumna">
+        
+        <fieldset>
+            <legend>Imagen</legend>
+            <img  src="../public/imagenes_ganados/vaca.jpg" alt="Imagen de vaca" width="300">
+        </fieldset>
+        
+        <fieldset>
+            <legend>Comentario</legend>
+            <textarea name="comentario" rows="5" cols="40"><?= $ganado['comentario'] ?? '' ?></textarea>
+        </fieldset>
+        
         </div>
 
     </div>

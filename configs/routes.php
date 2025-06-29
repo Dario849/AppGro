@@ -60,6 +60,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
 		include('system/login/Bprofile.php');
 	});
+	$r->addRoute('POST','/ganado', function ($ROUTE_PARAMS)	{
+		include('system/ganados/Bganados.php');
+	});
 });
 
 // Fetch method and URI from somewhere
