@@ -19,8 +19,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
             // unset($_SESSION['user_id']); //ELIMINA CONTENIDO (PODRIA SERVIR PARA CERRAR SESIÓN)
             // $_SESSION = [];  // Limpia el arreglo de sesión
         endif;
-        ?>
-        <?php
+
         if (!isset($_SESSION['contador'])) {
             $_SESSION['contador'] = 1;
         } else {
@@ -51,7 +50,6 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 }
                 ?>
             </div>
-
             <form action="/user/profile" id="formProfile" class="formProfile" method="GET">
                 <button id="ChangeOfMail" name="ChangeOfMail" type="submit" class="cta">
                     <span>Cambiar mi correo</span>
@@ -80,7 +78,6 @@ $usuarios = $stmt->fetchAll(); // array de filas
                             <polyline points="8 1 12 5 8 9"></polyline>
                         </svg>
                     </button>
-
                 </div>
                 <div id="UserChangeOfPswrd" class="UserChangeOfPswrd">
                     <p>Cambiar mi contraseña</p> <br>

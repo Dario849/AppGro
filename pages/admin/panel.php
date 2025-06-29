@@ -19,15 +19,20 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
             </ul>
             <!-- Permisos -->
             <h2>Permisos</h2>
-            <?php if (isset($permisos)): ?>
-                <ul>
-                    <?php foreach ($permisos as $permiso): ?>
-                        <li><?= htmlspecialchars($permiso) ?></li>
-                    <?php endforeach; ?>
-                </ul>
-            <?php else: ?>
-                <p>Seleccioná un usuario</p>
-            <?php endif; ?>
+            <ul>
+                <?php foreach ($vistas as $vista) {
+                    $habilitado = in_array($vista, $permisos);
+
+                    echo $vista . ' - ' . ($habilitado ? '<input type="checkbox" id="'.$vista.'" value="true" class="checkboxInput">
+    <label for="'.$vista.'" class="toggleSwitch">
+    </label> <br>' : '<input type="checkbox" id="'.$vista.'" value="false" class="checkboxInput">
+    <label for="'.$vista.'" class="toggleSwitch">
+    </label> <br>');
+                } ?>
+            </ul>
+            <ul>
+                <li><button></button></li>
+            </ul>
             <h2>Datos del Usuario</h2>
             <?php if (isset($datos)): ?>
                 <ul>
