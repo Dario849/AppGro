@@ -40,7 +40,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/user/profile.php');
 	});
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
-		include('pages/ganado.php');
+		include('pages/grupos_ganado.php');
 	});
 	$r->addRoute('GET', '/admin/panel', function ($ROUTE_PARAMS) {
 		include('pages/admin/panel.php');
