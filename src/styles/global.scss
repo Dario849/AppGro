@@ -177,6 +177,57 @@
 			}
 		}
 	}
+	&ganados {
+		#contenedor {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        #datos {
+            width: 33%;
+        }
+
+        #vacunas_y_baños {
+            width: 33%;
+        }
+
+        #terceracolumna {
+            width: 33%;
+        }
+
+        fieldset {
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ccc;
+        }
+
+        table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+	}
 	/* From Uiverse.io by alexmaracinaru */
 	.cta {
 		position: relative;

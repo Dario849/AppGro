@@ -1,26 +1,16 @@
 <?php
-/*require('system/main.php');
-
+require('system/main.php');
 sessionCheck();
-renderNavbar();
-$layout = new HTML(title: 'Ganado UwU');
+renderNavbar($_SESSION['user_id']);
+$layout = new HTML(title: 'Grupos_ganado UwU');
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 //require dirname(__DIR__,2) .'\system\ganados\Bganados.php';
 
-//obtener id_ganado desde la url
-$id_ganado = isset($_POST['id']) ? intval($_POST['id']) : 0;
-$ganado = [];
-if ($id_ganado > 0) {
-    $ganado = obtenerGanadoPorId($pdo, $id_ganado);
-}
-    */
 ?>
-<html>
-    <head></head>
-    <body>
+<main class="main__content">
+    <div class="main_container">
+        <div class="main_containerganados">
 
-<div id="contenedor">
-    <div id="datos">
         <fieldset>
             <legend>Datos del Animal</legend>
             <table>
@@ -54,7 +44,7 @@ if ($id_ganado > 0) {
                             echo "<td>" . htmlspecialchars($grupo['fecha_hasta']) . "</td>";
                             echo "<td>" . htmlspecialchars($grupo['id_subdivision']) . "</td>";
                             echo "<td>" . htmlspecialchars($grupo['comentario']) . "</td>";
-                            echo "<td><a href='ganados.php?id_grupo=" . urlencode($grupo['id']) . "'>Ver animales</a></td>";
+                            echo "<td><a href='/ganados?id_grupo=" . urlencode($grupo['id']) . "'>Ver animales</a></td>";
                             echo "</tr>";
                         }
                     } else {
@@ -67,65 +57,5 @@ if ($id_ganado > 0) {
             </table>
         </fieldset>
     </div>
-
-    <!-- Puedes agregar las otras dos columnas aquí si es necesario -->
-    <div id="vacunas_y_baños">
-        <!-- Contenido adicional -->
-    </div>
-    <div id="terceracolumna">
-        <!-- Contenido adicional -->
-    </div>
 </div>
-<style>
-        #contenedor {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-
-        #datos {
-            width: 33%;
-        }
-
-        #vacunas_y_baños {
-            width: 33%;
-        }
-
-        #terceracolumna {
-            width: 33%;
-        }
-
-        fieldset {
-            border: 2px solid #007bff;
-            border-radius: 10px;
-            background-color: #f0f0f0;
-            padding: 10px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        table th, table td {
-            padding: 8px;
-            text-align: left;
-            border: 1px solid #ccc;
-        }
-
-        table th {
-            background-color: #007bff;
-            color: white;
-        }
-
-        a {
-            text-decoration: none;
-            color: #007bff;
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</body> 
-</html>
+</main>

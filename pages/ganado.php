@@ -1,11 +1,10 @@
 <?php
-/*
 require('system/main.php');
-
 sessionCheck();
-renderNavbar();
+renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'Ganado UwU');
 require dirname(__DIR__, 2) .'\system\resources\database.php';
+/*
 //require dirname(__DIR__,2) .'\system\ganados\Bganados.php';
 
 //obtener id_ganado desde la url
@@ -157,7 +156,7 @@ $conn->close();
         <div id="pesos">
             <div>
                 <input type="text" name="peso_kg[]" value="<?= $ganado['peso'] ?? '' ?>" placeholder="Kg">
-                <input type="date" name="peso_fecha[]"><br>
+                <input type="date" name="peso_fecha[]" value="<?= $ganado['fecha_peso'] ?? '' ?>"><br>
             </div>
         </div>
         <button type="button" onclick="agregarPeso()">Agregar Peso</button>

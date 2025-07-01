@@ -39,11 +39,17 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/user/profile', function ($ROUTE_PARAMS) {
 		include('pages/user/profile.php');
 	});
-	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
+	$r->addRoute('GET', '/grupos_ganado', function ($ROUTE_PARAMS) {
 		include('pages/grupos_ganado.php');
 	});
 	$r->addRoute('GET', '/admin/panel', function ($ROUTE_PARAMS) {
 		include('pages/admin/panel.php');
+	});
+	$r->addRoute('GET', '/ganados', function ($ROUTE_PARAMS) {
+		include('pages/ganados.php');
+	});
+	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
+		include('pages/ganado.php');
 	});
 
 

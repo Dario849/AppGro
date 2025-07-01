@@ -1,4 +1,10 @@
 <?php
+require('system/main.php');
+sessionCheck();
+renderNavbar($_SESSION['user_id']);
+$layout = new HTML(title: 'GanadoS UwU');
+require dirname(__DIR__, 2) .'\system\resources\database.php';
+
 if (!isset($_GET['id_grupo'])) {
     echo "Grupo no especificado.";
     exit;
@@ -22,12 +28,11 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
-<!DOCTYPE html>
-    <html lang="es">
-        <head>
-            <meta charset="UTF-8">
+<main class="main__content">
+    <div class="main_container">
+        <div class="main_containerganados">
             <title>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></title>
-            <style>
+            <!-- <style>
                 fieldset {
                     border: 2px solid #007bff;
                     border-radius: 10px;
@@ -50,10 +55,7 @@ $result = $stmt->get_result();
                     background-color: #007bff;
                     color: white;
                 }
-            </style>
-        </head>
-    <body>
-
+            </style> -->
         <fieldset>
             <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
 
@@ -78,7 +80,7 @@ $result = $stmt->get_result();
                             echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
                             echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
                             echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
-                            echo "<td><a href='ganado.php?id=" . urlencode($animal['id']) . "'>Ver detalles</a></td>";
+                            echo "<td><a href='/ganado?id=" . urlencode($animal['id']) . "'>Ver detalles</a></td>";
                             echo "</tr>";
                         }
                     } else {
@@ -90,5 +92,6 @@ $result = $stmt->get_result();
                 </tbody>
             </table>
         </fieldset>
-    </body>
-</html>
+        </div>
+    </div>
+</main>
