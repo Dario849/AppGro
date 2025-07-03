@@ -30,32 +30,15 @@ $result = $stmt->get_result();
 
 <main class="main__content">
     <div class="main_container">
+        <div class="main_containerbuscador">
+            <form action="/grupos_ganado" method="GET">
+                <input type="text" name="search" placeholder="Buscar por ID del grupo de animales" required>
+                <button type="submit">Buscar</button>
+            </form>
+
+        </div>
         <div class="main_containerganados">
             <title>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></title>
-            <!-- <style>
-                fieldset {
-                    border: 2px solid #007bff;
-                    border-radius: 10px;
-                    background-color: #f0f0f0;
-                    padding: 10px;
-                    margin: 20px;
-                }
-
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-
-                th, td {
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                }
-
-                th {
-                    background-color: #007bff;
-                    color: white;
-                }
-            </style> -->
         <fieldset>
             <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
 

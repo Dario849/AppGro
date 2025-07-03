@@ -13,7 +13,7 @@ function renderNavbar($uid): void
         <li class="home__navbar-item"><a href="/tareas"><button>Tareas</button></a></li>
         <li class="home__navbar-item"><a href="/calendario"><button>Calendario</button></a></li>
         <li class="home__navbar-item"><a href="/tareasdev"><button>Tareas.html</button></a></li>
-        <li class="home__navbar-item"><a href="/ganado"><button>Ganado</button></a></li>
+        <li class="home__navbar-item"><a href="/grupos_ganado"><button>Ganado</button></a></li>
         <li class="home__navbar-item"><a href="/calendariodev"><button>Calendario.html</button></a></li>
         <!-- … resto de items … -->
       </ul>
