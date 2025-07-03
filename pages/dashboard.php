@@ -15,7 +15,18 @@ $usuarios = $stmt->fetchAll(); // array de filas
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerDashboard">
+      <div id="alertBox" class="alertBox">
+                <?php
+                if (!empty($_SESSION['error'])):
+                    alertBox($_SESSION['error'], null);
+                    unset($_SESSION['error']);
 
+                elseif (!empty($_SESSION['success'])):
+                    alertBox(null, $_SESSION['success']);
+                    unset($_SESSION['success']);
+                endif;
+                ?>
+      </div>
 
             <?php
             if (!empty($_SESSION['user_id'])):
