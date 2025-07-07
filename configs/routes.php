@@ -51,6 +51,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
+	$r->addRoute('GET', '/404', function ($ROUTE_PARAMS) {
+		include('pages/404.php');
+	});
 
 
 	// Rutas de backend (POST)
@@ -66,7 +69,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
 		include('system/login/Bprofile.php');
 	});
-	$r->addRoute('POST','/ganado', function ($ROUTE_PARAMS)	{
+	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
 	});
 });
@@ -85,8 +88,8 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
 		http_response_code(404);
-		header('/pages/404.php');
-		die('Not found...');
+		header('Location: /404');
+		exit;
 	// break;
 	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
 	// 	$allowedMethods = $routeInfo[1];
