@@ -72,6 +72,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
 	});
+	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
+		require('system\admin\BchangePermission.php');
+	});
 });
 
 // Fetch method and URI from somewhere

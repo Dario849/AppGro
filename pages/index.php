@@ -4,30 +4,42 @@ session_start();
 renderNavbar(null);
 $layout = new HTML(title: 'AppGro-Inicio');
 ?>
+<!-- RECAPTCHA -->
+<!-- <script type="text/javascript">
+  var onloadCallback = function () {
+    alert("grecaptcha is ready!");
+  };
+</script> -->
+<script src="https://www.google.com/recaptcha/api.js?hl=es-419" async defer>
+</script><!-- RECAPTCHA -->
 <main class="main__content">
   <div class="main_container">
     <div class="main_containerLogin">
       <div id="alertBox" class="alertBox">
-                <?php
-                if (!empty($_SESSION['error'])):
-                    alertBox($_SESSION['error'], null);
-                    unset($_SESSION['error']);
+        <?php
+        if (!empty($_SESSION['error'])):
+          alertBox($_SESSION['error'], null);
+          unset($_SESSION['error']);
 
-                elseif (!empty($_SESSION['success'])):
-                    alertBox(null, $_SESSION['success']);
-                    unset($_SESSION['success']);
-                endif;
-                ?>
+        elseif (!empty($_SESSION['success'])):
+          alertBox(null, $_SESSION['success']);
+          unset($_SESSION['success']);
+        endif;
+        ?>
       </div>
       <form action="/login" name="formLogin" autocomplete="on" method="POST">
         <div id="inputs" class="inputs">
-          <label for="Email">Correo Electrónico</label>
-          <input type="email" name="Email" id="UserName" onkeypress="return validateinputs();">
+          <label for="UserName">Correo Electrónico</label>
+          <input type="email" name="Email" id="UserName" autocomplete="username" onkeypress="return validateinputs();">
           <br>
           <label for="Password">Contraseña</label>
-          <input type="password" name="Password" id="Password" oninput="return validateinputs();"
-            onkeypress="return validateinputs();">
+          <input type="password" name="Password" id="Password" autocomplete="current-password"
+            oninput="return validateinputs();" onkeypress="return validateinputs();">
           <br>
+          <!-- RECAPTCHA -->
+          <div class="g-recaptcha" data-sitekey="6LehHnsrAAAAAIU1rLgtG7CTnQfpw880nX_wFA40" data-action="LOGIN"></div>
+          <br />
+          <!-- RECAPTCHA -->
           <button id="submitButton" name="submitButton" type="submit" class="cta"
             onmouseover="return validateinputs();">
             <span>Ingresar</span>
