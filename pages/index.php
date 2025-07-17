@@ -64,8 +64,8 @@ $layout = new HTML(title: 'AppGro-Inicio');
   });
   function validateinputs() { //Si campos no están completos, deshibilita presionado de submit button
 
-    if ($('#UserName').val().lenght > 3
-      || $('#Password').val().length > 3) {
+    if ($('#UserName').val().lenght > 6
+      || $('#Password').val().length > 4) {
       $('#submitButton').removeAttr('disabled');
     }
     else {

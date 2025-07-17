@@ -1,29 +1,38 @@
 <?php
 function renderNavbar($uid): void
 {
-  ?>
-  <div class="home">
-    <div class="home__navbar" id="sidebar">
-      <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
-      <ul class="home__navbar-TopList">
-        <!-- <li class="home__navbar-item"><a href="/"><button>Home</button></a></li> -->
-        <!-- <li class="home__navbar-item"><a href="/about"><button>About</button></a></li>
-        <li class="home__navbar-item"><a href="/ipsum"><button>Ipsum</button></a></li> -->
-        <li class="home__navbar-item"><a href="/dashboard"><button>Dashboard</button></a></li>
-        <li class="home__navbar-item"><a href="/tareas"><button>Tareas</button></a></li>
-        <li class="home__navbar-item"><a href="/calendario"><button>Calendario</button></a></li>
-        <li class="home__navbar-item"><a href="/tareasdev"><button>Tareas.html</button></a></li>
-        <li class="home__navbar-item"><a href="/grupos_ganado"><button>Ganado</button></a></li>
-        <li class="home__navbar-item"><a href="/calendariodev"><button>Calendario.html</button></a></li>
-        <!-- … resto de items … -->
-      </ul>
-      <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
-      <ul class="home__navbar-BottomList">
-        <li class="home__navbar-item"><a href="/user/profile"><button>Perfil</button></a></li>
-        <li class="home__navbar-item"><a href="/user/logout"><button>Log-out</button></a></li>
+  if (!$uid) { ?>
+    <div class="home">
+    <?php } else {
 
-      </ul>
-    </div>
-  </div>
-  <?php
+    require __DIR__ . '\..\..\system\resources\database.php'; // conexión PDO
+    $currentPerm = $pdo->prepare("SELECT v.nombre
+    FROM usuarios_vistas uv
+    JOIN vistas v ON uv.id_vista = v.id
+    WHERE uv.id_usuario = ?
+    ");
+    $currentPerm->execute([intval($uid)]);
+    $access = $currentPerm->fetchAll(PDO::FETCH_COLUMN);
+    ?>
+      <div class="home">
+        <div class="home__navbar" id="sidebar">
+          <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
+          <ul class="home__navbar-TopList">
+            <?php
+            foreach ($access as $vista) {
+              echo "  <li><a href=/".strtolower( $vista)."><button>". htmlspecialchars($vista) ."</button></a></li>\n";
+            }
+            ?>
+            <!-- … resto de items … -->
+          </ul>
+          <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
+          <ul class="home__navbar-BottomList">
+            <li class="home__navbar-item"><a href="/dashboard"><button>Dashboard</button></a></li>
+            <li class="home__navbar-item"><a href="/user/profile"><button>Perfil</button></a></li>
+            <li class="home__navbar-item"><a href="/user/logout"><button>Log-out</button></a></li>
+
+          </ul>
+        </div>
+      </div>
+  <?php }
 }

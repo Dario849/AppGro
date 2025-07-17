@@ -28,7 +28,7 @@ try {
         $stmt = $pdo->prepare($sql);
         $result = $stmt->execute([$email, $password, $nombre, $apellido, $estado, $fecha_nacimiento]);
         if ($result) {
-            $_SESSION['error'] = 'Usuario creado, inicie sesión' . "-" . "NO ERROR";
+            $_SESSION['success'] = 'Usuario creado, inicie sesión' . "-" . "NO ERROR";
             header('Location: /');
         } else {
             $_SESSION['error'] = 'Ocurrió un error, inesperado' . "-" . "ERROR 580";

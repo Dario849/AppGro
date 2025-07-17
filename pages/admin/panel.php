@@ -1,9 +1,10 @@
 <?php
 
 use BcMath\Number;
+
 require('system/main.php');
 sessionAuth();
-require dirname(__DIR__, levels: 3) . '\system\resources\database.php';// conecta con tu PDO $pdo
+require dirname(__DIR__, levels: 3) . '\system\resources\database.php'; // conecta con tu PDO $pdo
 renderNavbar($_SESSION['user_id']);
 require_once('system\admin\Bpanel.php');
 $layout = new HTML(title: 'AppGro-Panel Administrativo');
@@ -11,8 +12,9 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerPanel">
-            <ul>
+            <ul id="users">
                 <h2>Usuarios</h2> <br>
+                <input type="text" name="search_user" id="search_user" placeholder="Buscar..." style="border: solid;">
                 <?php foreach ($usuarios as $u): ?>
                     <li>
                         <a href="?uid=<?= $u['id_usuario'] ?>"> <?= htmlspecialchars($u['nombre']) ?> </a>
@@ -60,27 +62,43 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
     </div>
 </main>
 <script>
-    $("input[type='checkbox']").on("change", function () {//Llamada a función asincrona para cambiar el permiso cambiado (false or true)
+    $("#search_user").on('input', function() {
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById("search_user");
+        filter = input.value.toUpperCase();
+        ul = document.getElementById("users");
+        li = ul.getElementsByTagName("li");
+        for (i = 0; i < li.length; i++) {
+            a = li[i].getElementsByTagName("a")[0];
+            txtValue = a.textContent || a.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+                li[i].style.display = "none";
+            }
+        }
+    });
+    $("input[type='checkbox']").on("change", function() { //Llamada a función asincrona para cambiar el permiso cambiado (false or true)
         let uid = parseInt($("#userId").val());
         let permissionId = parseInt(this.id.split('_')[1]);
         const parameter = {
             "permId": permissionId,
             "selectedUserId": uid,
         };
-        $.ajax({//Envio de solicitud a back, envia id_usuario y id_vista
+        $.ajax({ //Envio de solicitud a back, envia id_usuario y id_vista
             url: '/BchangePermission',
             type: 'POST',
             data: parameter,
-            success: function (response) {
+            success: function(response) {
                 $(".toggleSwitch").attr('disabled', true);
                 $("input[type='checkbox']").attr('disabled', true);
                 console.log(response);
-                setTimeout(() => {//timeout para evitar flooding de envio de formulario
+                setTimeout(() => { //timeout para evitar flooding de envio de formulario
                     $(".toggleSwitch").attr('disabled', false);
                     $("input[type='checkbox']").attr('disabled', false);
                 }, 1000);
             },
-            error: function () {//fallback en caso de que no exista conexión al backend
+            error: function() { //fallback en caso de que no exista conexión al backend
                 $("#report").prepend("error");
                 $('#report > span').slice(1).remove();
 

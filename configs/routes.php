@@ -42,7 +42,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/grupos_ganado', function ($ROUTE_PARAMS) {
 		include('pages/grupos_ganado.php');
 	});
-	$r->addRoute('GET', '/admin/panel', function ($ROUTE_PARAMS) {
+	$r->addRoute('GET', '/administrador', function ($ROUTE_PARAMS) {
 		include('pages/admin/panel.php');
 	});
 	$r->addRoute('GET', '/ganados', function ($ROUTE_PARAMS) {
@@ -91,7 +91,7 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
 		http_response_code(404);
-		header('Location: /404');
+		// header('Location: /404'); Por propositos de developing, se oculta redireccionamiento
 		exit;
 	// break;
 	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
