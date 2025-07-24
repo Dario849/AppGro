@@ -51,6 +51,15 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
+	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/menu.php');
+	});
+	$r->addRoute('GET', '/backend/estadisticas', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/backend/estadisticas.php');
+	});
+	$r->addRoute('GET', '/backend/resumen', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/backend/resumen.php');
+	});
 	$r->addRoute('GET', '/404', function ($ROUTE_PARAMS) {
 		include('pages/404.php');
 	});
@@ -73,7 +82,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('system/ganados/Bganados.php');
 	});
 	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
-		require('system\admin\BchangePermission.php');
+		require('system/admin/BchangePermission.php');
 	});
 });
 
