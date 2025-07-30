@@ -25,7 +25,7 @@ class HTML
 		</head>
 
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">
-			<?= $output; ?>
+			<?= renderNavbar($_SESSION['user_id'] ?? null), $output; ?>
 		</body>
 
 		</html>

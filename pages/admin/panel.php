@@ -1,11 +1,7 @@
 <?php
-
-use BcMath\Number;
-
 require('system/main.php');
 sessionAuth();
 require dirname(__DIR__, levels: 3) . '\system\resources\database.php'; // conecta con tu PDO $pdo
-renderNavbar($_SESSION['user_id']);
 require_once('system\admin\Bpanel.php');
 $layout = new HTML(title: 'AppGro-Panel Administrativo');
 ?>

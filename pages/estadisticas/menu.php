@@ -2,7 +2,6 @@
 require('system/main.php');
 require dirname(__DIR__, 3) . '\system\resources\database.php';
 sessionCheck();
-renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'Estadísticas Productivas');
 ?>
 

@@ -1,6 +1,5 @@
 <?php
 require('system/main.php');
-renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'PHP via Vite');
 ?>
 <main class="main__content">

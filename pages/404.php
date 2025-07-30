@@ -1,6 +1,6 @@
 <?php
 require('system/main.php');
-$layout = new HTML(title: 'vaquita UwU');
+$layout = new HTML(title: '404');
 ?>
 
 <div class="cow">
@@ -13,10 +13,10 @@ $layout = new HTML(title: 'vaquita UwU');
   <div class="leg f r"></div>
   <div class="tail"></div>
 </div>
-<div class="well"><a class="home-btn" href="/dashboard">Go Home</a></div>
+<div class="well"><a class="home-btn" href="/dashboard">Ir al menu</a></div>
 <div class="text-box">
-  <h1>401</h1>
-  <p>Sorry, You don't have access there...</p>
+  <h1>404</h1>
+  <p>Perdón, No tenes acceso a esta página...</p>
 </div>
 <style>
   *, *:after , *:before {
@@ -32,6 +32,9 @@ body {
   font-family: arial;
   background: var(--bg);
   overflow: hidden;
+  background-image: url("favicon_nbg.webp");
+    background-repeat: no-repeat;
+  background-size: 20%;
 }
 
 
@@ -273,7 +276,7 @@ body {
   }
   p {
     width: 42rem;
-    font-size: 5rem;
+    font-size: 4rem;
     line-height: 1;
     margin: 0;
   }

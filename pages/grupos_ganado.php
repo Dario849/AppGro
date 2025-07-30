@@ -1,7 +1,6 @@
 <?php
 require('system/main.php');
 sessionCheck();
-renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'Grupos_ganado UwU');
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 //require dirname(__DIR__,2) .'\system\ganados\Bganados.php';

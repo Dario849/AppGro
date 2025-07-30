@@ -1,7 +1,6 @@
 <?php
 require('system/main.php');
 sessionCheck();
-renderNavbar($_SESSION['user_id']);
 $layout = new HTML(title: 'GanadoS UwU');
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 
