@@ -39,11 +39,29 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/user/profile', function ($ROUTE_PARAMS) {
 		include('pages/user/profile.php');
 	});
+	$r->addRoute('GET', '/grupos_ganado', function ($ROUTE_PARAMS) {
+		include('pages/grupos_ganado.php');
+	});
+	$r->addRoute('GET', '/administrador', function ($ROUTE_PARAMS) {
+		include('pages/admin/panel.php');
+	});
+	$r->addRoute('GET', '/ganados', function ($ROUTE_PARAMS) {
+		include('pages/ganados.php');
+	});
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
-	$r->addRoute('GET', '/admin/panel', function ($ROUTE_PARAMS) {
-		include('pages/admin/panel.php');
+	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/menu.php');
+	});
+	$r->addRoute('GET', '/backend/estadisticas', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/backend/estadisticas.php');
+	});
+	$r->addRoute('GET', '/backend/resumen', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/backend/resumen.php');
+	});
+	$r->addRoute('GET', '/404', function ($ROUTE_PARAMS) {
+		include('pages/404.php');
 	});
 
 
@@ -60,8 +78,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
 		include('system/login/Bprofile.php');
 	});
-	$r->addRoute('POST','/ganado', function ($ROUTE_PARAMS)	{
+	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
+	});
+	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
+		require('system/admin/BchangePermission.php');
 	});
 });
 
@@ -79,7 +100,8 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
 		http_response_code(404);
-		die('Not found...');
+		header('Location: /404'); // Por propositos de developing, se oculta redireccionamiento
+		exit;
 	// break;
 	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
 	// 	$allowedMethods = $routeInfo[1];

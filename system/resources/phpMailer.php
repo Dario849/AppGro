@@ -30,7 +30,7 @@ function enviarMailRecuperacion(string $emailDestino, string $claveTemporal): vo
         $mail->send();
     } catch (Exception $e) {
         error_log("Error al enviar correo: {$mail->ErrorInfo}");
-        $_SESSION['error'] = "No se pudo enviar el correo: " . $e->getMessage(); // opcional: $mail->ErrorInfo si lo propagás
+        $_SESSION['error'] = "No se pudo enviar el correo: " . $e->getMessage();
     }
 }
 ?>

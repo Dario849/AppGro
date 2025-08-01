@@ -3,9 +3,7 @@ function alertBox($error, $success)
 { ?>
   <script>
     $(document).ready(function () {
-      // Select the button by its ID and attach a click event handler
       $('#btnClose').on('click', function () {
-        // Code to execute when the button is clicked
         $("#alertDiv").remove();
       });
     }); 

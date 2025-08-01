@@ -17,10 +17,10 @@ if ($user) {
     enviarMailRecuperacion($email, $nuevaClave); // función definida externamente, envia a $email la clave (sin hashear) para que el usuario pueda ingresar
 } else {
     $_SESSION['error'] = 'El correo no está registrado.-ERROR 104';
-    header('Location: /user/user/recover'); // o a donde necesites
+    header('Location: /user/recover'); // o a donde necesites
     exit;
 }
-$_SESSION['error'] = 'Recibirás un correo para restablecer tu contraseña.-REQUEST COMPLETE';
+$_SESSION['success'] = 'Recibirás un correo para restablecer tu contraseña.-REQUEST COMPLETE';
 header('Location: /');
 exit;
 ?>

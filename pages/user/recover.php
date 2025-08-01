@@ -1,7 +1,6 @@
 <?php
 require('system/main.php');
 session_start();
-renderNavbar(null);
 $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
 ?>
 <main class="main__content">
