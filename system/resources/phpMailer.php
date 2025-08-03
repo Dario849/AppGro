@@ -1,8 +1,6 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-require_once '.config.php'; // ACA SE DEFINEN VARIABLES DE ENTORNO, CLAVE, HOST, USUARIO, DB_NAME
-
 function enviarMailRecuperacion(string $emailDestino, string $claveTemporal): void
 {
     $mail = new PHPMailer(true);
@@ -10,15 +8,15 @@ function enviarMailRecuperacion(string $emailDestino, string $claveTemporal): vo
     try {
         // Configuración SMTP (oculta del resto del sistema)
         $mail->isSMTP();
-        $mail->Host = SMTP_HOST;
+        $mail->Host = $_ENV['SMTP_HOST'];
         $mail->SMTPAuth = true;
-        $mail->Username = SMTP_USER;
-        $mail->Password = SMTP_PASS;
+        $mail->Username = $_ENV['SMTP_USER'];
+        $mail->Password = $_ENV['SMTP_PASS'];
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port = SMTP_PORT;
+        $mail->Port = $_ENV['SMTP_PORT'];
 
         // Datos del mensaje
-        $mail->setFrom(SMTP_FROM, SMTP_NAME);
+        $mail->setFrom($_ENV['SMTP_FROM'], $_ENV['SMTP_NAME']);
         $mail->addAddress($emailDestino);
         $mail->CharSet = 'UTF-8';
         $mail->Encoding = 'base64';

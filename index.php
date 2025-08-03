@@ -10,19 +10,9 @@ function require_existing(string $path) {
 }
 
 require_existing('vendor/autoload.php');
-require_existing('configs/env.php');
 
 try {
 	require_existing('configs/routes.php');
 } catch (\Throwable $th) {
 	die('Error: ' . $th->getMessage());
 }
-
-// // 1) El autoload de Composer (dotenv + App\Database)
-// require_once __DIR__ . '/../autoload.php';
-
-// use Dotenv\Dotenv;
-// use App\resources\Database;
-
-// // 2) Carga .env
-// Dotenv::createImmutable(__DIR__ . '/..')->load();
