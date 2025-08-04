@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => {
-	const publicBasePath = '/'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
+	const publicBasePath = 'https://appgro-production.up.railway.app/'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
 
 	const base = command === 'serve' ? '/' : publicBasePath;
 	const BASE = base.substring(0, base.length - 1);
@@ -77,9 +77,9 @@ export default defineConfig(({ command }) => {
 			port: 3000,
 		},
 		build: {
-			outDir: 'pages',
-			emptyOutDir: false,
-			assetsDir: '',
+			outDir: 'dist',
+			emptyOutDir: true,
+			assetsDir: 'public',
 		},
 	};
 });
