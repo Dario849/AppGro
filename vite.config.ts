@@ -77,7 +77,7 @@ export default defineConfig(({ command }) => {
 			port: 3000,
 		},
 		build: {
-			outDir: 'public',
+			outDir: '',
 			emptyOutDir: false,
 			assetsDir: '.',
 		},
