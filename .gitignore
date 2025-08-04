@@ -17,7 +17,6 @@ pnpm-debug.log*
 # environment variables
 *.local
 .env
-.env.example
 .config.php
 # macOS-specific files
 .DS_Store
