@@ -13,4 +13,4 @@ nixpkgsPackages = [
 cmds = ["composer install --no-dev --optimize-autoloader"]
 
 [start]
-cmd = "php -S 0.0.0.0:$PORT index.php"
+cmd = "php -S 0.0.0.0:$PORT -t . index.php"
