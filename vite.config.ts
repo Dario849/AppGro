@@ -27,13 +27,10 @@ export default defineConfig(({ command }) => {
 				],
 				rewriteUrl(requestUrl) {
 					const filePath = fileURLToPath(
-						new URL('.' + requestUrl.pathname, import.meta.url),
+						new URL('.' + requestUrl.pathname, import.meta.url)
 					);
 					const publicFilePath = fileURLToPath(
-						new URL(
-							'./public' + requestUrl.pathname,
-							import.meta.url,
-						),
+						new URL('./public' + requestUrl.pathname, import.meta.url)
 					);
 
 					if (
@@ -44,13 +41,10 @@ export default defineConfig(({ command }) => {
 					}
 
 					requestUrl.pathname = 'index.php';
-
 					return requestUrl;
 				},
 			}),
-			ViteEjsPlugin({
-				BASE,
-			}),
+			ViteEjsPlugin({ BASE }),
 			viteStaticCopy({
 				targets: [
 					{ src: 'public', dest: '' },
@@ -63,7 +57,7 @@ export default defineConfig(({ command }) => {
 			tailwindcss(),
 		],
 		define: {
-			'BASE': JSON.stringify(BASE),
+			BASE: JSON.stringify(BASE),
 			'import.meta.env.BASE': JSON.stringify(BASE),
 		},
 		resolve: {
@@ -83,8 +77,9 @@ export default defineConfig(({ command }) => {
 			port: 3000,
 		},
 		build: {
-			assetsDir: 'public',
-			emptyOutDir: true,
+			outDir: 'public',
+			emptyOutDir: false,
+			assetsDir: '.',
 		},
 	};
 });
