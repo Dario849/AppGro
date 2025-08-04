@@ -77,9 +77,9 @@ export default defineConfig(({ command }) => {
 			port: 3000,
 		},
 		build: {
-			outDir: '',
+			outDir: 'pages',
 			emptyOutDir: false,
-			assetsDir: '.',
+			assetsDir: '',
 		},
 	};
 });
