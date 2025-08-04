@@ -47,7 +47,7 @@ export default defineConfig(({ command }) => {
 			ViteEjsPlugin({ BASE }),
 			viteStaticCopy({
 				targets: [
-					{ src: 'public', dest: '' },
+					// { src: 'public', dest: '' },
 					{ src: 'system', dest: '' },
 					{ src: 'configs', dest: '', overwrite: false },
 					{ src: 'vendor', dest: '' },
