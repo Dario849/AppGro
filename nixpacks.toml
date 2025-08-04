@@ -1,10 +1,7 @@
 [build]
-builder = "heroku/buildpacks:20"
+builder = "NIXPACKS"
 
 [phases.setup]
-nixpkgsArchive = "nixpkgs-unstable"
-
-[phases.install]
 nixpkgsPackages = [
   "php82",
   "php82Packages.composer",
