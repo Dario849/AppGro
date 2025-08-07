@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => {
-	const publicBasePath = '/php-vite-starter/'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
+	const publicBasePath = '/.'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
 
 	const base = command === 'serve' ? '/' : publicBasePath;
 	const BASE = base.substring(0, base.length - 1);
@@ -21,19 +21,15 @@ export default defineConfig(({ command }) => {
 			usePHP({
 				entry: [
 					'index.php',
-					'configs/env.php',
 					'pages/**/*.php',
 					'partials/**/*.php',
 				],
 				rewriteUrl(requestUrl) {
 					const filePath = fileURLToPath(
-						new URL('.' + requestUrl.pathname, import.meta.url),
+						new URL('.' + requestUrl.pathname, import.meta.url)
 					);
 					const publicFilePath = fileURLToPath(
-						new URL(
-							'./public' + requestUrl.pathname,
-							import.meta.url,
-						),
+						new URL('./pages' + requestUrl.pathname, import.meta.url)
 					);
 
 					if (
@@ -44,16 +40,14 @@ export default defineConfig(({ command }) => {
 					}
 
 					requestUrl.pathname = 'index.php';
-
 					return requestUrl;
 				},
 			}),
-			ViteEjsPlugin({
-				BASE,
-			}),
+			ViteEjsPlugin({ BASE }),
 			viteStaticCopy({
 				targets: [
 					{ src: 'public', dest: '' },
+					{ src: 'js', dest: '' },
 					{ src: 'system', dest: '' },
 					{ src: 'configs', dest: '', overwrite: false },
 					{ src: 'vendor', dest: '' },
@@ -80,11 +74,12 @@ export default defineConfig(({ command }) => {
 			},
 		},
 		server: {
-			port: 3000,
+			port: 8080,
 		},
 		build: {
-			assetsDir: 'public',
+			outDir: 'dist',
 			emptyOutDir: true,
+			assetsDir: 'pages',
 		},
 	};
 });

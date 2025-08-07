@@ -100,13 +100,9 @@ $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
 		http_response_code(404);
-		header('Location: /404'); // Por propositos de developing, se oculta redireccionamiento
-		exit;
-	// break;
-	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-	// 	$allowedMethods = $routeInfo[1];
-	// 	... 405 Method Not Allowed
-	// 	break;
+		require __DIR__ . '/../pages/404.php';
+		break;
+
 	case FastRoute\Dispatcher::FOUND:
 		$routeInfo[1]($routeInfo[2]);
 		break;
