@@ -9,7 +9,7 @@ import { existsSync } from 'node:fs';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => {
-	const publicBasePath = '/php-vite-starter/'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
+	const publicBasePath = '/.'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
 
 	const base = command === 'serve' ? '/' : publicBasePath;
 	const BASE = base.substring(0, base.length - 1);
@@ -21,7 +21,6 @@ export default defineConfig(({ command }) => {
 			usePHP({
 				entry: [
 					'index.php',
-					'configs/env.php',
 					'pages/**/*.php',
 					'partials/**/*.php',
 				],
@@ -54,6 +53,7 @@ export default defineConfig(({ command }) => {
 			viteStaticCopy({
 				targets: [
 					{ src: 'public', dest: '' },
+					{ src: 'js', dest: '' },
 					{ src: 'system', dest: '' },
 					{ src: 'configs', dest: '', overwrite: false },
 					{ src: 'vendor', dest: '' },
@@ -80,7 +80,7 @@ export default defineConfig(({ command }) => {
 			},
 		},
 		server: {
-			port: 3000,
+			port: 8080,
 		},
 		build: {
 			assetsDir: 'public',
