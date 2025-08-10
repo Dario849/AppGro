@@ -2,6 +2,10 @@
 require('system/main.php');
 session_start();
 $layout = new HTML(title: 'AppGro-Inicio');
+if(($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SESSION['logged'] ?? false)) {
+  header('Location: /dashboard');
+  exit;
+}
 ?>
 <!-- RECAPTCHA -->
 <!-- <script type="text/javascript">

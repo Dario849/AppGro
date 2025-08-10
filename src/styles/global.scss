@@ -129,21 +129,37 @@
 	&Dashboard {
 		display: flex;
 		flex-wrap: wrap;
-		flex-direction: row-reverse;
 		justify-content: space-evenly;
 		&Tiempo {
-			display: flex;
-			height: 50%;
-			width: 100%;
-			flex-flow: row;
-			align-items: center;
-			background-color: aquamarine;
+			margin-top: 3vh;
+			.weather-container {
+				transition: ease-out 0.3s;
+				inset: 0;
+				font-size: small;
+				background: radial-gradient(#00d18b, #00787a);
+				border-radius: 4vh;
+				margin-left: 1vh;
+				padding: 3vh;
+			}
 		}
 
-		&Tareas {
-			height: 50%;
-			width: 50%;
-			background-color: burlywood;
+		.stats-container {
+			perspective: 1000px;
+			.stats-hover {
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+				background: radial-gradient(
+					circle at var(--X) var(--Y),
+					rgba(99, 99, 99, 0.3) 0%,
+					transparent 100%
+				);
+				transition: transform 0.3s ease;
+				border-radius: 16px;
+			}
+			.stats-graphs {
+				transform: rotateX(var(--rotation-X)) rotateY(var(--rotation-Y));
+			}
 		}
 
 		&Mapa {
@@ -554,9 +570,28 @@
 			}
 		}
 	}
-	&estadisticas {
+	&MenuEstadisticas {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		.menu-list {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 1rem;
+			padding: 1rem;
+			background-blend-mode: color-dodge;
+			border-radius: 8px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+		li {
+			margin-bottom: 1rem;
+		}
+	}
+	&Estadisticas {
 		/* === ESTADÍSTICAS === */
 		.stats-container {
+			justify-items: center;
 			padding: 2rem;
 			font-family: 'Segoe UI', sans-serif;
 			color: #222;
@@ -565,7 +600,7 @@
 		.stats-title {
 			font-size: 2rem;
 			font-weight: 600;
-			margin-bottom: 1.5rem;
+			margin-bottom: 0.5rem;
 		}
 
 		.stats-select {
@@ -574,7 +609,6 @@
 			border: 1px solid #ddd;
 			border-radius: 6px;
 			background-color: #fff;
-			margin-bottom: 1.5rem;
 			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 			transition: border 0.3s ease;
 			&:focus {
@@ -604,6 +638,10 @@
 			&:hover {
 				transform: scale(1.02);
 			}
+		}
+
+		.stats-graphs {
+			width: 80%;
 		}
 
 		.stats-chart-container {

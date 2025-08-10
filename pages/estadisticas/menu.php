@@ -7,7 +7,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
 
 <main class="main__content">
     <div class="main_container">
-        <div class="main_containerestadisticas">
+        <div class="main_containerEstadisticas">
             
             <div class="stats-container">
                 <h1 class="stats-title">Estadísticas Productivas</h1>

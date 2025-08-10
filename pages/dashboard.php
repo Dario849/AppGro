@@ -29,7 +29,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
             <?php
             if (!empty($_SESSION['user_id'])):
-                echo $_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
+                echo "<a class='absolute font-[monospace] [text-shadow:0px_0px_3px_#00000078] font-medium' >".$_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
                 // unset($_SESSION['user_id']); //ELIMINA CONTENIDO (PODRIA SERVIR PARA CERRAR SESIÓN)
                 // $_SESSION = [];  // Limpia el arreglo de sesión
             endif;
@@ -40,65 +40,74 @@ $usuarios = $stmt->fetchAll(); // array de filas
             } else {
                 $_SESSION['contador']++;
             }
-            echo "Has visitado esta página " . $_SESSION['contador'] . " veces.";
+            echo "Has visitado esta página " . $_SESSION['contador'] . " veces. </a>";
             ?>
+            <br>
             <div id="containerTiempo" class="main_containerDashboardTiempo">
+                <div class="weather-container">
+                    <h2>Estado del Clima</h2>
+                    <div id="weatherInfo" class="weather-info">
+                        <!-- Aquí se mostrará la información del clima -->
+                <!-- #TODO: Hacer un fondo dinámico en relación al estado actual del clima. captura estado: var conditionText = data.current.condition.text y asigna fondo del  -->
                 <?php
                 weatherApi();
                 ?>
-            </div>
-        <div class="main_containerestadisticas">
-            
-            <div class="stats-container">
-                <h1 class="stats-title">Estadísticas Productivas</h1>
-                <!-- Filtros generales -->
-                <div class="stats-filtros">
-                    <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
-                    <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
-                    <label>Grupo:
-                        <select id="filtro_agrupado" class="stats-select">
-                            <option value="mes">Mensual</option>
-                            <option value="dia">Diario</option>
-                            <option value="anio">Anual</option>
-                        </select>
-                    </label>
-                </div>
-                
-                <!-- Selector de pestañas -->
-                <div class="stats-tabs">
-                    <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
-                    <button class="stats-tab-btn" data-target="compras">Compras</button>
-                    <button class="stats-tab-btn" data-target="balance">Balance</button>
-                    <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
-                    <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
-                </div>
-                
-                <!-- Contenedores de gráficos -->
-                <div class="stats-graphs">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <div class="stats-chart-container active" id="tab-ventas">
-                        <canvas id="grafico_ventas" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-compras">
-                        <canvas id="grafico_compras" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-balance">
-                        <canvas id="grafico_balance" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-ganado">
-                        <canvas id="grafico_ganado" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-cultivos">
-                        <canvas id="grafico_cultivos" class="stats-canvas"></canvas>
                     </div>
                 </div>
             </div>
+            <div class="main_containerEstadisticas">
 
-            <script src="src/scripts/dashboard.js"></script>
-        </div>
+                <div class="stats-container">
+                    <h1 class="stats-title">Estadísticas Productivas</h1>
+                    <!-- Filtros generales -->
+                    <div class="stats-filtros">
+                        <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
+                        <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
+                        <label>Grupo:
+                            <select id="filtro_agrupado" class="stats-select">
+                                <option value="mes">Mensual</option>
+                                <option value="dia">Diario</option>
+                                <option value="anio">Anual</option>
+                            </select>
+                        </label>
+                    </div>
+
+                    <!-- Selector de pestañas -->
+                    <div class="stats-tabs">
+                        <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
+                        <button class="stats-tab-btn" data-target="compras">Compras</button>
+                        <button class="stats-tab-btn" data-target="balance">Balance</button>
+                        <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
+                        <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
+                    </div>
+
+                    <!-- Contenedores de gráficos -->
+                    <div class="stats-graphs">
+                    <div class="stats-hover"> </div>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <div class="stats-chart-container active" id="tab-ventas">
+                            <canvas id="grafico_ventas" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-compras">
+                            <canvas id="grafico_compras" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-balance">
+                            <canvas id="grafico_balance" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-ganado">
+                            <canvas id="grafico_ganado" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-cultivos">
+                            <canvas id="grafico_cultivos" class="stats-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="src/scripts/dashboard.js"></script>
+            </div>
 
             <!-- MAPA -->
-            <div class="main_containerDashboardMapa">
+            <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <link rel="stylesheet" href="src\styles\gridstack.css" />
                 <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
@@ -144,7 +153,29 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 </div>
 
                 <script type="text/javascript">
+                    function getMousePos(e) {
+                        return { x: e.clientX, y: e.clientY }; //Al llamar función devuelve 2 valores, x e y
+                    }
+                    $(".stats-graphs").mousemove(function (e) { // cuando el mouse se mueve dentro de la clase stats-graphs
+                        var mousecoords = getMousePos(e);
+                        mousecoords.x -= e.currentTarget.getBoundingClientRect().left; // resta la posición x del mouse respecto al elemento actual y lo almacena en mousecoords
+                        mousecoords.y -= e.currentTarget.getBoundingClientRect().top;  // resta la posición y del mouse respecto al elemento actual y lo almacena en mousecoords
+                        // getBoundingClientRect() devuelve un objeto DOMRect con las propiedades de posición y tamaño;
+                        const xpercent = (mousecoords.x / e.currentTarget.clientWidth); // calcula el porcentaje de la posición x del mouse respecto al ancho del elemento actual
+                        const ypercent = (mousecoords.y / e.currentTarget.clientHeight);
+                        const xrotation = (xpercent - 0.5) * 20; // calcula la rotación en x basada en la posición del mouse
+                        const yrotation = (0.5 - ypercent) * 20; // calcula la rotación en y basada en la posición del mouse
+                        // console.log(`posX: ${xrotation}`,`posY: ${yrotation}`);
+                        document.documentElement.style.setProperty(
+                            '--rotation-X', `${yrotation}deg`); // aplica la rotación al elemento actual
+                        document.documentElement.style.setProperty(
+                            '--rotation-Y', `${xrotation}deg`); // aplica la rotación al elemento actual
+                        document.documentElement.style.setProperty(
+                            '--X', `${(xpercent*100)}%`); // aplica la rotación al elemento actual
+                        document.documentElement.style.setProperty(
+                            '--Y', `${(ypercent*100)}%`); // aplica la rotación al elemento actual
 
+                    });
                     // NOTE: REAL apps would sanitize-html or DOMPurify before blinding setting innerHTML. see #2736
                     GridStack.renderCB = function (el, w) {
                         el.innerHTML = w.content;

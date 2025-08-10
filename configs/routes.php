@@ -51,8 +51,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
-	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
+	$r->addRoute('GET', '/estadisticasResumen', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/menu.php');
+	});
+	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/estadisticasMain.php');
 	});
 	$r->addRoute('GET', '/backend/estadisticas', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/backend/estadisticas.php');
@@ -64,20 +67,30 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/404.php');
 	});
 
-
 	// Rutas de backend (POST)
 	$r->addRoute('POST', '/login', function ($ROUTE_PARAMS) {
 		require('system/login/Blogin.php');
 	});
-	$r->addRoute('POST', '/user/recover', function ($ROUTE_PARAMS) {
-		include('system/login/Brecover.php');
+	$r->addGroup('/user', function (FastRoute\RouteCollector $r) { //Permite agrupar rutas que comparten un prefijo común
+		$r->addRoute('POST', '/recover', function ($ROUTE_PARAMS) {
+			include('system/login/Brecover.php');
+		});
+		$r->addRoute('POST', '/register', function ($ROUTE_PARAMS) {
+			include('system/login/Bregister.php');
+		});
+		$r->addRoute('POST', '/profile', function ($ROUTE_PARAMS) {
+			include('system/login/Bprofile.php');
+		});
 	});
-	$r->addRoute('POST', '/user/register', function ($ROUTE_PARAMS) {
-		include('system/login/Bregister.php');
-	});
-	$r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
-		include('system/login/Bprofile.php');
-	});
+	// $r->addRoute('POST', '/user/recover', function ($ROUTE_PARAMS) {
+	// 	include('system/login/Brecover.php');
+	// });
+	// $r->addRoute('POST', '/user/register', function ($ROUTE_PARAMS) {
+	// 	include('system/login/Bregister.php');
+	// });
+	// $r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
+	// 	include('system/login/Bprofile.php');
+	// });
 	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
 	});
@@ -99,14 +112,14 @@ $uri = rawurldecode($uri);
 $routeInfo = $dispatcher->dispatch($httpMethod, $uri);
 switch ($routeInfo[0]) {
 	case FastRoute\Dispatcher::NOT_FOUND:
+		// ... 404 Not Found
 		http_response_code(404);
-		header('Location: /404'); // Por propositos de developing, se oculta redireccionamiento
-		exit;
-	// break;
-	// case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-	// 	$allowedMethods = $routeInfo[1];
-	// 	... 405 Method Not Allowed
-	// 	break;
+		require __DIR__ . '/../pages/404.php';
+		break;
+	case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
+		$allowedMethods = $routeInfo[1];
+		//... 405 Method Not Allowed
+		break;
 	case FastRoute\Dispatcher::FOUND:
 		$routeInfo[1]($routeInfo[2]);
 		break;
