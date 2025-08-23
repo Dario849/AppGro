@@ -60,6 +60,7 @@
 		"@parcel/watcher"
 	],
 	"dependencies": {
-		"gridstack": "^12.2.2"
+		"gridstack": "^12.2.2",
+		"sweetalert2": "^11.22.4"
 	}
 }

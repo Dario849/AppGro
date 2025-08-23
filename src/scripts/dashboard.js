@@ -124,7 +124,7 @@ function cargarGrafico(tipo) {
 					scales: {
 						x: {
 							ticks: {
-								maxRotation: 0,
+								maxRotation: 50,
 								minRotation: 0,
 								autoSkip: false,
 							},

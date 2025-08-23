@@ -123,6 +123,27 @@
 	padding-top: 2vh;
 }
 
+.btn-to-top {
+	align-items: center;
+	background: #6b5ff8;
+	border-radius: 50%;
+	bottom: 2.5rem;
+	color: #fff;
+	cursor: pointer;
+	display: flex;
+	height: 6.875rem;
+	justify-content: center;
+	left: 2.5rem;
+	line-height: 1.2;
+	// opacity: 0;
+	padding: 2.25rem 1.25rem;
+	position: relative;
+	text-align: center;
+	transition: 0.4s;
+	// visibility: hidden;
+	width: 6.875rem;
+	z-index: 10;
+}
 .main_container {
 	height: 100%;
 	width: 100%;
@@ -158,6 +179,8 @@
 				border-radius: 16px;
 			}
 			.stats-graphs {
+				position: absolute;
+				min-width: -webkit-fill-available;
 				transform: rotateX(var(--rotation-X)) rotateY(var(--rotation-Y));
 			}
 		}
