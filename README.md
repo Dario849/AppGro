@@ -6,7 +6,13 @@
 />
 
 
-AppGro es un proyecto inicial basado en [php-vite-starter](https://github.com/nititech/php-vite-starter) por @nititech y potenciado con [vite-plugin-php](https://github.com/donnikitos/vite-plugin-php) por @donnikitos.
+AppGro es un proyecto de recolección de datos, centralizado en el sector agrícola, permite almacenar datos sobre cultivos, ganado, herramientas, rendimientos.
+Todo esto con el propósito principal de permitir la centralizacin, visualización, y graficación de estos datos.
+La base del proyecto fue realizada con [php-vite-starter](https://github.com/nititech/php-vite-starter) como plantilla para la estructura del proyecto.
+Integrantes:
+- @Dario849
+- @Kenstar05
+- @EnzoTaboada
 
 ## Estructura del proyecto
 
