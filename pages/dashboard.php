@@ -105,7 +105,11 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
                 <script src="src/scripts/dashboard.js"></script>
             </div>
-
+            <div>
+                <?php
+                require('pages\estadisticas\balanceMenu.php');
+                ?>
+            </div>
             <!-- MAPA -->
             <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">

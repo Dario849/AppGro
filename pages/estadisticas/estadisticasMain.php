@@ -10,6 +10,7 @@ $layout = new HTML(title: 'Menú de Estadísticas');
             <h1 class="menu-title">Menú de Estadísticas</h1>
             <p>Seleccione una categoría para ver las estadísticas correspondientes.</p>
             <ul class="menu-list">
+                <li><a href="/balanceMenu" class="menu-link"> Ver mini resumen</a></li>
                 <li><a href="/estadisticasResumen" class="menu-link">Ver resumen Estadísticas Productivas</a></li>
                 <li><a href="/balanceMenu" class="menu-link">Administrar Balance</a></li>
                 <li><a href="/grupos_ganado" class="menu-link">Administrar Ganado</a></li>

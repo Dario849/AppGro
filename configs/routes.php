@@ -51,6 +51,12 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
+	$r->addRoute('GET', '/cultivos', function ($ROUTE_PARAMS) {
+		include('pages/cultivos.php');
+	});
+	$r->addRoute('GET', '/balanceMenu', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/balanceMenu.php');
+	});
 	$r->addRoute('GET', '/estadisticasResumen', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/menu.php');
 	});

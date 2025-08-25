@@ -13,31 +13,43 @@ $usuarios = $stmt->fetchAll(); // array de filas
 <script>
     $(document).ready(function () {// Carga documento, llama a verificar inputs, en caso de autocompletado o no, comprueba igual
         // validateinputs();
-        if (window.location.search.indexOf('ChangeOfMail=') !== -1) { // Si la URL contiene ChangeOfMail=, procede
+        $("#ChangeOfMail").click(function (e) {
+            e.preventDefault();
             $("#ChangeOfMail").hide();
+            $("#formMailProfile").removeAttr('hidden');
+            $("#formPassProfile").attr('hidden', 'true');
+            $("#formPassProfile").attr('autocomplete', 'off');
+            // $("#formPassProfile").hide(); //Oculta form de cambio de contraseña
+            // $("#formMailProfile").show(); //Muestra form de cambio de mail
             $("#UserChangeOfMail").show();
             $("#UserChangeOfPswrd").hide();
-            $("#confirmPass").prop('required','true');
+            $("#confirmPass").prop('required', 'true');
             console.log("Parámetro ChangeOfMail presente");
-        } else if (window.location.search.indexOf('ChangeOfPswrd=') !== -1) {
+            $("#ChangeOfPswrd").show();
+        });
+        $("#ChangeOfPswrd").click(function (e) {
+            e.preventDefault();
             $("#ChangeOfPswrd").hide();
+            $("#formPassProfile").removeAttr('hidden');
+            $("#formMailProfile").attr('hidden', 'true');
+            $("#formMailProfile").attr('autocomplete', 'off');
+            // $("#formPassProfile").show(); //Muestra form de cambio de contraseña
+            // $("#formMailProfile").hide(); //Oculta form de cambio de mail
             $("#UserChangeOfMail").hide();
             $("#UserChangeOfPswrd").show();
-            $("#actualPass").prop('required','true');
+            $("#actualPass").prop('required', 'true');
             console.log("Parámetro ChangeOfPswrd presente");
-        } else {
-            $("#ChangeOfPswrd").show();
-            $("#ChangeOfPswrd").show();
-            $("#UserChangeOfMail").hide();
-            $("#UserChangeOfPswrd").hide();
-        }
+            $("#ChangeOfMail").show();
+        });
+        $("#UserChangeOfMail").hide();
+        $("#UserChangeOfPswrd").hide();
         $("#submitButtonPassword").click(function () {
-            if(validateinputs()){
+            if (validateinputs()) {
                 $('#formProfile').prop('method', 'POST');
             }
         });
         $("#submitButtonEmail").click(function () {
-            if(validateinputs()){
+            if (validateinputs()) {
                 $('#formProfile').prop('method', 'POST');
             }
         });
@@ -97,32 +109,32 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 }
                 ?>
             </div>
-            <form action="/user/profile" id="formProfile" class="formProfile" method="GET">
-                <button id="ChangeOfMail" name="ChangeOfMail" type="submit" class="cta">
-                    <span>Cambiar mi correo</span>
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button> <button id="ChangeOfPswrd" name="ChangeOfPswrd" type="submit" class="cta">
-                    <span>Cambiar mi Contraseña</span>
-                    <svg width="15px" height="10px" viewBox="0 0 13 10">
-                        <path d="M1,5 L11,5"></path>
-                        <polyline points="8 1 12 5 8 9"></polyline>
-                    </svg>
-                </button>
+            <button id="ChangeOfPswrd" name="ChangeOfPswrd" type="submit" class="cta">
+                <span>Cambiar mi Contraseña</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </button>
+            <button id="ChangeOfMail" name="ChangeOfMail" type="submit" class="cta">
+                <span>Cambiar mi correo</span>
+                <svg width="15px" height="10px" viewBox="0 0 13 10">
+                    <path d="M1,5 L11,5"></path>
+                    <polyline points="8 1 12 5 8 9"></polyline>
+                </svg>
+            </button>
+            <form action="/user/profile" id="formMailProfile" class="formProfile" method="POST" autocomplete="on"
+                hidden>
                 <div id="UserChangeOfMail" class="UserChangeOfMail">
                     <p>Cambiar mi correo</p>
                     <br>
                     <label for="confirmPass">Ingrese su contraseña</label>
                     <br>
-                    <input type="password" id="confirmPass" 
-                        autocomplete="current-password" name="confirmPass">
+                    <input type="password" id="confirmPass" autocomplete="current-password" name="confirmPass">
                     <br>
                     <label for="newMail">Ingrese su nuevo correo</label>
                     <input type="email" name="newMail" id="newMail">
-                    <button id="submitButtonEmail" name="submitButtonEmail" type="submit" class="cta"
-                        >
+                    <button id="submitButtonEmail" name="submitButtonEmail" type="submit" class="cta">
                         <span>Ingresar</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">
                             <path d="M1,5 L11,5"></path>
@@ -130,19 +142,24 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         </svg>
                     </button>
                 </div>
+            </form>
+            <form action="/user/profile" id="formPassProfile" class="formProfile" method="POST" autocomplete="on"
+                hidden>
+                <!-- CAMBIAR A POST EN JS -->
                 <div id="UserChangeOfPswrd" class="UserChangeOfPswrd">
                     <p>Cambiar mi contraseña</p>
                     <br>
-                    <label for="actualPass">Confirme su contraseña actual</label>
-                    <br><input type="password" id="actualPass" name="actualPass" autocomplete="current-password"
-                        >
+                    <label for="actualPass">Ingrese su contraseña actual</label>
+                    <br>
+                    <input type="password" id="actualPass" name="current-password" autocomplete="current-password">
                     <br>
                     <label for="newPass1">Ingrese su nueva contraseña</label>
-                    <input type="password" name="newPass1" id="newPass1" >
+                    <input type="password" id="newPass1" name="new-password"
+         autocomplete="new-password">
                     <label for="newPass2">Confirme su nueva contraseña</label>
-                    <input type="password" name="newPass2" id="newPass2" >
-                    <button id="submitButtonPassword" name="submitButtonPassword" type="submit" class="cta"
-                        >
+                    <input type="password" id="newPass2" name="new-password-confirm"
+         autocomplete="new-password">
+                    <button id="submitButtonPassword" name="submitButtonPassword" type="submit" class="cta">
                         <span>Ingresar</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">
                             <path d="M1,5 L11,5"></path>

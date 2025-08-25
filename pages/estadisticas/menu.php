@@ -8,7 +8,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerEstadisticas">
-            
+
             <div class="stats-container">
                 <h1 class="stats-title">Estadísticas Productivas</h1>
                 <!-- Filtros generales -->
@@ -23,16 +23,19 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                         </select>
                     </label>
                 </div>
-                
+
                 <!-- Selector de pestañas -->
                 <div class="stats-tabs">
                     <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
                     <button class="stats-tab-btn" data-target="compras">Compras</button>
                     <button class="stats-tab-btn" data-target="balance">Balance</button>
                     <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
-                    <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
+                    <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>                        
+                    <button>
+                        <img width="20px" src="plus-solid-full.svg" alt="Agregar" class="stats-tab-icon" title="Agregar" data-target="agregar" />
+                    </button>
                 </div>
-                
+
                 <!-- Contenedores de gráficos -->
                 <div class="stats-graphs">
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -53,7 +56,6 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                     </div>
                 </div>
             </div>
-
             <script src="src/scripts/dashboard.js"></script>
         </div>
     </div>
