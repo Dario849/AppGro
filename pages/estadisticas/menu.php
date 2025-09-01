@@ -8,7 +8,6 @@ $layout = new HTML(title: 'Estadísticas Productivas');
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerEstadisticas">
-
             <div class="stats-container">
                 <h1 class="stats-title">Estadísticas Productivas</h1>
                 <!-- Filtros generales -->
@@ -41,15 +40,16 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                         <div class="modal-content">
                             <span class="close">&times;</span>
                             <br>
-                            <p>Some text in the Modal..</p>
                             <div id="inputs" class="modal-body">
                                 <fieldset>
                                     <legend>Fecha de compra/venta</legend>
-                                    <input type="date" name="dateNewBalance" value="" id="dateNewBalance">
+                                    <input type="date" value="" id="dateNewBalance">
                                 </fieldset>
                                 <fieldset>
                                     <legend>Monto</legend>
-                                    <input type="number" name="valueNewBalance" value="0" id="valueNewBalance">
+                                    <input type="number" id="valueNewBalance" value="0" autocomplete="off">
+                                    <br>
+                                    <span id="monto-formateado"></span>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Tipo de nuevo balance</legend>
@@ -85,162 +85,6 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                         <th>Tipo</th>
                                     </tr>
                                     <tbody id="tableOldBalances">
-                                        <!-- Mockup data -->
-                                        <tr>
-                                            <td>2023-01-01</td>
-                                            <td>1000</td>
-                                            <td>Venta</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-02</td>
-                                            <td>500</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-03</td>
-                                            <td>750</td>
-                                            <td>Venta</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2023-01-04</td>
-                                            <td>300</td>
-                                            <td>Compra</td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
@@ -249,7 +93,9 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                     </div>
 
                 </div>
-                <script>
+                <script type="module">
+                    import Swal from 'sweetalert2/dist/sweetalert2.js';
+                    import 'sweetalert2/src/sweetalert2.scss';
                     function hoyLocalYYYYMMDD() {
                         const n = new Date(); // Hora local
                         const yyyy = n.getFullYear(); // extrae year
@@ -263,11 +109,130 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                         // console.log("parseDateLocal: y="+y+" m="+m+" d="+d);
                         return new Date(y, m - 1, d); // Solicita fecha parseada con datos locales
                     }
+                    // Sanitizar fecha (YYYY-MM-DD)
+                    function sanitizeDate(input) {
+                        const regex = /^\d{4}-\d{2}-\d{2}$/;
+                        return regex.test(input) ? input : null;
+                    }
 
+                    // Sanitizar número
+                    function sanitizeNumber(input) {
+                        const num = parseFloat(input.toString().replace(/[^\d.-]/g, ''));
+                        return isNaN(num) ? null : num;
+                    }
+
+                    // Sanitizar texto de tipo select (ej: COMPRA, VENTA)
+                    function sanitizeText(input) {
+                        const opciones = ["COMPRA", "VENTA"];
+                        return opciones.includes(input.toUpperCase()) ? input.toUpperCase() : null;
+                    }
+                    function saveToTable(fecha, monto, tipo) {
+                        // console.log(" SuFecha:"+fecha+" SuMonto:"+monto+" SuTipo:"+tipo);
+                        const date = fecha;
+                        const value = monto;
+                        const type = tipo.toUpperCase();
+                        const data = {
+                            monto: value,
+                            fecha: date,
+                            tipo: type
+                        }
+                        $.ajax({
+                            type: "GET",
+                            url: "/saveNewBalances",
+                            data: data,
+                            dataType: "json",
+                            success: function (response) {
+                                let timerInterval;
+                                Swal.fire({
+                                    position: "bottom-end",
+                                    title: response,
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                        const timer = Swal.getPopup().querySelector("b");
+                                        timerInterval = setInterval(() => {}, 100);
+                                    },
+                                    willClose: () => {
+                                        clearInterval(timerInterval);
+                                    }
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log("I was closed by the timer");
+                                    }
+                                });
+                            }
+                        });
+                        loadTable(); //Tras insertar, solicita tabla con nuevos registros
+                    }
+                    function loadTable() { // Carga La tabla con todos los datos en DB (transacciones)
+                        const table = $("#tableOldBalances")[0];
+                        // console.log("Loading Table wth new data");
+                        $.ajax({
+                            type: "GET",
+                            url: "/getOldBalances",
+                            dataType: "json",
+                            success: function (response) {
+                                const $tbody = $("#tableOldBalances");
+                                $tbody.empty(); // limpiar contenido previo
+                                const data = response;
+                                $.each(data, function (i, row) {
+                                    const tr = $("<tr>");
+                                    tr.append($("<td>").text(row.fecha));
+                                    tr.append($("<td>").text(new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(row.monto)));
+                                    tr.append($("<td>").text(row.tipo));
+                                    $tbody.append(tr);
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                console.error("Error al cargar balances antiguos: " + status + " - " + error);
+                            }
+                        });
+                    }
                     $(function () {
                         const ymd = hoyLocalYYYYMMDD();
                         // console.log("Hora actual: "+parseDateLocal(ymd) + "----" + ymd);
                         $('#dateNewBalance').val(ymd);
+                        $("#btnAdd").click(function () { loadTable(); });
+                        $('#valueNewBalance').keyup(function (e) {
+                            var defaultNumber = $('#valueNewBalance').val();
+                            $('#monto-formateado').text(new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(defaultNumber));
+                        });
+
+                        $('#confirmNewBalance').on('click', function (e) {
+                            e.preventDefault();
+                            const date = sanitizeDate($('#dateNewBalance').val());
+                            const value = sanitizeNumber($('#valueNewBalance').val());
+                            const type = sanitizeText($('input[name="optNewBalance"]:checked').val());
+                            // console.log("New balance to add: " + date + " | " + value + " | " + type);
+                            // #TODO: Añadir botón de importar desde archivo CSV
+                            // #TODO: Añadir exportador de tabla a CSV
+                            if (value === 0) {
+                                let timerInterval;
+                                Swal.fire({
+                                    position: "bottom-end",
+                                    title: "Complete el monto primero",
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    didOpen: () => {
+                                        Swal.showLoading();
+                                        const timer = Swal.getPopup().querySelector("b");
+                                        timerInterval = setInterval(() => {}, 100);
+                                    },
+                                    willClose: () => {
+                                        clearInterval(timerInterval);
+                                    }
+                                }).then((result) => {
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        // console.log("I was closed by the timer");
+                                    }
+                                });
+                            } else {
+                                saveToTable(date, value, type);
+                            }
+                            emptyOutInputs(false, true, false);
+                        });
                     });
                     // Get the modal
                     var modal = document.getElementById("myModal");
@@ -282,38 +247,24 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                     btn.onclick = function () {
                         modal.style.display = "block";
                     }
-                    function emptyOutInputs(d,n,s) { // n=numero (monto), d=fecha, s=selección (compra/venta)
-                        n ? $('#valueNewBalance').val('0'): null; // statement IF minified, después del ":" es el ELSE
-                        d ? $('#dateNewBalance').val(hoyLocalYYYYMMDD()): null; // statement IF minified, después del ":" es el ELSE
-                        s ? $('input[name="optNewBalance"][value="Compra"]').prop('checked', true): null; // statement IF minified, después del ":" es el ELSE
+                    function emptyOutInputs(d, n, s) { // n=numero (monto), d=fecha, s=selección (compra/venta)
+                        n ? $('#valueNewBalance').val('0') : null; // statement IF minified, después del ":" es el ELSE
+                        d ? $('#dateNewBalance').val(hoyLocalYYYYMMDD()) : null; // statement IF minified, después del ":" es el ELSE
+                        s ? $('input[name="optNewBalance"][value="Compra"]').prop('checked', true) : null; // statement IF minified, después del ":" es el ELSE
                     }
                     // When the user clicks on <span> (x), close the modal
                     span.onclick = function () {
                         modal.style.display = "none";
-                        emptyOutInputs(d=true,n=true,s=true);
+                        emptyOutInputs(true, true, true);
                     }
 
                     // When the user clicks anywhere outside of the modal, close it
                     window.onclick = function (event) {
                         if (event.target == modal) {
                             modal.style.display = "none";
-                            emptyOutInputs(d=true,n=true,s=true);
+                            emptyOutInputs(true, true, true);
                         }
                     }
-                    $('#confirmNewBalance').on('click', function (e) {
-                        e.preventDefault();
-                        const date = $('#dateNewBalance').val();
-                        const value = parseFloat($('#valueNewBalance').val());
-                        const type = $('input[name="optNewBalance"]:checked').val();
-                        console.log("New balance to add: " + date + " | " + value + " | " + type);
-                        // #TODO: Añadir llamado AJAX para enviar los datos al servidor y actualizar la base de datos
-                        // #TODO: Añadir botón de importar desde archivo CSV
-                        // #TODO: Validar datos antes de enviar
-                        // #TODO: Actualizar tabla de balances antiguos
-                        // #TODO: Añadir exportador de tabla a CSV
-                        // modal.style.display = "none";
-                        emptyOutInputs(d=false,n=true,s=false);
-                    });
 
                 </script>
                 <!-- Contenedores de gráficos -->

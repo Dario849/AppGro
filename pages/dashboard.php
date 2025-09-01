@@ -29,7 +29,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
             <?php
             if (!empty($_SESSION['user_id'])):
-                echo "<a class='absolute font-[monospace] [text-shadow:0px_0px_3px_#00000078] font-medium' >".$_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
+                echo "<a class='absolute font-[monospace] [text-shadow:0px_0px_3px_#00000078] font-medium' >" . $_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
                 // unset($_SESSION['user_id']); //ELIMINA CONTENIDO (PODRIA SERVIR PARA CERRAR SESIÓN)
                 // $_SESSION = [];  // Limpia el arreglo de sesión
             endif;
@@ -44,14 +44,19 @@ $usuarios = $stmt->fetchAll(); // array de filas
             ?>
             <br>
             <div id="containerTiempo" class="main_containerDashboardTiempo">
-                <div class="weather-container">
-                    <h2>Estado del Clima</h2>
-                    <div id="weatherInfo" class="weather-info">
-                        <!-- Aquí se mostrará la información del clima -->
-                        <!-- #TODO: Hacer un fondo dinámico en relación al estado actual del clima. captura estado: var conditionText = data.current.condition.text y asigna fondo del  -->
-                        <?php
-                        weatherApi();
-                        ?>
+                <div class="with-perspective">
+                    <div class="has-gradient-tracker weather-container">
+                        <div class="weather-container">
+                            <div class="movement-listener"></div>
+                            <h2>Estado del Clima</h2>
+                            <div id="weatherInfo" class="weather-info">
+                                <!-- Aquí se mostrará la información del clima -->
+                                <!-- #TODO: Hacer un fondo dinámico en relación al estado actual del clima. captura estado: var conditionText = data.current.condition.text y asigna fondo del  -->
+                                <?php
+                                weatherApi();
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -83,7 +88,6 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
                     <!-- Contenedores de gráficos -->
                     <div class="stats-graphs">
-                        <div class="stats-hover"> </div>
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <div class="stats-chart-container active" id="tab-ventas">
                             <canvas id="grafico_ventas" class="stats-canvas"></canvas>
@@ -105,11 +109,6 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
                 <script src="src/scripts/dashboard.js"></script>
             </div>
-            <div>
-                <?php
-                require('pages\estadisticas\balanceMenu.php');
-                ?>
-            </div>
             <!-- MAPA -->
             <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -123,18 +122,18 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         opacity: 0.8;
                         filter: blur(5px);
                     }
-
+                    
                     .sidepanel-item {
                         background-color: #18bc9c;
                         text-align: center;
                         padding: 5px;
                         margin-bottom: 15px;
                     }
-
+                    
                     #trash {
                         background-color: rgba(255, 0, 0, 0.4);
                     }
-
+                    
                     ion-icon {
                         font-size: 300%;
                     }
@@ -172,34 +171,10 @@ $usuarios = $stmt->fetchAll(); // array de filas
                                 });
                             }
                         });
-                        function getMousePos(e) {
-                            return { x: e.clientX, y: e.clientY }; //Al llamar función devuelve 2 valores, x e y
-                        }
-                        $(".stats-graphs").mousemove(function (e) { // cuando el mouse se mueve dentro de la clase stats-graphs
-                            var mousecoords = getMousePos(e);
-                            mousecoords.x -= e.currentTarget.getBoundingClientRect().left ?? 0; // resta la posición x del mouse respecto al elemento actual y lo almacena en mousecoords
-                            mousecoords.y -= e.currentTarget.getBoundingClientRect().top ?? 0;  // resta la posición y del mouse respecto al elemento actual y lo almacena en mousecoords
-                            // getBoundingClientRect() devuelve un objeto DOMRect con las propiedades de posición y tamaño;
-                            const xpercent = (mousecoords.x / e.currentTarget.clientWidth); // calcula el porcentaje de la posición x del mouse respecto al ancho del elemento actual
-                            const ypercent = (mousecoords.y / e.currentTarget.clientHeight);
-                            const xrotation = (xpercent - 0.5) * 20; // calcula la rotación en x basada en la posición del mouse
-                            const yrotation = (0.5 - ypercent) * 20; // calcula la rotación en y basada en la posición del mouse
-                            // console.log(`posX: ${xrotation}`,`posY: ${yrotation}`);
-                            document.documentElement.style.setProperty(
-                                '--rotation-X', `${yrotation}deg`); // aplica la rotación al elemento actual
-                            document.documentElement.style.setProperty(
-                                '--rotation-Y', `${xrotation}deg`); // aplica la rotación al elemento actual
-                            document.documentElement.style.setProperty(
-                                '--X', `${(xpercent * 100)}%`); // aplica la rotación al elemento actual
-                            document.documentElement.style.setProperty(
-                                '--Y', `${(ypercent * 100)}%`); // aplica la rotación al elemento actual
-
-                        });
                         // NOTE: REAL apps would sanitize-html or DOMPurify before blinding setting innerHTML. see #2736
                         GridStack.renderCB = function (el, w) {
                             el.innerHTML = w.content;
                         };
-
                         let children = [
                             { x: 0, y: 0, w: 4, h: 2, content: '<input type="text">' },
                             { x: 4, y: 0, w: 4, h: 4, locked: true, content: 'locked: can\'t be pushed by others, only user!<br><ion-icon name="ios-lock"></ion-icon>' },
@@ -211,7 +186,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                             { x: 8, y: 4, w: 2, h: 2, content: '10' },
                         ];
                         let insert = [{ h: 2, content: 'new item' }];
-
+                        
                         let grid = GridStack.init({
                             cellHeight: 70,
                             acceptWidgets: true,
@@ -219,7 +194,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                             children
                         });
                         GridStack.setupDragIn('.sidepanel>.grid-stack-item', undefined, insert);
-
+                        
                         grid.on('added removed change', function (e, items) {
                             let str = '';
                             items.forEach(function (item) { str += ' (x,y)=' + item.x + ',' + item.y; });
@@ -229,12 +204,37 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 </script>
             </div>
             <!--FIN DE MAPA -->
+        <div class="mith-perspective">
+            <div class="has-gradient-tracker stats-graphs">
+                <div class="balance-container" id="balanceMenu"></div>
+            </div>
+        </div>
+        <script> // Carga el HTML
+            $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
+        </script>
         </div>
         <!-- <script>
             $(".btn-to-top").click(() => {
                 $("html, body").animate({ scrollTop: 0 });
-            });
-        </script>
-        <div class="btn-to-top">Back To Top</div> -->
+                });
+            </script>
+            <div class="btn-to-top">Back To Top</div> -->
     </div>
+    <script>
+        $(function () {
+
+            gradientTracker({
+                selector: '.stats-graphs',
+                color1: '',
+                color2: '',
+                maxTilt: 20
+            });
+            gradientTracker({
+                selector: '.weather-container',
+                color1: '#007950',
+                color2: '#00787a',
+                maxTilt: 14
+            });
+        });
+    </script>
 </main>

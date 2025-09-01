@@ -22,6 +22,7 @@ class HTML
 			<script src="../js/jquery-3.7.1.min.js"></script>
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
 			<link href="/src/styles/global.scss" rel="stylesheet" />
+			<script src="src/scripts/perspectiveCard.js"></script>
 		</head>
 
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">

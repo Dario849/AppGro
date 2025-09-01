@@ -223,42 +223,74 @@
 		justify-content: space-evenly;
 		&Tiempo {
 			margin-top: 3vh;
-			.weather-container {
-				transition: ease-out 0.3s;
-				inset: 0;
-				font-size: small;
-				background: radial-gradient(#00d18b, #00787a);
-				border-radius: 4vh;
-				margin-left: 1vh;
-				padding: 3vh;
-			}
 		}
-		.stats-container {
-			perspective: 1000px;
-			.stats-hover {
-				position: absolute;
-				inset: 0;
-				pointer-events: none;
-				background: radial-gradient(
-					circle at var(--X) var(--Y),
-					rgba(99, 99, 99, 0.3) 0%,
-					transparent 100%
-				);
-				transition: transform 0.3s ease;
-				border-radius: 16px;
-			}
-			.stats-graphs {
-				position: absolute;
-				min-width: -webkit-fill-available;
-				transform: rotateX(var(--rotation-X)) rotateY(var(--rotation-Y));
-			}
-		}
-
 		&Mapa {
 			height: 50%;
 			width: 50%;
 			background-color: plum;
 		}
+		&Estadisticas {
+			height: 50%;
+			width: 50%;
+			background-color: lightblue;
+			.stats-card{
+				pointer-events: auto;
+			}
+		}
+		.balance-container{
+			width: 100%;
+			height: 100%;
+			display: flex;
+		}
+	}
+	/* El padre aporta perspectiva real 3D */
+	.with-perspective {
+		perspective: 1000px;
+		// inset: 0;
+	}
+
+	/* Estilo base del componente interactivo */
+	.has-gradient-tracker {
+		/* Paleta por elemento (se puede sobreescribir vía JS) */
+		--gt-color1: #00d18b;
+		/* color del centro del gradiente */
+		--gt-color2: #00787a;
+		/* color externo del gradiente */
+
+		/* Variables reactivas por elemento */
+		--X: 50%;
+		/* posición horizontal del hotspot (0%-100%) */
+		--Y: 50%;
+		/* posición vertical del hotspot (0%-100%) */
+		--rotation-X: 0deg;
+		/* inclinación sobre eje X (vertical) */
+		--rotation-Y: 0deg;
+		/* inclinación sobre eje Y (horizontal) */
+
+		position: relative;
+		min-height: 260px;
+		border-radius: 16px;
+		padding: 16px;
+		color: #fff;
+
+		/* Hotspot + fondo. No animamos background en CSS para evitar repaints caros */
+		background: radial-gradient(
+			circle at var(--X) var(--Y),
+			var(--gt-color1) 0%,
+			var(--gt-color2) 100%
+		);
+		/* La animación fluida sucede en la capa de composición (transform) */
+		transform: rotateX(var(--rotation-X)) rotateY(var(--rotation-Y));
+		transform-style: preserve-3d;
+		backface-visibility: hidden;
+		transition: transform 80ms ease-out;
+		/* solo transform */
+		will-change: transform;
+		contain: paint;
+		/* limita el área de repintado */
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 
 	&Login {
@@ -663,9 +695,6 @@
 		}
 	}
 	&MenuEstadisticas {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
 		.menu-list {
 			display: flex;
 			flex-direction: column;
