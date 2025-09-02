@@ -72,6 +72,13 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                     </div>
                                 </fieldset>
                                 <fieldset>
+                                    <legend>Exportar/Importar</legend>
+                                    <div class="csvContainer">
+                                        <img src="public\icons8-excel-50.svg" alt="Exportar a .CSV" width="20px">
+                                    </div>
+                                </fieldset>
+
+                                <fieldset>
                                     <button id="confirmNewBalance" class="submit-button">
                                         &crarr; Añadir
                                     </button>
@@ -151,7 +158,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                     didOpen: () => {
                                         Swal.showLoading();
                                         const timer = Swal.getPopup().querySelector("b");
-                                        timerInterval = setInterval(() => {}, 100);
+                                        timerInterval = setInterval(() => { }, 100);
                                     },
                                     willClose: () => {
                                         clearInterval(timerInterval);
@@ -218,7 +225,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                     didOpen: () => {
                                         Swal.showLoading();
                                         const timer = Swal.getPopup().querySelector("b");
-                                        timerInterval = setInterval(() => {}, 100);
+                                        timerInterval = setInterval(() => { }, 100);
                                     },
                                     willClose: () => {
                                         clearInterval(timerInterval);

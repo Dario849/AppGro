@@ -233,11 +233,11 @@
 			height: 50%;
 			width: 50%;
 			background-color: lightblue;
-			.stats-card{
+			.stats-card {
 				pointer-events: auto;
 			}
 		}
-		.balance-container{
+		.balance-container {
 			width: 100%;
 			height: 100%;
 			display: flex;
@@ -247,6 +247,7 @@
 	.with-perspective {
 		perspective: 1000px;
 		// inset: 0;
+		// margin-top: 1vh;
 	}
 
 	/* Estilo base del componente interactivo */
@@ -988,6 +989,9 @@
 			gap: 1rem;
 			margin-bottom: 2rem;
 			align-items: center;
+		}
+		.csvContainer{
+			margin-left: 5vh;
 		}
 	}
 }
