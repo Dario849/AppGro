@@ -1,7 +1,7 @@
 <?php
 class HTML
 {
-	public function __construct(public string $title, public string $lang = 'en')
+	public function __construct(public string $title, public int $uid = 0, public string $lang = 'en')
 	{
 		ob_start();
 	}
@@ -19,6 +19,7 @@ class HTML
 			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
+			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
 			<script src="../js/jquery-3.7.1.min.js"></script>
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
 			<link href="/src/styles/global.scss" rel="stylesheet" />

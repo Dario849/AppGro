@@ -2,7 +2,7 @@
 require('system/main.php');
 require dirname(__DIR__, 3) . '\system\resources\database.php';
 sessionCheck();
-$layout = new HTML(title: 'Estadísticas Productivas');
+$layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']);
 ?>
 
 <main class="main__content">
@@ -49,11 +49,10 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                     <legend>Monto</legend>
                                     <input type="number" id="valueNewBalance" value="0" autocomplete="off">
                                     <br>
-                                    <span id="monto-formateado"></span>
+                                    <b><span id="monto-formateado"></span></b>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Tipo de nuevo balance</legend>
-                                    <!-- From Uiverse.io by andrew-demchenk0 -->
                                     <div class="opcionBalance">
                                         <div class="option">
                                             <input class="input" type="radio" id="optNewCompra" name="optNewBalance"
@@ -70,6 +69,47 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                             </div>
                                         </div>
                                     </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Tipo de producto</legend>
+                                    <div class="opcionProducto">
+                                        <div class="option">
+                                            <input class="input" type="radio" id="optNewGanado" name="opcionProducto"
+                                                value="Ganado" checked="">
+                                            <div class="btn">
+                                                <span class="span">Ganado</span>
+                                            </div>
+                                        </div>
+                                        <div class="option">
+                                            <input class="input" type="radio" id="optNewCultivo" name="opcionProducto"
+                                                value="Cultivo">
+                                            <div class="btn">
+                                                <span class="span">Cultivo</span>
+                                            </div>
+                                        </div>
+                                        <div class="option">
+                                            <input class="input" type="radio" id="optNewHerramienta"
+                                                name="opcionProducto" value="Herramienta">
+                                            <div class="btn">
+                                                <span class="span">Herramienta</span>
+                                            </div>
+                                        </div>
+                                        <div class="option">
+                                            <input class="input" type="radio" id="optNewOtro" name="opcionProducto"
+                                                value="Otro">
+                                            <div class="btn">
+                                                <span class="span">Otro</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Cantidad</legend>
+                                    <input type="number" id="valueNewCantidad" value="0" autocomplete="off">
+                                </fieldset>
+                                <fieldset>
+                                    <legend>Descripción de producto</legend>
+                                    <textarea placeholder="Ingrese posible descripción del producto" class="textareaComentario" id="optNewComentario"></textarea>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Exportar/Importar</legend>
@@ -121,7 +161,9 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                                     <p>Contenido a importar:</p>
                                                     <pre id="outputImportCsv"></pre>
                                                     <p>Preview tabla:</p>
-                                                    <table id="csvTable"></table>
+                                                    <table id="csvTable">
+
+                                                    </table>
                                                     <button id="btnImportCsv">Importar archivo</button>
                                                 </fieldset>
                                             </div>
@@ -138,26 +180,26 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                             <div class="table-container">
                                 <table>
                                     <tr>
+                                        <th>Nro</th>
                                         <th>Fecha</th>
                                         <th>Valor</th>
                                         <th>Tipo</th>
+                                        <th>Usuario reponsable</th>
+                                        <th>Producto</th>
+                                        <th>Cantidad</th>
+                                        <th>Comentario</th>
                                     </tr>
                                     <tbody id="tableOldBalances">
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
                 <script type="text/javascript" src="js/xlsx.full.min.js"></script>
                 <script type="module">
                     // #TODO: Añadir botón de importar desde archivo CSV
                     // #TODO: Añadir exportador de tabla a CSV
-                    // #TODO: Añadir campo seleccionable (ganado, cultivo, herramientas, varios)
-                    // #TODO: Añadir campo stock para posterior dato [STOCK-GENERALIZADO] de esos 4 grupos
-                    // #TODO: Añadir campo id_usuario, para vincular cada transacción con el usuario que crea dicho dato, facilitando seguimiento (podría traer dato username para cada fila)
                     // #TODO: Añadir resumen de ganado donde: Muestre total activo, 
                     import Swal from 'sweetalert2/dist/sweetalert2.js';
                     import 'sweetalert2/src/sweetalert2.scss';
@@ -257,15 +299,23 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                         const opciones = ["COMPRA", "VENTA"];
                         return opciones.includes(input.toUpperCase()) ? input.toUpperCase() : null;
                     }
-                    function saveToTable(fecha, monto, tipo) {
+                    function saveToTable(fecha, monto, tipo, uid, producto, cantidad, comentario) {
                         // console.log(" SuFecha:"+fecha+" SuMonto:"+monto+" SuTipo:"+tipo);
                         const date = fecha;
                         const value = monto;
                         const type = tipo.toUpperCase();
+                        const userId = sanitizeNumber(uid);
+                        const prod = producto.toUpperCase();
+                        const amount = cantidad;
+                        const comment = comentario;
                         const data = {
                             monto: value,
                             fecha: date,
-                            tipo: type
+                            tipo: type,
+                            uid: userId,
+                            prod: prod,
+                            prod_num: amount,
+                            detail: comment
                         }
                         $.ajax({
                             type: "GET",
@@ -311,9 +361,15 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                 const data = response;
                                 $.each(data, function (i, row) {
                                     const tr = $("<tr>");
+                                    const index = i;
+                                    tr.append($("<td>").text(index));
                                     tr.append($("<td>").text(row.fecha));
                                     tr.append($("<td>").text(new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(row.monto)));
                                     tr.append($("<td>").text(row.tipo));
+                                    tr.append($("<td>").text(row.id_usuario));
+                                    tr.append($("<td>").text(row.dato));
+                                    tr.append($("<td>").text(row.dato_cantidad));
+                                    tr.append($("<td>").text(row.detalle));
                                     $tbody.append(tr);
                                 });
                             },
@@ -345,6 +401,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                             const date = sanitizeDate($('#dateNewBalance').val());
                             const value = sanitizeNumber($('#valueNewBalance').val());
                             const type = sanitizeText($('input[name="optNewBalance"]:checked').val());
+                            const uid = sanitizeNumber($('#uid_n').val());
                             // console.log("New balance to add: " + date + " | " + value + " | " + type);
                             if (value === 0) {
                                 let timerInterval;
@@ -368,7 +425,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                 //     }
                                 // });
                             } else {
-                                saveToTable(date, value, type);
+                                saveToTable(date, value, type, uid,);
                             }
                             emptyOutInputs(false, true, false);
                         });
@@ -412,6 +469,7 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                             }
                             if (event.target == csvmodal) {
                                 csvmodal.style.display = "none";
+                                $('#csvTable').html('');
                             }
                         }
                         $('#fileImportCsv').on('change', function () {
@@ -447,12 +505,15 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                                         })()
                                         : e.target.result;
 
-                                    rows = parseCSV(text); // Devuelve array de caracteres comprendidos dentro de archivo .csv o arreglo de caracteres separados por , en caso de archivo .xlsx/xlsm
-                                    for (let i = 0; i < rows.length; i++) {
-                                        const [code, nombre, stock, fecha] = rows[i];
+                                    rows = parseCSV(text); // Devuelve array de caracteres comprendidos dentro de archivo .csv o arreglo de caracteres pre-separados por , en caso de archivo .xlsx/xlsm
+                                    const startsLikeHeader = rows[0] && /[F,f]echa/i.test(rows[0][0] || "") && /[M,m]onto/i.test(rows[0][1] || "") && /[T.t]ipo/i.test(rows[0][2] || "") && /[T,t]ipo_[P,p]roducto/i.test(rows[0][3] || "") && /[C,c]antidad_[P,p]roducto/i.test(rows[0][4] || "") && /[D,d]escripci[o,ó]n/i.test(rows[0][5] || "");
+                                    $('#csvTable').append(`<thead><tr><td>Fecha</td><td>Monto</td><td>Venta/Compra</td><td>Tipo de producto</td><td>Cantidad del producto</td><td>Comentario</td></tr></thead>`);
+                                    const startsOn = startsLikeHeader ? 1 : 0;
+                                    for (let i = startsOn; i < rows.length; i++) {
+                                        const [fecha, monto, tipo, dato, dato_cantidad, detalle] = rows[i];
                                         // console.log(`codigo:${code} Nombre:${nombre} NumStock:${stock} YYYY-MM-DD:${toYMD(fecha)}`);
                                         // $('#csvTable').append("<tr><td>" + code + "</td><td>" + nombre + "</td><td>" + stock + "</td><td>" + toYMD(fecha) + "</td></tr>");
-                                        $('#csvTable').append(`<tr><td>${code}</td><td>${nombre}</td><td>${stock}</td><td>${toYMD(fecha)}</td></tr>`);
+                                        $('#csvTable').append(`<tr><td>${toYMD(fecha)}</td><td>${monto}</td><td>${tipo}</td><td>${dato}</td><td>${dato_cantidad}</td><td>${detalle}</td></tr>`);
                                     }
                                 } catch (err) {
                                     console.error('Error procesando el archivo:', err);
@@ -471,11 +532,12 @@ $layout = new HTML(title: 'Estadísticas Productivas');
                         });
                         $("#btnImportCsv").click(function (e) {
                             e.preventDefault();
+                            const uid = sanitizeNumber($('#uid_n').val());
                             for (let i = 0; i < rows.length; i++) {
-                                var [csvFecha, csvMonto, csvTipo] = rows[i];
-                                csvFecha=toYMD(csvFecha);
-                                saveToTable(csvFecha, csvMonto, csvTipo);
-                                console.log(csvFecha, csvMonto, csvTipo)
+                                var [csvFecha, csvMonto, csvTipo, csvDato, csvDato_Cantidad, csvDetalle] = rows[i];
+                                csvFecha = toYMD(csvFecha);
+                                saveToTable(csvFecha, csvMonto, csvTipo, uid, csvDato, csvDato_Cantidad, csvDetalle);
+                                // console.log(csvFecha, csvMonto, csvTipo, csvDato, csvDato_Cantidad, csvDetalle)
                             }
                         });
                     });

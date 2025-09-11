@@ -30,6 +30,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/user/logout', function ($ROUTE_PARAMS) {
 		include('pages/user/logout.php');
 	});
+	$r->addRoute('GET', '/demo-cards', function ($ROUTE_PARAMS) {
+		include('pages\examples\demo-cards.php');
+	});
 	$r->addRoute('GET', '/user/recover', function ($ROUTE_PARAMS) {
 		include('pages/user/recover.php');
 	});
@@ -66,11 +69,17 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
+	$r->addRoute('GET', '/cultivos', function ($ROUTE_PARAMS) {
+		include('pages/cultivos.php');
+	});
 	$r->addRoute('GET', '/estadisticasResumen', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/menu.php');
 	});
 	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/estadisticasMain.php');
+	});
+	$r->addRoute('GET', '/test', function ($ROUTE_PARAMS) {
+		include('pages/estadisticas/modaltest.html');
 	});
 	$r->addRoute('GET', '/backend/estadisticas', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/backend/estadisticas.php');
@@ -78,10 +87,18 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/backend/resumen', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/backend/resumen.php');
 	});
+	$r->addRoute('GET', '/migrateToHTML', function ($ROUTE_PARAMS) {
+		include('pages\estadisticas\migrateToHTML.html');
+	});
+	$r->addRoute('GET', '/getOldBalances', function ($ROUTE_PARAMS) {
+		include('system\balances\getOldBalances.php');
+	});
+	$r->addRoute('GET', '/saveNewBalances', function ($ROUTE_PARAMS) {
+		include('system\balances\saveNewBalances.php');
+	});
 	$r->addRoute('GET', '/404', function ($ROUTE_PARAMS) {
 		include('pages/404.php');
 	});
-
 	// Rutas de backend (POST)
 	$r->addRoute('POST', '/login', function ($ROUTE_PARAMS) {
 		require('system/login/Blogin.php');
