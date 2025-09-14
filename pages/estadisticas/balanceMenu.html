@@ -1,0 +1,45 @@
+
+<div class="main_containerMenuEstadisticas">
+    <h1 class="menu-title">Resumen total</h1>
+    <!-- <script src="src/scripts/dashboardResumen.js"></script> -->
+    <script>
+        $.ajax({
+            type: "GET",
+            url: "/backend/resumen",
+            success: function (response) {
+                const formattedVentas = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(response.ventas);
+                const formattedCompras = new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(response.compras);
+
+                $('#totalVentas').text(`${formattedVentas}`);
+                $('#totalCompras').text(`${formattedCompras}`);
+                $('#totalGanado').text(response.ganado);
+                $('#totalCultivos').text(response.cultivos);
+                $('#totalTareas').text(response.tareas);
+            }
+        });
+    </script>
+    <div class="resumen-container">
+        <ul>
+            <label for="totalVentas">Ventas: </label>
+            <li id="totalVentas" class="CardEstadisticas">
+                Total Ventas: Cargando...
+            </li>
+            <label for="totalCompras">Compras:</label>
+            <li id="totalCompras" class="CardEstadisticas">
+                Total Compras: Cargando...
+            </li>
+            <label for="totalGanado">Ganado:</label>
+            <li id="totalGanado" class="CardEstadisticas">
+                Total Altas de Ganado: Cargando...
+            </li>
+            <label for="totalCultivos">Cultivos:</label>
+            <li id="totalCultivos" class="CardEstadisticas">
+                Total Altas de Cultivos: Cargando...
+            </li>
+            <label for="totalTareas">Tareas Completadas:</label>
+            <li id="totalTareas" class="CardEstadisticas">
+                Total Tareas Completadas: Cargando...
+            </li>
+        </ul>
+    </div>
+</div>

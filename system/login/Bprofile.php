@@ -5,9 +5,9 @@ require __DIR__ . '/../resources/database.php';   // conexión PDO
 // 1) Recoger y sanitizar
 $emailPassConfirm = trim($_POST['confirmPass'] ?? '');
 $emailNew = filter_input(INPUT_POST, 'newMail', FILTER_SANITIZE_EMAIL);
-$passOld = trim($_POST['actualPass'] ?? '');
-$passNew1 = trim($_POST['newPass1'] ?? '');
-$passNew2 = trim($_POST['newPass2'] ?? '');
+$passOld = trim($_POST['current-password'] ?? '');
+$passNew1 = trim($_POST['new-password'] ?? '');
+$passNew2 = trim($_POST['new-password-confirm'] ?? '');
 // 2) Validaciones básicas
 if ( !$passNew1 != !$passNew2) {
     $_SESSION['error'] = 'La nueva contraseña no coincide con la confirmada - Intente denuevo';

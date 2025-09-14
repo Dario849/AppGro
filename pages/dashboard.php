@@ -29,7 +29,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
             <?php
             if (!empty($_SESSION['user_id'])):
-                echo $_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
+                echo "<a class='absolute font-[monospace] [text-shadow:0px_0px_3px_#00000078] font-medium' >" . $_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
                 // unset($_SESSION['user_id']); //ELIMINA CONTENIDO (PODRIA SERVIR PARA CERRAR SESIÓN)
                 // $_SESSION = [];  // Limpia el arreglo de sesión
             endif;
@@ -40,65 +40,77 @@ $usuarios = $stmt->fetchAll(); // array de filas
             } else {
                 $_SESSION['contador']++;
             }
-            echo "Has visitado esta página " . $_SESSION['contador'] . " veces.";
+            echo "Has visitado esta página " . $_SESSION['contador'] . " veces. </a>";
             ?>
+            <br>
             <div id="containerTiempo" class="main_containerDashboardTiempo">
-                <?php
-                weatherApi();
-                ?>
-            </div>
-        <div class="main_containerestadisticas">
-            
-            <div class="stats-container">
-                <h1 class="stats-title">Estadísticas Productivas</h1>
-                <!-- Filtros generales -->
-                <div class="stats-filtros">
-                    <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
-                    <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
-                    <label>Grupo:
-                        <select id="filtro_agrupado" class="stats-select">
-                            <option value="mes">Mensual</option>
-                            <option value="dia">Diario</option>
-                            <option value="anio">Anual</option>
-                        </select>
-                    </label>
-                </div>
-                
-                <!-- Selector de pestañas -->
-                <div class="stats-tabs">
-                    <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
-                    <button class="stats-tab-btn" data-target="compras">Compras</button>
-                    <button class="stats-tab-btn" data-target="balance">Balance</button>
-                    <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
-                    <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
-                </div>
-                
-                <!-- Contenedores de gráficos -->
-                <div class="stats-graphs">
-                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <div class="stats-chart-container active" id="tab-ventas">
-                        <canvas id="grafico_ventas" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-compras">
-                        <canvas id="grafico_compras" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-balance">
-                        <canvas id="grafico_balance" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-ganado">
-                        <canvas id="grafico_ganado" class="stats-canvas"></canvas>
-                    </div>
-                    <div class="stats-chart-container" id="tab-cultivos">
-                        <canvas id="grafico_cultivos" class="stats-canvas"></canvas>
+                <div class="with-perspective">
+                    <div class="has-gradient-tracker weather-container">
+                        <div class="weather-container">
+                            <div class="movement-listener"></div>
+                            <h2>Estado del Clima</h2>
+                            <div id="weatherInfo" class="weather-info">
+                                <!-- Aquí se mostrará la información del clima -->
+                                <!-- #TODO: Hacer un fondo dinámico en relación al estado actual del clima. captura estado: var conditionText = data.current.condition.text y asigna fondo del  -->
+                                <?php
+                                weatherApi();
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="main_containerEstadisticas">
 
-            <script src="src/scripts/dashboard.js"></script>
-        </div>
+                <div class="stats-container">
+                    <h1 class="stats-title">Estadísticas Productivas</h1>
+                    <!-- Filtros generales -->
+                    <div class="stats-filtros">
+                        <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
+                        <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
+                        <label>Grupo:
+                            <select id="filtro_agrupado" class="stats-select">
+                                <option value="mes">Mensual</option>
+                                <option value="dia">Diario</option>
+                                <option value="anio">Anual</option>
+                            </select>
+                        </label>
+                    </div>
 
+                    <!-- Selector de pestañas -->
+                    <div class="stats-tabs">
+                        <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
+                        <button class="stats-tab-btn" data-target="compras">Compras</button>
+                        <button class="stats-tab-btn" data-target="balance">Balance</button>
+                        <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
+                        <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
+                    </div>
+
+                    <!-- Contenedores de gráficos -->
+                    <div class="stats-graphs">
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <div class="stats-chart-container active" id="tab-ventas">
+                            <canvas id="grafico_ventas" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-compras">
+                            <canvas id="grafico_compras" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-balance">
+                            <canvas id="grafico_balance" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-ganado">
+                            <canvas id="grafico_ganado" class="stats-canvas"></canvas>
+                        </div>
+                        <div class="stats-chart-container" id="tab-cultivos">
+                            <canvas id="grafico_cultivos" class="stats-canvas"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="src/scripts/dashboard.js"></script>
+            </div>
             <!-- MAPA -->
-            <div class="main_containerDashboardMapa">
+            <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <link rel="stylesheet" href="src\styles\gridstack.css" />
                 <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
@@ -110,18 +122,18 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         opacity: 0.8;
                         filter: blur(5px);
                     }
-
+                    
                     .sidepanel-item {
                         background-color: #18bc9c;
                         text-align: center;
                         padding: 5px;
                         margin-bottom: 15px;
                     }
-
+                    
                     #trash {
                         background-color: rgba(255, 0, 0, 0.4);
                     }
-
+                    
                     ion-icon {
                         font-size: 300%;
                     }
@@ -142,42 +154,87 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         <div class="grid-stack"></div>
                     </div>
                 </div>
-
-                <script type="text/javascript">
-
-                    // NOTE: REAL apps would sanitize-html or DOMPurify before blinding setting innerHTML. see #2736
-                    GridStack.renderCB = function (el, w) {
-                        el.innerHTML = w.content;
-                    };
-
-                    let children = [
-                        { x: 0, y: 0, w: 4, h: 2, content: '<input type="text">' },
-                        { x: 4, y: 0, w: 4, h: 4, locked: true, content: 'locked: can\'t be pushed by others, only user!<br><ion-icon name="ios-lock"></ion-icon>' },
-                        { x: 8, y: 0, w: 2, h: 2, minW: 2, noResize: true, content: '<p class="card-text text-center" style="margin-bottom: 0">Drag me!<p class="card-text text-center"style="margin-bottom: 0"><ion-icon name="hand"></ion-icon><p class="card-text text-center" style="margin-bottom: 0">...but don\'t resize me!' },
-                        { x: 0, y: 2, w: 2, h: 2, content: '5' },
-                        { x: 2, y: 2, w: 2, h: 4, content: '6' },
-                        { x: 0, y: 4, w: 2, h: 2, content: '8' },
-                        { x: 4, y: 4, w: 4, h: 2, content: '9' },
-                        { x: 8, y: 4, w: 2, h: 2, content: '10' },
-                    ];
-                    let insert = [{ h: 2, content: 'new item' }];
-
-                    let grid = GridStack.init({
-                        cellHeight: 70,
-                        acceptWidgets: true,
-                        removable: '#trash', // drag-out delete class
-                        children
-                    });
-                    GridStack.setupDragIn('.sidepanel>.grid-stack-item', undefined, insert);
-
-                    grid.on('added removed change', function (e, items) {
-                        let str = '';
-                        items.forEach(function (item) { str += ' (x,y)=' + item.x + ',' + item.y; });
-                        console.log(e.type + ' ' + items.length + ' items:' + str);
+                <script type="module">
+                    import Swal from 'sweetalert2/dist/sweetalert2.js'
+                    import 'sweetalert2/src/sweetalert2.scss'
+                    $(function () {
+                        $(window).resize(function () {
+                            // your code 
+                            var browserZoomLevel = Math.round(window.devicePixelRatio * 100);
+                            console.log("Browser Zoom Level: " + browserZoomLevel + "%");
+                            if (browserZoomLevel != 100) {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Oops...El zoom del navegador no es 100%.",
+                                    text: "Por favor, ajuste el zoom a 100% para una mejor experiencia.",
+                                    footer: '<a href="#">Why do I have this issue?</a>'
+                                });
+                            }
+                        });
+                        // NOTE: REAL apps would sanitize-html or DOMPurify before blinding setting innerHTML. see #2736
+                        GridStack.renderCB = function (el, w) {
+                            el.innerHTML = w.content;
+                        };
+                        let children = [
+                            { x: 0, y: 0, w: 4, h: 2, content: '<input type="text">' },
+                            { x: 4, y: 0, w: 4, h: 4, locked: true, content: 'locked: can\'t be pushed by others, only user!<br><ion-icon name="ios-lock"></ion-icon>' },
+                            { x: 8, y: 0, w: 2, h: 2, minW: 2, noResize: true, content: '<p class="card-text text-center" style="margin-bottom: 0">Drag me!<p class="card-text text-center"style="margin-bottom: 0"><ion-icon name="hand"></ion-icon><p class="card-text text-center" style="margin-bottom: 0">...but don\'t resize me!' },
+                            { x: 0, y: 2, w: 2, h: 2, content: '5' },
+                            { x: 2, y: 2, w: 2, h: 4, content: '6' },
+                            { x: 0, y: 4, w: 2, h: 2, content: '8' },
+                            { x: 4, y: 4, w: 4, h: 2, content: '9' },
+                            { x: 8, y: 4, w: 2, h: 2, content: '10' },
+                        ];
+                        let insert = [{ h: 2, content: 'new item' }];
+                        
+                        let grid = GridStack.init({
+                            cellHeight: 70,
+                            acceptWidgets: true,
+                            removable: '#trash', // drag-out delete class
+                            children
+                        });
+                        GridStack.setupDragIn('.sidepanel>.grid-stack-item', undefined, insert);
+                        
+                        grid.on('added removed change', function (e, items) {
+                            let str = '';
+                            items.forEach(function (item) { str += ' (x,y)=' + item.x + ',' + item.y; });
+                            console.log(e.type + ' ' + items.length + ' items:' + str);
+                        });
                     });
                 </script>
             </div>
             <!--FIN DE MAPA -->
+        <div class="mith-perspective">
+            <div class="has-gradient-tracker stats-graphs">
+                <div class="balance-container" id="balanceMenu"></div>
+            </div>
         </div>
+        <script> // Carga el HTML
+            $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
+        </script>
+        </div>
+        <!-- <script>
+            $(".btn-to-top").click(() => {
+                $("html, body").animate({ scrollTop: 0 });
+                });
+            </script>
+            <div class="btn-to-top">Back To Top</div> -->
     </div>
+    <script>
+        $(function () {
+
+            gradientTracker({
+                selector: '.stats-graphs',
+                color1: '',
+                color2: '',
+                maxTilt: 20
+            });
+            gradientTracker({
+                selector: '.weather-container',
+                color1: '#007950',
+                color2: '#00787a',
+                maxTilt: 14
+            });
+        });
+    </script>
 </main>

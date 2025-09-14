@@ -10,29 +10,44 @@ if (!isset($_GET['id_grupo'])) {
 }
 
 $id_grupo = $_GET['id_grupo'];
+$nro_caravana = isset($_GET['nro_caravana']) ? trim($_GET['nro_caravana']) : '';
 
 $conn = new mysqli('localhost', 'root', '', 'app_campo');
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
-
-$stmt = $conn->prepare("
-    SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
-    FROM ganado g
-    INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
-    WHERE gg.id_grupo = ?
-");
-$stmt->bind_param("i", $id_grupo);
+if ($nro_caravana !== '' && $nro_caravana !== '0') {
+    // Busqueda por número de caravana
+    $stmt = $conn->prepare("
+        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+        FROM ganado g
+        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+        WHERE gg.id_grupo = ? AND g.nro_caravana = ?
+    ");
+    $stmt->bind_param("is", $id_grupo, $nro_caravana);
+} else {
+    $stmt = $conn->prepare("
+        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+        FROM ganado g
+        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+        WHERE gg.id_grupo = ?
+    ");
+    $stmt->bind_param("i", $id_grupo);
+}
 $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
 <main class="main__content">
     <div class="main_container">
-        <div class="main_containerbuscador">
-            <form action="/grupos_ganado" method="GET">
-                <input type="text" name="search" placeholder="Buscar por ID del grupo de animales" required>
+        <div class="main_containerbuscador" style="display: flex; justify-content: space-around;">
+            <form action="/ganados" method="GET">
+                <input type="text" name="nro_caravana" placeholder="Buscar por numero de caravana del animal">
+                <input type="hidden" name="id_grupo" value="<?php echo htmlspecialchars($id_grupo); ?>">
                 <button type="submit">Buscar</button>
+            </form>
+            <form action="/grupos_ganado" method="GET">
+                <button type="submit">Volver a los grupos</button>
             </form>
 
         </div>
@@ -62,7 +77,7 @@ $result = $stmt->get_result();
                             echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
                             echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
                             echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
-                            echo "<td><a href='/ganado?id=" . urlencode($animal['id']) . "'>Ver detalles</a></td>";
+                            echo "<td><a href='/ganado?nro_caravana=" . urlencode($animal['nro_caravana']) . "'>Ver detalles</a></td>";
                             echo "</tr>";
                         }
                     } else {

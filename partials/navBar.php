@@ -9,7 +9,7 @@ function renderNavbar($uid): void
     FROM usuarios_vistas uv
     JOIN vistas v ON uv.id_vista = v.id
     WHERE uv.id_usuario = ?
-    ");
+    ORDER BY v.id"  );
     $currentPerm->execute([intval($uid)]);
     $access = $currentPerm->fetchAll(PDO::FETCH_COLUMN);
     ?>

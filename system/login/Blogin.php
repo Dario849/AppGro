@@ -17,6 +17,8 @@ $stmt->execute([':username' => $email], );
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($user && password_verify($password, $user['password'])) {
     // 4) Credenciales OK
+    $_SESSION['logged'] = true;
+    $_SESSION['cookie'] = $_COOKIE['PHPSESSID'];
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['username'];
     header('Location: /dashboard');

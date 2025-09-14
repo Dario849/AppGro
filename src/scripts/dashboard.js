@@ -118,13 +118,13 @@ function cargarGrafico(tipo) {
 				options: {
 					responsive: true,
 					plugins: {
-						legend: { display: false },
+						legend: { display: true },
 						tooltip: { mode: 'index', intersect: false },
 					},
 					scales: {
 						x: {
 							ticks: {
-								maxRotation: 0,
+								maxRotation: 50,
 								minRotation: 0,
 								autoSkip: false,
 							},

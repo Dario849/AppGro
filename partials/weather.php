@@ -63,7 +63,7 @@ function weatherApi(): void
                             var currentGustMph = data.current.gust_mph; // 5.4
                             var currentGustKph = data.current.gust_kph; // 8.7
                             $('#displayClima').html(
-                                '<h4>Clima en ' + locationName + ', ' + locationRegion + ' (' + locationCountry + ')</h4>' +
+                                '<h4>Clima en ' + locationName + '<br>' + locationRegion + '</h4>' +
                                 '<p><img src="' + conditionIcon + '" alt="' + conditionText + '" /> <strong>' + conditionText + '</strong></p>' +
                                 '<ul style="list-style:none; padding:0; margin:0;">' +
                                 '<li>Horario: <strong>' + locationLocaltime + '</strong></li>' +

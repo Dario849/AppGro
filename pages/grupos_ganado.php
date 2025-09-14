@@ -17,7 +17,7 @@ $id_grupo = $_GET['id_grupo'];
     <div class="main_container">
         <div class="main_containerbuscador">
             <form action="/grupos_ganado" method="GET">
-                <input type="text" name="search" placeholder="Buscar por ID del grupo de animales" required>
+                <input type="text" name="id_grupo" placeholder="Buscar por ID del grupo de animales" required>
                 <button type="submit">Buscar</button>
             </form>
 
@@ -45,8 +45,14 @@ $id_grupo = $_GET['id_grupo'];
                     if ($conn->connect_error) {
                         die("Conexión fallida: " . $conn->connect_error);
                     }
+                    if ($id_grupo) {
+                        $sql = "SELECT id, fecha_desde, fecha_hasta, id_subdivision, comentario 
+                                FROM grupos 
+                                WHERE id = $id_grupo";
+                    } else {
+                        $sql = "SELECT id, fecha_desde, fecha_hasta, id_subdivision, comentario FROM grupos";
+                    }
 
-                    $sql = "SELECT id, fecha_desde, fecha_hasta, id_subdivision, comentario FROM grupos";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
