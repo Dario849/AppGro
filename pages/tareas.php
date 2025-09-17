@@ -90,10 +90,9 @@ $layout = new HTML(title: 'AppGro - Tareas');
     </div>
 
     <div class="admin-controls">
-      <label for="auto-eliminar">ELIMINACIÓN AUTOMÁTICA:</label>
+      <label for="auto-eliminar">ELIMINACIÓN SEMANAL - MENSUAL - ANUAL:</label>
       <form id="formEliminarTareas" action="eliminar_tareas.php" method="POST" onsubmit="return validarEliminar(this);">
         <select id="auto-eliminar" name="criterio">
-          <option value="ninguno">NINGUNO</option>
           <option value="semanal">SEMANAL</option>
           <option value="mensual">MENSUAL</option>
           <option value="anual">ANUAL</option>
