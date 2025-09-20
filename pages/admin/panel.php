@@ -29,7 +29,9 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
                             id="fecha_nacimiento" value="<?= htmlspecialchars($datos['fecha_nacimiento']) ?>" readonly>
                     </li>
                     <li><strong>Edad:</strong> <?= (int) $datos['edad'] ?> años</li>
-
+                    <li><strong>ELIMINAR?</strong> <button class="submit-button" id="btnEliminar"
+                            ondblclick="return clickEliminar($('#userId').val());">CONFIRMAR</button>
+                    </li>
                 </ul>
                 <ul>
                     <h2>Permisos</h2><br>
@@ -58,7 +60,7 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
     </div>
 </main>
 <script>
-    $("#search_user").on('input', function() {
+    $("#search_user").on('input', function () {
         var input, filter, ul, li, a, i, txtValue;
         input = document.getElementById("search_user");
         filter = input.value.toUpperCase();
@@ -74,7 +76,7 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
             }
         }
     });
-    $("input[type='checkbox']").on("change", function() { //Llamada a función asincrona para cambiar el permiso cambiado (false or true)
+    $("input[type='checkbox']").on("change", function () { //Llamada a función asincrona para cambiar el permiso cambiado (false or true)
         let uid = parseInt($("#userId").val());
         let permissionId = parseInt(this.id.split('_')[1]);
         const parameter = {
@@ -85,7 +87,7 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
             url: '/BchangePermission',
             type: 'POST',
             data: parameter,
-            success: function(response) {
+            success: function (response) {
                 $(".toggleSwitch").attr('disabled', true);
                 $("input[type='checkbox']").attr('disabled', true);
                 console.log(response);
@@ -94,13 +96,32 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
                     $("input[type='checkbox']").attr('disabled', false);
                 }, 1000);
             },
-            error: function() { //fallback en caso de que no exista conexión al backend
+            error: function () { //fallback en caso de que no exista conexión al backend
                 $("#report").prepend("error");
                 $('#report > span').slice(1).remove();
-
             }
         });
 
 
     });
+    function clickEliminar(uid) {
+        dropUserId = parseInt(uid);
+        console.log(dropUserId + '- Doble click en botón eliminar');
+        data = {
+            dropUId: dropUserId,
+        }
+        $.ajax({
+            type: "POST",
+            url: "/disableUser",
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                location.href = location.pathname
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al realizar cambio a usuario: " + status + " - " + error);
+            }
+        });
+    }
 </script>

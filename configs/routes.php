@@ -8,7 +8,6 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/about', function ($ROUTE_PARAMS) {
 		include('pages/about.php');
 	});
-
 	$r->addRoute('GET', '/ipsum', function ($ROUTE_PARAMS) {
 		include('pages/ipsum.php');
 	});
@@ -31,25 +30,25 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/user/logout.php');
 	});
 	$r->addRoute('GET', '/demo-cards', function ($ROUTE_PARAMS) {
-		include('pages\examples\demo-cards.php');
+		include('pages/examples/demo-cards.php');
 	});
 	$r->addRoute('GET', '/user/recover', function ($ROUTE_PARAMS) {
 		include('pages/user/recover.php');
 	});
 	$r->addRoute(['GET','POST'], '/guardar_tarea.php', function ($ROUTE_PARAMS) {
-		include('pages\guardar_tarea.php');
+		include('pages/guardar_tarea.php');
 	});
 	$r->addRoute(['GET','POST'], '/get_tareas.php', function ($ROUTE_PARAMS) {
-		include('pages\get_tareas.php');
+		include('pages/get_tareas.php');
 	});
 	$r->addRoute(['GET','POST'], '/eliminar_tareas.php', function ($ROUTE_PARAMS) {
-		include('pages\eliminar_tareas.php');
+		include('pages/eliminar_tareas.php');
 	});
 	$r->addRoute(['GET','POST'], '/clasetareas.php', function ($ROUTE_PARAMS) {
-		include('pages\clasetareas.php');
+		include('pages/clasetareas.php');
 	});
 	$r->addRoute(['GET','POST'], '/actualizar_tareas.php', function ($ROUTE_PARAMS) {
-		include('pages\actualizar_tareas.php');
+		include('pages/actualizar_tareas.php');
 	});
 	$r->addRoute('GET', '/user/register', function ($ROUTE_PARAMS) {
 		include('pages/user/register.php');
@@ -78,6 +77,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/estadisticas', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/estadisticasMain.php');
 	});
+	$r->addRoute('GET', '/transacciones', function ($ROUTE_PARAMS) {
+		include('system/balances/transacciones.php');
+	});
 	$r->addRoute('GET', '/test', function ($ROUTE_PARAMS) {
 		include('pages/estadisticas/modaltest.html');
 	});
@@ -88,13 +90,13 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		include('pages/estadisticas/backend/resumen.php');
 	});
 	$r->addRoute('GET', '/migrateToHTML', function ($ROUTE_PARAMS) {
-		include('pages\estadisticas\migrateToHTML.html');
+		include('pages/estadisticas/migrateToHTML.html');
 	});
 	$r->addRoute('GET', '/getOldBalances', function ($ROUTE_PARAMS) {
-		include('system\balances\getOldBalances.php');
+		include('system/balances/getOldBalances.php');
 	});
 	$r->addRoute('GET', '/saveNewBalances', function ($ROUTE_PARAMS) {
-		include('system\balances\saveNewBalances.php');
+		include('system/balances/saveNewBalances.php');
 	});
 	$r->addRoute('GET', '/404', function ($ROUTE_PARAMS) {
 		include('pages/404.php');
@@ -102,6 +104,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	// Rutas de backend (POST)
 	$r->addRoute('POST', '/login', function ($ROUTE_PARAMS) {
 		require('system/login/Blogin.php');
+	});
+	$r->addRoute('POST', '/disableUser', function ($ROUTE_PARAMS) {
+		require('system/admin/BdropUser.php');
 	});
 	$r->addGroup('/user', function (FastRoute\RouteCollector $r) { //Permite agrupar rutas que comparten un prefijo común
 		$r->addRoute('POST', '/recover', function ($ROUTE_PARAMS) {

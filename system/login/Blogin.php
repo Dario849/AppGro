@@ -11,7 +11,7 @@ if (!$email || !$password) {
     exit;
 }
 // 3) Consulta segura
-$sql = "SELECT id, password, username FROM usuarios WHERE username = :username LIMIT 1";
+$sql = "SELECT id, password, username FROM usuarios WHERE username = :username AND estado = 'activo' LIMIT 1";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([':username' => $email], );
 $user = $stmt->fetch(PDO::FETCH_ASSOC);

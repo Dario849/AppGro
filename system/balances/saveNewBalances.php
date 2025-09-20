@@ -9,6 +9,11 @@ $productToSave = $_GET['prod'] ?? null;
 $amountToSave = $_GET['prod_num'] ?? null;
 $commentToSave = $_GET['detail'] ?? null;
 try {
+    // $getUser = "SELECT nombre, apellido FROM `usuarios`  WHERE id=?";
+    // $stmt = $pdo->prepare($getUser);
+    // $stmt->execute([$uIdToSave]);
+    // $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    // $user = $user['nombre'].'-'.$user['apellido'];
     $sql = "INSERT INTO `transacciones` (`fecha`, `monto`, `tipo`, `id_usuario`, `dato`, `dato_cantidad`, `detalle`) VALUES (?,?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$dateToSave, $valueToSave, $typeToSave, $uIdToSave, $productToSave, $amountToSave, $commentToSave], );
