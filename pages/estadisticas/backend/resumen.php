@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require dirname(__DIR__,4) . '\system\resources\database.php';
+require dirname(__DIR__, 4) . '/system/resources/database.php';
 try {
     $ventas = $pdo->query("SELECT SUM(monto) AS total FROM Transacciones WHERE tipo = 'VENTA'")->fetchColumn();
     $compras = $pdo->query("SELECT SUM(monto) AS total FROM Transacciones WHERE tipo = 'COMPRA'")->fetchColumn();

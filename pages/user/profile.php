@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Panel de usuario');
-require dirname(__DIR__, 3) . '\system\resources\database.php';
+require dirname(__DIR__, 3) . '/system/resources/database.php';
 $sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM Usuarios WHERE id = :uid";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
@@ -154,11 +154,9 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     <input type="password" id="actualPass" name="current-password" autocomplete="current-password">
                     <br>
                     <label for="newPass1">Ingrese su nueva contraseña</label>
-                    <input type="password" id="newPass1" name="new-password"
-         autocomplete="new-password">
+                    <input type="password" id="newPass1" name="new-password" autocomplete="new-password">
                     <label for="newPass2">Confirme su nueva contraseña</label>
-                    <input type="password" id="newPass2" name="new-password-confirm"
-         autocomplete="new-password">
+                    <input type="password" id="newPass2" name="new-password-confirm" autocomplete="new-password">
                     <button id="submitButtonPassword" name="submitButtonPassword" type="submit" class="cta">
                         <span>Ingresar</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">

@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Ganado UwU');
-require dirname(__DIR__, 2) .'\system\resources\database.php';
+require dirname(__DIR__, 2) .'/system/resources/database.php';
 
 if (!isset($_GET['nro_caravana'])) {
     echo "Ganado no especificado.";

@@ -1,20 +1,20 @@
 <?php
 require('system/main.php');
-require dirname(__DIR__, 3) . '\system\resources\database.php';
+require dirname(__DIR__, 3) . '/system/resources/database.php';
 sessionCheck();
 $layout = new HTML(title: 'Menú de Estadísticas');
 ?>
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerMenuEstadisticas">
-                <div class="mith-perspective">
-                    <div class="has-gradient-tracker balance-container">
-                        <div id="balanceMenu"></div>
-                    </div>
+            <div class="mith-perspective">
+                <div class="has-gradient-tracker balance-container">
+                    <div id="balanceMenu"></div>
                 </div>
-                <script> // Carga el HTML
-                    $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
-                </script>
+            </div>
+            <script> // Carga el HTML
+                $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
+            </script>
             <h1 class="menu-title">Menú de Estadísticas</h1>
             <p>Seleccione una categoría para ver las estadísticas correspondientes.</p>
             <ul class="menu-list">

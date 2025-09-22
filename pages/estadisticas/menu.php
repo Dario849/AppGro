@@ -1,6 +1,6 @@
 <?php
 require('system/main.php');
-require dirname(__DIR__, 3) . '\system\resources\database.php';
+require dirname(__DIR__, 3) . '/system/resources/database.php';
 sessionCheck();
 $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']);
 ?>
@@ -109,13 +109,14 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                 </fieldset>
                                 <fieldset>
                                     <legend>Descripción de producto</legend>
-                                    <textarea placeholder="Ingrese posible descripción del producto" class="textareaComentario" id="optNewComentario"></textarea>
+                                    <textarea placeholder="Ingrese posible descripción del producto"
+                                        class="textareaComentario" id="optNewComentario"></textarea>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Exportar/Importar</legend>
                                     <div class="csvContainer">
                                         <button id="csvBtn">
-                                            <img src="public\icons8-excel-50.svg" alt="Exportar a .CSV" width="20px">
+                                            <img src="public/icons8-excel-50.svg" alt="Exportar a .CSV" width="20px">
                                         </button>
                                         <div id="csvModal" class="modal">
 

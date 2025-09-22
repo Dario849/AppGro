@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Menú');
-require dirname(__DIR__, 2) . '\system\resources\database.php';
+require dirname(__DIR__, 2) . '/system/resources/database.php';
 $sql = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
@@ -112,7 +112,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
             <!-- MAPA -->
             <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-                <link rel="stylesheet" href="src\styles\gridstack.css" />
+                <link rel="stylesheet" href="src/styles/gridstack.css" />
                 <script type="module" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.esm.js"></script>
                 <script nomodule="" src="https://unpkg.com/ionicons@4.5.10-0/dist/ionicons/ionicons.js"></script>
                 <link href="node_modules/gridstack/dist/gridstack.min.css" rel="stylesheet" />

@@ -1,5 +1,5 @@
 <?php
-require dirname(__DIR__, 2) .'\system\resources\database.php';
+require dirname(__DIR__, 2) . '/system/resources/database.php';
 
 if (!isset($_GET['id'])) {
     echo "Error: ID no recibido";
@@ -37,9 +37,9 @@ echo "<table border='1' width='100%' cellpadding='5' cellspacing='0'>
         </tr>";
 while ($row = $result->fetch_assoc()) {
     echo "<tr>
-            <td>".htmlspecialchars($row['nombre_vacuna'])."</td>
-            <td>".htmlspecialchars($row['proveedor'])."</td>
-            <td>".htmlspecialchars($row['fecha_estado'])."</td>
+            <td>" . htmlspecialchars($row['nombre_vacuna']) . "</td>
+            <td>" . htmlspecialchars($row['proveedor']) . "</td>
+            <td>" . htmlspecialchars($row['fecha_estado']) . "</td>
           </tr>";
 }
 echo "</table>";

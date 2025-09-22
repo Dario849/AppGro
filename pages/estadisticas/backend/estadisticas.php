@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require dirname(__DIR__,4) . '\system\resources\database.php';
+require dirname(__DIR__, 4) . '/system/resources/database.php';
 
 // Activar logs visibles para debug
 ini_set('display_errors', 1);
@@ -16,11 +16,11 @@ $parametros = [$desde, $hasta];
 
 // === 2. Mapear tipo → tabla, campo_fecha ===
 $mapa = [
-    'ventas'         => ['tabla' => 'transacciones', 'campo' => 'fecha'],
-    'compras'        => ['tabla' => 'transacciones', 'campo' => 'fecha'],
-    'balance'        => ['tabla' => 'transacciones', 'campo' => 'fecha'],
-    'ganado_alta'    => ['tabla' => 'ganado', 'campo' => 'fecha_nacimiento'],
-    'cultivo_alta'   => ['tabla' => 'cultivos', 'campo' => 'fecha_siembra'],
+    'ventas' => ['tabla' => 'transacciones', 'campo' => 'fecha'],
+    'compras' => ['tabla' => 'transacciones', 'campo' => 'fecha'],
+    'balance' => ['tabla' => 'transacciones', 'campo' => 'fecha'],
+    'ganado_alta' => ['tabla' => 'ganado', 'campo' => 'fecha_nacimiento'],
+    'cultivo_alta' => ['tabla' => 'cultivos', 'campo' => 'fecha_siembra'],
     'tareas_completadas' => ['tabla' => 'tareas', 'campo' => 'fecha_hora_inicio'],
 ];
 
@@ -36,9 +36,14 @@ $columna_fecha = $mapa[$tipo]['campo'];
 
 // === 4. Agrupamiento dinámico ===
 switch ($grupo) {
-    case 'anio': $expr_fecha = "YEAR($columna_fecha)"; break;
-    case 'dia':  $expr_fecha = "DATE($columna_fecha)"; break;
-    default:     $expr_fecha = "DATE_FORMAT($columna_fecha, '%Y-%m')";
+    case 'anio':
+        $expr_fecha = "YEAR($columna_fecha)";
+        break;
+    case 'dia':
+        $expr_fecha = "DATE($columna_fecha)";
+        break;
+    default:
+        $expr_fecha = "DATE_FORMAT($columna_fecha, '%Y-%m')";
 }
 
 // === 5. Construcción de SQL por tipo ===
