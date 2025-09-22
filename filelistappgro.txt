@@ -1,0 +1,38 @@
+
+    Directory: C:\Users\Dario\Documents\AppGro
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d----           17/6/2025    14:01                .github
+d----           20/9/2025    18:57                .php-tmp
+d----           17/6/2025    14:01                .vscode
+d----           17/6/2025    14:01                bin
+d----           22/9/2025    16:40                configs
+d----           22/9/2025    16:40                js
+d----            9/9/2025    21:16                node_modules
+d----           22/9/2025    16:40                pages
+d----           22/9/2025    16:40                partials
+d----           22/9/2025    16:40                public
+d----           17/6/2025    14:01                raw
+d----           17/6/2025    14:01                src
+d----           22/9/2025    16:40                system
+d----           20/6/2025    21:26                vendor
+-a---           17/6/2025    14:01            161 .editorconfig
+-a---            3/8/2025    19:09            432 .env
+-a---            3/8/2025    20:46           1334 .env.example
+-a---            3/8/2025    21:22            283 .gitignore
+-a---           22/9/2025    16:40             15 .npmrc
+-a---           17/6/2025    14:01             52 .prettierignore
+-a---           17/6/2025    14:01            539 .prettierrc
+-a---           17/6/2025    14:01            122 AppGro.code-workspace
+-a---            7/8/2025    15:10            950 composer.json
+-a---            7/8/2025    15:10          22678 composer.lock
+-a---           22/9/2025    16:46              0 filelistappgro.txt
+-a---            7/8/2025    15:10            359 index.php
+-a---           17/6/2025    14:01           1110 LICENSE
+-a---           22/9/2025    16:40         140988 package-lock.json
+-a---           22/9/2025    16:40           1565 package.json
+-a---           22/9/2025    16:40           3258 README.md
+-a---            6/8/2025    22:50            554 tsconfig.json
+-a---           22/9/2025    16:40           2208 vite.config.ts
+
