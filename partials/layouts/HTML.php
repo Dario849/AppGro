@@ -20,24 +20,26 @@ class HTML
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
 			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
-			<script src="public/js/jquery-3.7.1.min.js"></script>
-			<!-- Assets generados por Vite -->
-			<?php foreach (vite_css('src/main.js') as $css): ?>
-				<link rel="stylesheet" href="<?= $css ?>">
-			<?php endforeach; ?>
-			<?php foreach (vite_css('src/styles/global.scss') as $css): ?>
-				<link rel="stylesheet" href="<?= $css ?>">
-			<?php endforeach; ?>
-			<script type="module" src="<?= vite_asset('src/main.js') ?>"></script>
-
-			<script src="src/scripts/perspectiveCard.js"></script>
+			
+			<!-- jQuery -->
+			<script src="/js/jquery-3.7.1.min.js"></script>
+			
+			<?php
+			// Verificar si existe el build de Vite
+			if (file_exists(__DIR__ . '/../../dist/manifest.json') || file_exists(__DIR__ . '/../../dist/.vite/manifest.json')) {
+				// Modo producción con Vite build
+				echo '<link rel="stylesheet" href="/dist/assets/app.css">';
+				echo '<script type="module" src="/dist/assets/app.js"></script>';
+			} else {
+				// Modo desarrollo - usar archivos directos
+				echo '<link href="/src/styles/tailwind.css" rel="stylesheet" />';
+				echo '<link href="/src/styles/global.scss" rel="stylesheet" />';
+				echo '<script src="/src/scripts/perspectiveCard.js"></script>';
+			}
+			?>
 		</head>
 
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">
-			<div class="container mx-auto p-4">
-				<h1 class="text-3xl font-bold text-blue-600">¡Hola Mundo!</h1>
-				<p class="mt-4 text-gray-600">Si ves estilos, Tailwind está funcionando!</p>
-			</div>
 			<?= renderNavbar($_SESSION['user_id'] ?? null), $output; ?>
 		</body>
 

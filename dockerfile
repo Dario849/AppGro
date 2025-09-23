@@ -1,86 +1,82 @@
-# ============================
-# 1) Etapa de build con Node.js
-# ============================
-FROM node:20-alpine AS build
-WORKDIR /app
+# syntax=docker/dockerfile:1
 
-# Copiamos package.json y package-lock.json
-COPY package*.json ./
+ARG PHP_VERSION=8.2
+FROM docker.io/library/php:${PHP_VERSION}-fpm
 
-# Instalamos dependencias JS
-RUN npm install
+LABEL "language"="php"
 
-# Copiamos todo el código fuente
-COPY . .
+ENV APP_ENV=prod
+ENV APP_DEBUG=false
 
-# Compilamos la app con Vite
-RUN npm run build
+WORKDIR /var/www
 
+# install-php-extensions
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions && sync
 
-# ============================
-# 2) Etapa final: PHP + Composer + Nginx
-# ============================
-FROM php:8.3-fpm-alpine
+# apt dependencies
+RUN set -eux \
+		&& apt update \
+		&& apt install -y cron curl gettext git grep libicu-dev nginx pkg-config unzip \
+		&& rm -rf /var/www/html \
+		&& rm -rf /var/lib/apt/lists/*
 
-# Instalamos dependencias de sistema
-RUN apk add --no-cache \
-    nginx \
-    bash \
-    git \
-    unzip \
-    curl \
-    libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql
+# composer and php extensions
+RUN install-php-extensions @composer bcmath gd intl mysqli opcache pcntl pdo_mysql sysvsem zip
 
-# Instalamos Composer
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-# Configuración básica de Nginx
-COPY <<EOF /etc/nginx/http.d/default.conf
+# nginx configuration
+RUN cat <<'EOF' > /etc/nginx/sites-enabled/default
 server {
     listen 8080;
-    root /var/www/html;
-    index index.php index.html;
+    root /var/www;
 
-    location / {
-        try_files \$uri \$uri/ /index.php?\$query_string;
-    }
+    add_header X-Frame-Options "SAMEORIGIN";
+    add_header X-Content-Type-Options "nosniff";
+
+    index index.php index.html;
+    charset utf-8;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 /index.php;
 
     location ~ \.php$ {
-        try_files \$uri =404;
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.*)$;
         fastcgi_pass 127.0.0.1:9000;
         fastcgi_index index.php;
         include fastcgi_params;
-        fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_hide_header X-Powered-By;
     }
 
-    location ~* \.(css|js|ico|png|jpg|jpeg|gif|svg|woff|woff2|ttf|eot)$ {
-        expires 1y;
-        add_header Cache-Control "public, immutable";
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+        gzip_static on;
     }
+
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+
+    error_log /dev/stderr;
+    access_log /dev/stderr;
 }
 EOF
 
-WORKDIR /var/www/html
+# project directory
+RUN chown -R www-data:www-data /var/www
+COPY --link --chown=www-data:www-data --chmod=755 . /var/www
 
-# Copiamos archivos del build de Node
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/index.php ./index.php
-COPY --from=build /app/system ./system
-COPY --from=build /app/configs ./configs
+# install only PHP dependencies
+USER www-data
+RUN composer install --optimize-autoloader --classmap-authoritative --no-dev
 
-# Copiamos composer.json y composer.lock
-COPY --from=build /app/composer.* ./
+USER root
 
-# Instalamos dependencias PHP en producción
-RUN composer install --no-dev --optimize-autoloader
-
-# Copiamos el resto del código fuente PHP (por ej. app/, vendor se genera con composer)
-COPY --from=build /app/vendor ./vendor
-
-# Permisos
-RUN chown -R www-data:www-data /var/www/html
+CMD nginx; php-fpm;
 
 EXPOSE 8080
-
-CMD sh -c "php-fpm -D && nginx -g 'daemon off;'"
