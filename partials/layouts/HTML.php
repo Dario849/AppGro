@@ -21,20 +21,20 @@ class HTML
 			<title><?= $this->title; ?></title>
 			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
 			
-			<!-- jQuery -->
-			<script src="/js/jquery-3.7.1.min.js"></script>
-			
 			<?php
-			// Verificar si existe el build de Vite
+			// Check if Vite build exists
 			if (file_exists(__DIR__ . '/../../dist/manifest.json') || file_exists(__DIR__ . '/../../dist/.vite/manifest.json')) {
-				// Modo producción con Vite build
+				// Production mode with Vite build
 				echo '<link rel="stylesheet" href="/dist/assets/app.css">';
+				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
 				echo '<script type="module" src="/dist/assets/app.js"></script>';
 			} else {
-				// Modo desarrollo - usar archivos directos
+				// Development mode - use direct files
+				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
 				echo '<link href="/src/styles/tailwind.css" rel="stylesheet" />';
-				echo '<link href="/src/styles/global.scss" rel="stylesheet" />';
+				echo '<link href="/src/styles/gridstack.css" rel="stylesheet" />';
 				echo '<script src="/src/scripts/perspectiveCard.js"></script>';
+				// Note: SCSS files can't be loaded directly, we'll use CSS alternatives
 			}
 			?>
 		</head>
