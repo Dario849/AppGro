@@ -33,7 +33,7 @@ class HTML
 				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
 				echo '<script src="https://cdn.tailwindcss.com"></script>';
 				echo '<link rel="stylesheet" href="/src/styles/global.css">';
-				echo '<link rel="stylesheet" href="/src/styles/gridstack.css">';
+				// echo '<link rel="stylesheet" href="/src/styles/gridstack.css">';
 				echo '<script src="/src/scripts/perspectiveCard.js"></script>';
 			}
 			?>

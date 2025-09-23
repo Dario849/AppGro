@@ -2,28 +2,6 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Menú');
-
-// Robust database include
-$database_paths = [
-    __DIR__ . '/../system/resources/database.php',
-    '/var/www/system/resources/database.php',
-    $_SERVER['DOCUMENT_ROOT'] . '/system/resources/database.php'
-];
-
-foreach ($database_paths as $path) {
-    if (file_exists($path)) {
-        require_once $path;
-        break;
-    }
-}
-
-$sql = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
-$stmt = $pdo->prepare($sql);
-$stmt->execute([
-    'min' => 1,
-    'max' => 5,
-]);
-$usuarios = $stmt->fetchAll(); // array de filas
 ?>
 <main class="main__content">
     <div class="main_container">
@@ -40,22 +18,6 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 endif;
                 ?>
             </div>
-
-            <?php
-            if (!empty($_SESSION['user_id'])):
-                echo "<a class='absolute font-[monospace] [text-shadow:0px_0px_3px_#00000078] font-medium' >" . $_SESSION['user_id'] . "Bienvenido usuario: " . $_SESSION['user_name'];
-                // unset($_SESSION['user_id']); //ELIMINA CONTENIDO (PODRIA SERVIR PARA CERRAR SESIÓN)
-                // $_SESSION = [];  // Limpia el arreglo de sesión
-            endif;
-            ?>
-            <?php
-            if (!isset($_SESSION['contador'])) {
-                $_SESSION['contador'] = 1;
-            } else {
-                $_SESSION['contador']++;
-            }
-            echo "Has visitado esta página " . $_SESSION['contador'] . " veces. </a>";
-            ?>
             <br>
             <div id="containerTiempo" class="main_containerDashboardTiempo">
                 <div class="with-perspective">
@@ -74,11 +36,11 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     </div>
                 </div>
             </div>
-            <div class="main_containerEstadisticas">
+            <!-- <div class="main_containerEstadisticas">
 
                 <div class="stats-container">
                     <h1 class="stats-title">Estadísticas Productivas</h1>
-                    <!-- Filtros generales -->
+                     Filtros generales 
                     <div class="stats-filtros">
                         <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
                         <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
@@ -91,7 +53,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         </label>
                     </div>
 
-                    <!-- Selector de pestañas -->
+                     Selector de pestañas 
                     <div class="stats-tabs">
                         <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
                         <button class="stats-tab-btn" data-target="compras">Compras</button>
@@ -100,7 +62,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                         <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
                     </div>
 
-                    <!-- Contenedores de gráficos -->
+                     Contenedores de gráficos 
                     <div class="stats-graphs">
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <div class="stats-chart-container active" id="tab-ventas">
@@ -123,7 +85,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
 
                 <script src="src/scripts/dashboard.js"></script>
             </div>
-            <!-- MAPA -->
+             MAPA 
             <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <link rel="stylesheet" href="src/styles/gridstack.css" />
@@ -217,7 +179,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     });
                 </script>
             </div>
-            <!--FIN DE MAPA -->
+            FIN DE MAPA 
         <div class="mith-perspective">
             <div class="has-gradient-tracker stats-graphs">
                 <div class="balance-container" id="balanceMenu"></div>
@@ -227,12 +189,12 @@ $usuarios = $stmt->fetchAll(); // array de filas
             $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
         </script>
         </div>
-        <!-- <script>
+         <script>
             $(".btn-to-top").click(() => {
                 $("html, body").animate({ scrollTop: 0 });
                 });
             </script>
-            <div class="btn-to-top">Back To Top</div> -->
+            <div class="btn-to-top">Back To Top</div> 
     </div>
     <script>
         $(function () {
@@ -250,5 +212,5 @@ $usuarios = $stmt->fetchAll(); // array de filas
                 maxTilt: 14
             });
         });
-    </script>
+    </script> -->
 </main>
