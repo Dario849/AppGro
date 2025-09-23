@@ -3,7 +3,8 @@ require_once __DIR__ . '/../bootstrap.php';
 
 $host = $_ENV['DB_HOST'] ?? null;
 $dbname = $_ENV['DB_NAME'] ?? null;
-$dsn = 'mysql:host=' .  $host . ';dbname=' . $dbname  . ';charset=utf8mb4';
+$port = $_ENV['DB_PORT'] ?? null;
+$dsn = 'mysql:host=' .  $host .';port='. $port . ';dbname=' . $dbname  . ';charset=utf8mb4';
 $user = $_ENV['DB_USER'] ?? null;
 $pass = $_ENV['DB_PASS'] ?? null;
 
