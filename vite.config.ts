@@ -53,7 +53,7 @@ export default defineConfig(({ command }) => {
 			viteStaticCopy({
 				targets: [
 					{ src: 'public', dest: '' },
-					{ src: 'js', dest: '' },
+					{ src: 'src/scripts/js', dest: '' },
 					{ src: 'system', dest: '' },
 					{ src: 'configs', dest: '', overwrite: false },
 					{ src: 'vendor', dest: '' },
@@ -75,7 +75,7 @@ export default defineConfig(({ command }) => {
 		css: {
 			preprocessorOptions: {
 				scss: {
-					api: 'modern-compiler',
+					api: "modern-compiler" as "modern-compiler",
 				},
 			},
 		},
