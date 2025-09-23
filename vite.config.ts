@@ -20,10 +20,12 @@ export default defineConfig(({ command }) => {
 			rollupOptions: {
 				input: {
 					main: 'src/main.js',
+					style: 'src/styles/global.scss' // Asegúrate de incluir tu SCSS
 				},
 			},
 			assetsDir: 'assets',
 			emptyOutDir: true,
+			manifest: true, // Generar manifest.json para PHP
 		},
 		plugins: [
 			imagetools(),
