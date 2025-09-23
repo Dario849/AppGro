@@ -95,7 +95,7 @@
 
 	&__navbar a button {
 		text-align: center;
-		position: relative; // crea un nuevo contexto de apilamiento
+		position: relative; /* crea un nuevo contexto de apilamiento */
 		-webkit-text-fill-color: azure;
 		border: 1px solid #ccc;
 		border-radius: 10px;
@@ -135,12 +135,12 @@
 	justify-content: center;
 	left: 2.5rem;
 	line-height: 1.2;
-	// opacity: 0;
+	/* opacity: 0; */
 	padding: 2.25rem 1.25rem;
 	position: relative;
 	text-align: center;
 	transition: 0.4s;
-	// visibility: hidden;
+	/* visibility: hidden; */
 	width: 6.875rem;
 	z-index: 10;
 }
@@ -269,8 +269,8 @@
 	/* El padre aporta perspectiva real 3D */
 	.with-perspective {
 		perspective: 1000px;
-		// inset: 0;
-		// margin-top: 1vh;
+		/*  inset: 0; */
+		/* margin-top: 1vh; */
 	}
 
 	/* Estilo base del componente interactivo */
@@ -438,9 +438,7 @@
 		}
 	}
 
-	&ganados,
-	&buscador,
-	&ganado {
+	&ganados,&buscador,&ganado {
 		#contenedor {
 			display: flex;
 			flex-direction: row;
@@ -469,7 +467,8 @@
 			width: 33%;
 		}
 		input[type='text'] {
-			field-sizing: content; //asigna tamaño dependiendo del contenido(incluye placeholder)
+			field-sizing: content; 
+			/* asigna tamaño dependiendo del contenido(incluye placeholder) */
 		}
 		input[type='submit'] {
 			margin-left: 2vh;
@@ -491,7 +490,6 @@
 					inset -4px -4px 12px #ffffff;
 			}
 		}
-
 		fieldset {
 			border: 2px solid #007bff;
 			border-radius: 10px;
