@@ -24,6 +24,11 @@ RUN set -eux \
 # composer and php extensions
 RUN install-php-extensions @composer bcmath gd intl mysqli opcache pcntl pdo_mysql sysvsem zip
 
+# PHP configuration to handle deprecations
+RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" >> /usr/local/etc/php/php.ini
+RUN echo "display_errors = Off" >> /usr/local/etc/php/php.ini
+RUN echo "log_errors = On" >> /usr/local/etc/php/php.ini
+
 # nginx configuration with better static file handling
 RUN cat <<'EOF' > /etc/nginx/sites-enabled/default
 server {
