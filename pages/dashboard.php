@@ -2,7 +2,21 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Menú');
-require dirname(__DIR__, 1) . '/system/resources/database.php';
+
+// Robust database include
+$database_paths = [
+    __DIR__ . '/../system/resources/database.php',
+    '/var/www/system/resources/database.php',
+    $_SERVER['DOCUMENT_ROOT'] . '/system/resources/database.php'
+];
+
+foreach ($database_paths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
+
 $sql = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
