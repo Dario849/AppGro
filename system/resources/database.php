@@ -1,10 +1,21 @@
 <?php
-require_once __DIR__ . '/../bootstrap.php';
+// Robust path resolution for container environments
+$bootstrap_paths = [
+    __DIR__ . '/../bootstrap.php',
+    '/var/www/system/bootstrap.php', 
+    $_SERVER['DOCUMENT_ROOT'] . '/system/bootstrap.php'
+];
+
+foreach ($bootstrap_paths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        break;
+    }
+}
 
 $host = $_ENV['DB_HOST'] ?? null;
 $dbname = $_ENV['DB_NAME'] ?? null;
-$port = $_ENV['DB_PORT'] ?? null;
-$dsn = 'mysql:host=' .  $host .';port='. $port . ';dbname=' . $dbname  . ';charset=utf8mb4';
+$dsn = 'mysql:host=' .  $host . ';dbname=' . $dbname  . ';charset=utf8mb4';
 $user = $_ENV['DB_USER'] ?? null;
 $pass = $_ENV['DB_PASS'] ?? null;
 
