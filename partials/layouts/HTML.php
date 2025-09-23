@@ -20,7 +20,7 @@ class HTML
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
 			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
-			<script src="../js/jquery-3.7.1.min.js"></script>
+			<script src="src/scripts/js/jquery-3.7.1.min.js"></script>
 			<link href="src/styles/tailwind.css" rel="stylesheet" />
 			<link href="src/styles/global.scss" rel="stylesheet" />
 			<script src="src/scripts/perspectiveCard.js"></script>

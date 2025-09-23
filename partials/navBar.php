@@ -4,7 +4,7 @@ function renderNavbar($uid): void
   if (!$uid) { ?>
     <!-- <div class="home"> -->
     <?php } else {
-    require __DIR__ . '/../../system/resources/database.php'; // conexión PDO
+    require dirname(__DIR__, 1) . '/system/resources/database.php'; // conexión PDO
     $currentPerm = $pdo->prepare("SELECT v.nombre
     FROM usuarios_vistas uv
     JOIN vistas v ON uv.id_vista = v.id
