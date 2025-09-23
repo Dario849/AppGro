@@ -13,11 +13,12 @@ foreach ($bootstrap_paths as $path) {
     }
 }
 
-$host = $_ENV['DB_HOST'] ?? null;
+$host = $_ENV['MYSQL_HOST'] ?? null;
 $dbname = $_ENV['DB_NAME'] ?? null;
-$dsn = 'mysql:host=' .  $host . ';dbname=' . $dbname  . ';charset=utf8mb4';
-$user = $_ENV['DB_USER'] ?? null;
-$pass = $_ENV['DB_PASS'] ?? null;
+$port = $_ENV['MYSQL_PORT'] ?? null;
+$dsn = 'mysql:host=' .  $host .';port='. $port . ';dbname=' . $dbname  . ';charset=utf8mb4';
+$user = $_ENV['MYSQL_USERNAME'] ?? null;
+$pass = $_ENV['MYSQL_PASSWORD'] ?? null;
 
 try {
     $pdo = new PDO($dsn, $user, $pass, [
