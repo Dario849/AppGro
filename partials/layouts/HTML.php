@@ -29,19 +29,11 @@ class HTML
 				echo '<link rel="stylesheet" href="/dist/assets/app.css">';
 				echo '<script type="module" src="/dist/assets/app.js"></script>';
 			} else {
-				// Development mode - use direct files with absolute paths
+				// Development mode
 				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
-				echo '<link rel="stylesheet" href="/src/styles/tailwind.css">';
+				echo '<script src="https://cdn.tailwindcss.com"></script>';
+				echo '<link rel="stylesheet" href="/src/styles/global.css">';
 				echo '<link rel="stylesheet" href="/src/styles/gridstack.css">';
-				echo '<script>
-					window.addEventListener("DOMContentLoaded", function() {
-						if (typeof jQuery !== "undefined") {
-							console.log("jQuery loaded successfully");
-						} else {
-							console.error("jQuery not loaded");
-						}
-					});
-				</script>';
 				echo '<script src="/src/scripts/perspectiveCard.js"></script>';
 			}
 			?>

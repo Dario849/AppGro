@@ -24,7 +24,7 @@ RUN set -eux \
 # composer and php extensions
 RUN install-php-extensions @composer bcmath gd intl mysqli opcache pcntl pdo_mysql sysvsem zip
 
-# nginx configuration
+# nginx configuration with better static file handling
 RUN cat <<'EOF' > /etc/nginx/sites-enabled/default
 server {
     listen 8080;
@@ -36,22 +36,33 @@ server {
     index index.php index.html;
     charset utf-8;
 
-    # Static files with proper MIME types
-    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+    # Static files - handle CSS and JS with correct MIME types
+    location ~* \.(css)$ {
+        add_header Content-Type "text/css";
+        add_header Cache-Control "public, max-age=31536000";
+        try_files $uri =404;
+    }
+
+    location ~* \.(js)$ {
+        add_header Content-Type "application/javascript";
+        add_header Cache-Control "public, max-age=31536000";
+        try_files $uri =404;
+    }
+
+    # Other static files
+    location ~* \.(png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
         expires 1y;
         add_header Cache-Control "public, immutable";
         try_files $uri =404;
     }
 
-    # Handle CSS files specifically
-    location ~* \.css$ {
-        add_header Content-Type text/css;
+    # Special handling for src folder (development assets)
+    location ^~ /src/ {
         try_files $uri =404;
     }
 
-    # Handle JS files specifically  
-    location ~* \.js$ {
-        add_header Content-Type application/javascript;
+    # Special handling for js folder
+    location ^~ /js/ {
         try_files $uri =404;
     }
 
@@ -74,7 +85,6 @@ server {
 
     location / {
         try_files $uri $uri/ /index.php$is_args$args;
-        gzip_static on;
     }
 
     location ~ /\.(?!well-known).* {
@@ -89,6 +99,10 @@ EOF
 # project directory
 RUN chown -R www-data:www-data /var/www
 COPY --link --chown=www-data:www-data --chmod=755 . /var/www
+
+# Ensure correct permissions for static files
+RUN find /var/www -type f -name "*.css" -exec chmod 644 {} \;
+RUN find /var/www -type f -name "*.js" -exec chmod 644 {} \;
 
 # install only PHP dependencies
 USER www-data
