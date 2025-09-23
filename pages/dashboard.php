@@ -36,11 +36,11 @@ $layout = new HTML(title: 'AppGro-Menú');
                     </div>
                 </div>
             </div>
-            <!-- <div class="main_containerEstadisticas">
+            <div class="main_containerEstadisticas">
 
                 <div class="stats-container">
                     <h1 class="stats-title">Estadísticas Productivas</h1>
-                     Filtros generales 
+                    <!-- Filtros generales -->
                     <div class="stats-filtros">
                         <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
                         <label>Hasta: <input type="date" id="filtro_hasta" class="stats-select" /></label>
@@ -53,7 +53,7 @@ $layout = new HTML(title: 'AppGro-Menú');
                         </label>
                     </div>
 
-                     Selector de pestañas 
+                    <!-- Selector de pestañas -->
                     <div class="stats-tabs">
                         <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
                         <button class="stats-tab-btn" data-target="compras">Compras</button>
@@ -62,7 +62,7 @@ $layout = new HTML(title: 'AppGro-Menú');
                         <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
                     </div>
 
-                     Contenedores de gráficos 
+                    <!-- Contenedores de gráficos -->
                     <div class="stats-graphs">
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <div class="stats-chart-container active" id="tab-ventas">
@@ -85,7 +85,7 @@ $layout = new HTML(title: 'AppGro-Menú');
 
                 <script src="src/scripts/dashboard.js"></script>
             </div>
-             MAPA 
+            <!-- MAPA -->
             <div hidden class="main_containerDashboardMapa">
                 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
                 <link rel="stylesheet" href="src/styles/gridstack.css" />
@@ -179,7 +179,7 @@ $layout = new HTML(title: 'AppGro-Menú');
                     });
                 </script>
             </div>
-            FIN DE MAPA 
+            <!--FIN DE MAPA -->
         <div class="mith-perspective">
             <div class="has-gradient-tracker stats-graphs">
                 <div class="balance-container" id="balanceMenu"></div>
@@ -189,12 +189,12 @@ $layout = new HTML(title: 'AppGro-Menú');
             $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
         </script>
         </div>
-         <script>
+        <!-- <script>
             $(".btn-to-top").click(() => {
                 $("html, body").animate({ scrollTop: 0 });
                 });
             </script>
-            <div class="btn-to-top">Back To Top</div> 
+            <div class="btn-to-top">Back To Top</div> -->
     </div>
     <script>
         $(function () {
@@ -212,5 +212,5 @@ $layout = new HTML(title: 'AppGro-Menú');
                 maxTilt: 14
             });
         });
-    </script> -->
+    </script>
 </main>
