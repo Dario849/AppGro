@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Menú');
-require dirname(__DIR__, 1) . '/system/resources/database.php';
+require dirname(__DIR__, 2) . '/system/resources/database.php';
 $sql = "SELECT nombre FROM Usuarios WHERE id BETWEEN :min AND :max";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([

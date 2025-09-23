@@ -197,7 +197,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         </div>
                     </div>
                 </div>
-                <script type="text/javascript" src="js/xlsx.full.min.js"></script>
+                <script type="text/javascript" src="public/js/xlsx.full.min.js"></script>
                 <script type="module">
                     // #TODO: Añadir botón de importar desde archivo CSV
                     // #TODO: Añadir exportador de tabla a CSV
