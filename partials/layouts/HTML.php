@@ -20,9 +20,15 @@ class HTML
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
 			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
-			<script src="src/scripts/js/jquery-3.7.1.min.js"></script>
-			<link href="src/styles/tailwind.css" rel="stylesheet" />
-			<link href="src/styles/global.scss" rel="stylesheet" />
+			<script src="../js/jquery-3.7.1.min.js"></script>
+			<?php if (MODE_DEV): ?>
+				<!-- En desarrollo, Vite maneja los estilos -->
+				<script type="module" src="/src/main.js"></script>
+			<?php else: ?>
+				<!-- En producción, usar los archivos compilados -->
+				<link rel="stylesheet" href="/assets/main.css">
+				<script type="module" src="/assets/main.js"></script>
+			<?php endif; ?>
 			<script src="src/scripts/perspectiveCard.js"></script>
 		</head>
 

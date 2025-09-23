@@ -1,4 +1,4 @@
-// vite.config.js
+// vite.config.ts
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
 import usePHP from 'vite-plugin-php';
@@ -9,18 +9,28 @@ import { existsSync } from 'node:fs';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig(({ command }) => {
-	const publicBasePath = '/'; // Change if deploying under a nested public path. Needs to end with a /. See https://vitejs.dev/guide/build.html#public-base-path
-
+	const publicBasePath = '/'; // Cambiado para producción
 	const base = command === 'serve' ? '/' : publicBasePath;
 	const BASE = base.substring(0, base.length - 1);
 
 	return {
 		base,
+		// Agregar entrada principal
+		build: {
+			rollupOptions: {
+				input: {
+					main: 'src/main.js',
+				},
+			},
+			assetsDir: 'assets',
+			emptyOutDir: true,
+		},
 		plugins: [
 			imagetools(),
 			usePHP({
 				entry: [
 					'index.php',
+					'configs/env.php',
 					'pages/**/*.php',
 					'partials/**/*.php',
 				],
@@ -43,7 +53,6 @@ export default defineConfig(({ command }) => {
 					}
 
 					requestUrl.pathname = 'index.php';
-
 					return requestUrl;
 				},
 			}),
@@ -53,7 +62,6 @@ export default defineConfig(({ command }) => {
 			viteStaticCopy({
 				targets: [
 					{ src: 'public', dest: '' },
-					{ src: 'src/scripts/js', dest: '' },
 					{ src: 'system', dest: '' },
 					{ src: 'configs', dest: '', overwrite: false },
 					{ src: 'vendor', dest: '' },
@@ -75,16 +83,12 @@ export default defineConfig(({ command }) => {
 		css: {
 			preprocessorOptions: {
 				scss: {
-					api: "modern-compiler" as "modern-compiler",
+					api: 'modern-compiler',
 				},
 			},
 		},
 		server: {
-			port: 8080,
-		},
-		build: {
-			assetsDir: '',
-			emptyOutDir: true,
+			port: 3000,
 		},
 	};
 });
