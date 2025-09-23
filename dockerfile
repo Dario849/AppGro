@@ -36,6 +36,25 @@ server {
     index index.php index.html;
     charset utf-8;
 
+    # Static files with proper MIME types
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    # Handle CSS files specifically
+    location ~* \.css$ {
+        add_header Content-Type text/css;
+        try_files $uri =404;
+    }
+
+    # Handle JS files specifically  
+    location ~* \.js$ {
+        add_header Content-Type application/javascript;
+        try_files $uri =404;
+    }
+
     location = /favicon.ico { access_log off; log_not_found off; }
     location = /robots.txt  { access_log off; log_not_found off; }
 

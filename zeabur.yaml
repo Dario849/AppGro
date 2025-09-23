@@ -1,10 +1,13 @@
 # zeabur.yaml
 services:
   appgro:
-    source: .
-    dockerfile: ./Dockerfile
-    env:
+    source:
+      type: git
+    build:
+      dockerfile: Dockerfile
+    environment:
       APP_ENV: production
       APP_DEBUG: false
     ports:
-      - 8080:8080
+      - port: 8080
+        type: http

@@ -23,18 +23,26 @@ class HTML
 			
 			<?php
 			// Check if Vite build exists
-			if (file_exists(__DIR__ . '/../../dist/manifest.json') || file_exists(__DIR__ . '/../../dist/.vite/manifest.json')) {
+			if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/dist/manifest.json')) {
 				// Production mode with Vite build
-				echo '<link rel="stylesheet" href="/dist/assets/app.css">';
 				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
+				echo '<link rel="stylesheet" href="/dist/assets/app.css">';
 				echo '<script type="module" src="/dist/assets/app.js"></script>';
 			} else {
-				// Development mode - use direct files
+				// Development mode - use direct files with absolute paths
 				echo '<script src="/js/jquery-3.7.1.min.js"></script>';
-				echo '<link href="/src/styles/tailwind.css" rel="stylesheet" />';
-				echo '<link href="/src/styles/gridstack.css" rel="stylesheet" />';
+				echo '<link rel="stylesheet" href="/src/styles/tailwind.css">';
+				echo '<link rel="stylesheet" href="/src/styles/gridstack.css">';
+				echo '<script>
+					window.addEventListener("DOMContentLoaded", function() {
+						if (typeof jQuery !== "undefined") {
+							console.log("jQuery loaded successfully");
+						} else {
+							console.error("jQuery not loaded");
+						}
+					});
+				</script>';
 				echo '<script src="/src/scripts/perspectiveCard.js"></script>';
-				// Note: SCSS files can't be loaded directly, we'll use CSS alternatives
 			}
 			?>
 		</head>
