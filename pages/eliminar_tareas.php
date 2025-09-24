@@ -38,3 +38,4 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
 }
 
+$pdo = null; // CIERRO LA CONEXION A LA BASE DE DATOS DE PDO
