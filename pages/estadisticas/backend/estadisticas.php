@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require dirname(__DIR__, 4) . '/system/resources/database.php';
+require dirname(__DIR__, 3) . '/system/resources/database.php';
 
 // Activar logs visibles para debug
 ini_set('display_errors', 1);

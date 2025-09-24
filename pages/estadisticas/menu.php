@@ -1,6 +1,5 @@
 <?php
 require('system/main.php');
-require dirname(__DIR__, 3) . '/system/resources/database.php';
 sessionCheck();
 $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']);
 ?>
@@ -198,12 +197,9 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                     </div>
                 </div>
                 <script type="text/javascript" src="public/js/xlsx.full.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script type="module">
-                    // #TODO: Añadir botón de importar desde archivo CSV
-                    // #TODO: Añadir exportador de tabla a CSV
-                    // #TODO: Añadir resumen de ganado donde: Muestre total activo, 
-                    import Swal from 'sweetalert2/dist/sweetalert2.js';
-                    import 'sweetalert2/src/sweetalert2.scss';
+                    // #TODO: Añadir resumen de ganado donde: Muestre total activo, toma en cuenta tablas de defuncion, debería de mostrar un intervalo, y relacionar datos de ventas y compras a su vez
                     /**
                      * ¿Vacío?
                      * Propósito: detectar valores "vacíos" útiles para formularios/CSV.
