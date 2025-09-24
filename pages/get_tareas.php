@@ -10,19 +10,6 @@ $direccion = strtolower($_GET['direccion'] ?? 'asc');
 $mes = isset($_GET['mes']) ? (int)$_GET['mes'] : 0;
 $anio = isset($_GET['anio']) ? (int)$_GET['anio'] : 0;
 
-// Validación dirección segura
-if (!in_array($direccion, ['asc', 'desc'])) {
-    $direccion = 'asc';
-}
-
-// Validación estado
-$estados_permitidos = ['activa', 'completada', 'cancelada', 'todas'];
-if (!in_array($estado, $estados_permitidos)) {
-    http_response_code(400);
-    echo json_encode(["error" => "Estado inválido"]);
-    exit;
-}
-
 $sql = "SELECT * FROM tareas WHERE baja_logica = 0";
 $params = [];
 
