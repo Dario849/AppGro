@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require dirname(__DIR__, levels: 2) . '\system\resources\database.php';
+require dirname(__DIR__, 2) . '/system/resources/database.php';
 
 // Recibir JSON desde fetch
 $data = json_decode(file_get_contents("php://input"), true);
@@ -11,30 +11,54 @@ if (!$criterio) {
     exit;
 }
 
-switch ($criterio) {
-    case 'semanal': $dias = 7; break;
-    case 'mensual': $dias = 30; break;
-    case 'anual':   $dias = 365; break;
-    default:
-        echo json_encode(["success" => false, "error" => "Criterio inválido"]);
-        exit;
-}
-
-// Rango de fechas (de hoy hacia atrás)
-$hoy = date('Y-m-d H:i:s');                  // ahora con hora
-$limite = date('Y-m-d H:i:s', strtotime("-$dias days"));
-
-// Conexión mysqli
 try {
-    // Baja lógica usando fecha_hora_inicio
-  $stmt = $pdo->prepare("UPDATE tareas 
-                      SET baja_logica = 1 
-                      WHERE (estado = 'completada' OR estado = 'cancelada') 
-                      AND fecha_hora_inicio BETWEEN ? AND ?");
-  $stmt->execute([$limite,$hoy]);
-  $affectedRows = $stmt->rowCount();
-  echo json_encode(["success" => true, "eliminadas" => $affectedRows]);
-} catch (PDOException $e) {
-    echo 'Connection failed: ' . $e->getMessage();
-}
+    $hoy = date('Y-m-d');
+    $sql = "";
+    $params = [];
 
+    switch ($criterio) {
+        case 'semanal':
+            // Este mes (del 01 hasta hoy)
+            $inicio = date('Y-m-01');
+            $fin = $hoy;
+            $sql = "UPDATE tareas 
+                    SET baja_logica = 1 
+                    WHERE (estado = 'completada' OR estado = 'cancelada') 
+                    AND DATE(fecha_hora_inicio) BETWEEN ? AND ?";
+            $params = [$inicio, $fin];
+            break;
+
+        case 'mensual':
+            // Este año (enero 01 hasta hoy)
+            $inicio = date('Y-01-01');
+            $fin = $hoy;
+            $sql = "UPDATE tareas 
+                    SET baja_logica = 1 
+                    WHERE (estado = 'completada' OR estado = 'cancelada') 
+                    AND DATE(fecha_hora_inicio) BETWEEN ? AND ?";
+            $params = [$inicio, $fin];
+            break;
+
+        case 'anual':
+            // Años anteriores
+            $limite = date('Y-01-01');
+            $sql = "UPDATE tareas 
+                    SET baja_logica = 1 
+                    WHERE (estado = 'completada' OR estado = 'cancelada') 
+                    AND DATE(fecha_hora_inicio) < ?";
+            $params = [$limite];
+            break;
+
+        default:
+            echo json_encode(["success" => false, "error" => "Criterio inválido"]);
+            exit;
+    }
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    $affectedRows = $stmt->rowCount();
+
+    echo json_encode(["success" => true, "eliminadas" => $affectedRows]);
+} catch (PDOException $e) {
+    echo json_encode(["success" => false, "error" => $e->getMessage()]);
+}
