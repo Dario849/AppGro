@@ -88,7 +88,7 @@
 		color: #bbb;
 		text-decoration: none;
 		display: block;
-		padding: 12px 20px;
+		padding: 12px 8px;
 		font-size: 14px;
 		transition: background-color 0.2s;
 	}
@@ -108,7 +108,13 @@
 		}
 	}
 }
-
+body{
+	margin: 0;
+	padding: 0;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f4f4f4;
+	color: #888;
+}
 .main {
 	&__content {
 		flex: 1;
@@ -143,6 +149,7 @@
 				transparent
 			);
 		background-size: 55px 55px;
+		justify-items: center;
 	}
 }
 
@@ -361,7 +368,7 @@
 	}
 
 	&Register {
-		background-color: eaddd7;
+		background: radial-gradient(#301d1d, #0b001861);
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
@@ -409,7 +416,7 @@
 	}
 
 	&Recover {
-		background-color: eaddd7;
+		background: radial-gradient(#301d1d, #0b001861);
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
