@@ -117,6 +117,7 @@ function cargarGrafico(tipo) {
 				},
 				options: {
 					responsive: true,
+					maintainAspectRatio: false,
 					plugins: {
 						legend: { display: true },
 						tooltip: { mode: 'index', intersect: false },
