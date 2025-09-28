@@ -24,6 +24,23 @@ class HTML
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
 			<link href="/src/styles/global.scss" rel="stylesheet" />
 			<script src="src/scripts/perspectiveCard.js"></script>
+			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
+			<script>
+				$(function () {
+					$('#submitLoginButton').click(function () { // función on click, activa submit por POST a backend, añade token recaptcha y action explicita de login/validarUsuario
+						grecaptcha.ready(function () { // grecaptcha, añade token, action al form y lo envía (función propia de google API)
+							grecaptcha.execute('6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq', {
+								action: 'validarUsuario'
+							}).then(function (token) {
+								$('#form_Login').prepend('<input type="hidden" name="token" value="' + token + '" >');
+								$('#form_Login').prepend('<input type="hidden" name="action" value="validarUsuario" >');
+								$('#form_Login').submit();
+							});
+						});
+					});
+				});
+			</script>
+
 		</head>
 
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">

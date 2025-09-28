@@ -24,9 +24,9 @@ function alertBox($error, $success)
           </div>
           <div>
             <p id="headSuccessText" class="text-white"><?php
-            echo explode('-', $success)[0]; ?> </p>
+            echo explode('-', $success)[0]??""; ?> </p>
             <p id="detailSuccessText" class="text-gray-500"><?php
-            echo explode('-', $success)[1]; ?></p>
+            echo explode('-', $success)[1]??""; ?></p>
           </div>
         </div>
         <button id="btnClose" class="text-gray-600 hover:bg-white/5 p-1 rounded-md transition-colors ease-linear">
@@ -54,9 +54,9 @@ function alertBox($error, $success)
           </div>
           <div>
             <p id="headErrorText" class="text-white"><?php
-            echo explode('-', $error)[0]; ?> </p>
+            echo explode('-', $error)[0]??""; ?> </p>
             <p id="detailErrorText" class="text-gray-500"><?php
-            echo explode('-', $error)[1]; ?></p>
+            echo explode('-', $error)[1]??""; ?></p>
           </div>
         </div>
         <button id="btnClose" class="text-gray-600 hover:bg-white/10 p-1 rounded-md transition-colors ease-linear">
