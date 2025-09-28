@@ -21,7 +21,7 @@ try {
 
     $datos = json_decode($response, true); // decode JSON response
 
-    print_r($datos); // DEBUG, en caso de que no se realize ningun header, se muestra el resultado
+    //print_r($datos); // DEBUG, en caso de que no se realize ningun header, se muestra el resultado
 
     if ($datos['success'] == 1 && $datos['score'] >= 0.5) { // puntuación mínima aceptada 0.5
         if ($datos['action'] == 'validarUsuario') {
