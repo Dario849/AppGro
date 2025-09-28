@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'GanadoS UwU');
-require dirname(__DIR__, 2) .'/system/resources/database.php';
+require dirname(__DIR__, 1) . '/system/resources/database.php';
 
 if (!isset($_GET['id_grupo'])) {
     echo "Grupo no especificado.";
@@ -11,31 +11,30 @@ if (!isset($_GET['id_grupo'])) {
 
 $id_grupo = $_GET['id_grupo'];
 $nro_caravana = isset($_GET['nro_caravana']) ? trim($_GET['nro_caravana']) : '';
-
-$conn = new mysqli('localhost', 'root', '', 'app_campo');
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
+try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    if ($nro_caravana !== '' && $nro_caravana !== '0') {
+        // Busqueda por número de caravana
+        $stmt = $pdo->prepare("
+            SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+            FROM ganado g
+            INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+            WHERE gg.id_grupo = ? AND g.nro_caravana = ? ");
+        $stmt->execute([$id_grupo, $nro_caravana]);
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+            FROM ganado g
+            INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+            WHERE gg.id_grupo = ?
+        ");
+        $stmt->execute([$id_grupo]);
+    }
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    echo "Error en la conexión: " . $e->getMessage();
+    exit;
 }
-if ($nro_caravana !== '' && $nro_caravana !== '0') {
-    // Busqueda por número de caravana
-    $stmt = $conn->prepare("
-        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
-        FROM ganado g
-        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
-        WHERE gg.id_grupo = ? AND g.nro_caravana = ?
-    ");
-    $stmt->bind_param("is", $id_grupo, $nro_caravana);
-} else {
-    $stmt = $conn->prepare("
-        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
-        FROM ganado g
-        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
-        WHERE gg.id_grupo = ?
-    ");
-    $stmt->bind_param("i", $id_grupo);
-}
-$stmt->execute();
-$result = $stmt->get_result();
 ?>
 
 <main class="main__content">
@@ -52,43 +51,42 @@ $result = $stmt->get_result();
 
         </div>
         <div class="main_containerganados">
-            <title>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></title>
-        <fieldset>
-            <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
+            <fieldset>
+                <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>N° Caravana</th>
-                        <th>Tipo</th>
-                        <th>Sexo</th>
-                        <th>Fecha Nacimiento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($result->num_rows > 0) {
-                        while ($animal = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($animal['id']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['nro_caravana']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
-                            echo "<td><a href='/ganado?nro_caravana=" . urlencode($animal['nro_caravana']) . "'>Ver detalles</a></td>";
-                            echo "</tr>";
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>N° Caravana</th>
+                            <th>Tipo</th>
+                            <th>Sexo</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if (count($result) > 0) {
+                            foreach ($result as $animal) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($animal['id']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['nro_caravana']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
+                                echo "<td><a href='/ganado?nro_caravana=" . urlencode($animal['nro_caravana']) . "'>Ver detalles</a></td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6'>Este grupo no tiene animales.</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='6'>Este grupo no tiene animales.</td></tr>";
-                    }
-                    $stmt->close();
-                    $conn->close();
-                    ?>
-                </tbody>
-            </table>
-        </fieldset>
+                        $stmt = null;
+                        $pdo = null;
+                        ?>
+                    </tbody>
+                </table>
+            </fieldset>
         </div>
     </div>
 </main>

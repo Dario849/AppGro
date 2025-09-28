@@ -115,7 +115,9 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                     <legend>Exportar/Importar</legend>
                                     <div class="csvContainer">
                                         <button id="csvBtn">
-                                            <img src="public/icons8-excel-50.svg" alt="Exportar a .CSV" width="20px">
+                                            <svg class="icon" style="color:black;">
+                                                <use href="excel_logo.svg#icon-libro"></use>
+                                            </svg>
                                         </button>
                                         <div id="csvModal" class="modal">
 
@@ -125,33 +127,83 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                 <p>Seleccione que acción desea realizar</p>
                                                 <fieldset>
                                                     <legend>Exportar datos actuales</legend>
+                                                    <button id="btnXlsx" class="container-btn-file">
+                                                        <svg class="icon">
+                                                            <use href="excel_logo.svg#icon-libro"></use>
+                                                        </svg>
+                                                        Descargar archivo
+                                                    </button>
+                                                    <br>
+                                                    <button id="btnCsv" class="container-btn-file">
+                                                        <svg class="icon">
+                                                            <use href="ext_csv_filetype_icon_176252.svg"></use>
+                                                        </svg>
+                                                        Descargar archivo
+                                                    </button>
+                                                    <script>
+                                                        async function fetchTransacciones() {
+                                                            const resp = await fetch('/transacciones');
+                                                            const json = await resp.json();
+                                                            if (json.status !== 'success') throw new Error(json.message);
+                                                            return json.data;
+                                                        }
+
+                                                        function exportCsv(rows) {
+                                                            // convertir a hoja
+                                                            const ws = XLSX.utils.json_to_sheet(rows);
+                                                            const csv = XLSX.utils.sheet_to_csv(ws);
+                                                            downloadFile('transacciones.csv', csv, 'text/csv');
+                                                        }
+
+                                                        function exportXlsx(rows) {
+                                                            const wb = XLSX.utils.book_new();
+                                                            const ws = XLSX.utils.json_to_sheet(rows);
+                                                            XLSX.utils.book_append_sheet(wb, ws, "Transacciones");
+                                                            const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                                                            const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                                                            downloadBlob('transacciones.xlsx', blob);
+                                                        }
+
+                                                        function downloadFile(filename, content, type) {
+                                                            const blob = new Blob([content], { type });
+                                                            downloadBlob(filename, blob);
+                                                        }
+                                                        function downloadBlob(filename, blob) {
+                                                            const link = document.createElement('a');
+                                                            link.href = URL.createObjectURL(blob);
+                                                            link.download = filename;
+                                                            document.body.appendChild(link);
+                                                            link.click();
+                                                            document.body.removeChild(link);
+                                                        }
+
+                                                        $('#btnCsv').on('click', async () => {
+                                                            try { exportCsv(await fetchTransacciones()); }
+                                                            catch (e) { alert("Error: " + e.message); }
+                                                        });
+                                                        $('#btnXlsx').on('click', async () => {
+                                                            try { exportXlsx(await fetchTransacciones()); }
+                                                            catch (e) { alert("Error: " + e.message); }
+                                                        });
+                                                    </script>
+
                                                 </fieldset>
                                                 <fieldset>
                                                     <legend>Descargar plantilla</legend>
+                                                    <button class="container-btn-file">
+                                                        <svg class="icon">
+                                                            <use href="public\excel_logo.svg#icon-libro"></use>
+                                                        </svg>
+                                                        <a class="file" href="Plantilla_Balances-AppGro.xlsx"></a>
+                                                        Descargar Archivo
+                                                    </button>
+                                                    </button>
                                                 </fieldset>
                                                 <fieldset>
                                                     <legend>Importar datos al sistema</legend>
                                                     <button class="container-btn-file">
-                                                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" width="20"
-                                                            height="20" viewBox="0 0 50 50">
-                                                            <path d="M28.8125 .03125L.8125 5.34375C.339844 
-    5.433594 0 5.863281 0 6.34375L0 43.65625C0 
-    44.136719 .339844 44.566406 .8125 44.65625L28.8125 
-    49.96875C28.875 49.980469 28.9375 50 29 50C29.230469 
-    50 29.445313 49.929688 29.625 49.78125C29.855469 49.589844 
-    30 49.296875 30 49L30 1C30 .703125 29.855469 .410156 29.625 
-    .21875C29.394531 .0273438 29.105469 -.0234375 28.8125 .03125ZM32 
-    6L32 13L34 13L34 15L32 15L32 20L34 20L34 22L32 22L32 27L34 27L34 
-    29L32 29L32 35L34 35L34 37L32 37L32 44L47 44C48.101563 44 49 
-    43.101563 49 42L49 8C49 6.898438 48.101563 6 47 6ZM36 13L44 
-    13L44 15L36 15ZM6.6875 15.6875L11.8125 15.6875L14.5 21.28125C14.710938 
-    21.722656 14.898438 22.265625 15.0625 22.875L15.09375 22.875C15.199219 
-    22.511719 15.402344 21.941406 15.6875 21.21875L18.65625 15.6875L23.34375 
-    15.6875L17.75 24.9375L23.5 34.375L18.53125 34.375L15.28125 
-    28.28125C15.160156 28.054688 15.035156 27.636719 14.90625 
-    27.03125L14.875 27.03125C14.8125 27.316406 14.664063 27.761719 
-    14.4375 28.34375L11.1875 34.375L6.1875 34.375L12.15625 25.03125ZM36 
-    20L44 20L44 22L36 22ZM36 27L44 27L44 29L36 29ZM36 35L44 35L44 37L36 37Z"></path>
+                                                        <svg class="icon">
+                                                            <use href="public\excel_logo.svg#icon-libro"></use>
                                                         </svg>
                                                         Subir archivo
                                                         <input class="file" id="fileImportCsv" type="file"
@@ -293,7 +345,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
 
                     // Sanitizar texto de tipo select (ej: COMPRA, VENTA)
                     function sanitizeText(input) {
-                        const opciones = ["COMPRA", "VENTA"];
+                        const opciones = ["COMPRA", "VENTA", "GANADO", "CULTIVO", "HERRAMIENTA", "OTRO"];
                         return opciones.includes(input.toUpperCase()) ? input.toUpperCase() : null;
                     }
                     function saveToTable(fecha, monto, tipo, uid, producto, cantidad, comentario) {
@@ -363,7 +415,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                     tr.append($("<td>").text(row.fecha));
                                     tr.append($("<td>").text(new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(row.monto)));
                                     tr.append($("<td>").text(row.tipo));
-                                    tr.append($("<td>").text(row.id_usuario));
+                                    tr.append($("<td>").text(row.usuario_responsable));
                                     tr.append($("<td>").text(row.dato));
                                     tr.append($("<td>").text(row.dato_cantidad));
                                     tr.append($("<td>").text(row.detalle));
@@ -376,10 +428,12 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         });
                     }
 
-                    function emptyOutInputs(d, n, s) { // n=numero (monto), d=fecha, s=selección (compra/venta)
+                    function emptyOutInputs(d, n, s, p, c) { // n=numero (monto), d=fecha, s=selección (compra/venta)
                         n ? $('#valueNewBalance').val('0') : null; // statement IF minified, después del ":" es el ELSE
                         d ? $('#dateNewBalance').val(hoyLocalYYYYMMDD()) : null; // statement IF minified, después del ":" es el ELSE
                         s ? $('input[name="optNewBalance"][value="Compra"]').prop('checked', true) : null; // statement IF minified, después del ":" es el ELSE
+                        p ? $('input[name="opcionProducto"][value="Ganado"]').prop('checked', true) + $('#valueNewCantidad').val('0') : null;
+                        c ? $('#optNewComentario').val("") : null;
                     }
 
                     var rows;
@@ -399,7 +453,10 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             const value = sanitizeNumber($('#valueNewBalance').val());
                             const type = sanitizeText($('input[name="optNewBalance"]:checked').val());
                             const uid = sanitizeNumber($('#uid_n').val());
-                            // console.log("New balance to add: " + date + " | " + value + " | " + type);
+                            const optProd = sanitizeText($('input[name="opcionProducto"]:checked').val());
+                            const cantProd = sanitizeNumber($('#valueNewCantidad').val());
+                            const textDescription = $('#optNewComentario').val();
+                            console.log("New balance to add: " + date + " | " + value + " | " + type + " | " + optProd + " | " + cantProd + " | " + textDescription);
                             if (value === 0) {
                                 let timerInterval;
                                 Swal.fire({
@@ -422,9 +479,9 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                 //     }
                                 // });
                             } else {
-                                saveToTable(date, value, type, uid,);
+                                saveToTable(date, value, type, uid, optProd, cantProd, textDescription);
                             }
-                            emptyOutInputs(false, true, false);
+                            emptyOutInputs(false, true, false, false, true);
                         });
                         // Get the modal
                         var modal = document.getElementById("myModal");
@@ -453,7 +510,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         // When the user clicks on <span> (x), close the modal
                         span.onclick = function () {
                             modal.style.display = "none";
-                            emptyOutInputs(true, true, true);
+                            emptyOutInputs(true, true, true, true, true);
                         }
                         csvspan.onclick = function () {
                             csvmodal.style.display = "none";
@@ -462,7 +519,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         window.onclick = function (event) {
                             if (event.target == modal) {
                                 modal.style.display = "none";
-                                emptyOutInputs(true, true, true);
+                                emptyOutInputs(true, true, true, true, true);
                             }
                             if (event.target == csvmodal) {
                                 csvmodal.style.display = "none";
@@ -504,13 +561,31 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
 
                                     rows = parseCSV(text); // Devuelve array de caracteres comprendidos dentro de archivo .csv o arreglo de caracteres pre-separados por , en caso de archivo .xlsx/xlsm
                                     const startsLikeHeader = rows[0] && /[F,f]echa/i.test(rows[0][0] || "") && /[M,m]onto/i.test(rows[0][1] || "") && /[T.t]ipo/i.test(rows[0][2] || "") && /[T,t]ipo_[P,p]roducto/i.test(rows[0][3] || "") && /[C,c]antidad_[P,p]roducto/i.test(rows[0][4] || "") && /[D,d]escripci[o,ó]n/i.test(rows[0][5] || "");
-                                    $('#csvTable').append(`<thead><tr><td>Fecha</td><td>Monto</td><td>Venta/Compra</td><td>Tipo de producto</td><td>Cantidad del producto</td><td>Comentario</td></tr></thead>`);
+                                    $('#csvTable').append(`
+                                    <thead>
+                                        <tr>
+                                            <td>Fecha</td>
+                                            <td>Monto</td>
+                                            <td>Venta/Compra</td>
+                                            <td>Tipo de producto</td>
+                                            <td>Cantidad del producto</td>
+                                            <td>Comentario</td>
+                                        </tr>
+                                    </thead>`);
                                     const startsOn = startsLikeHeader ? 1 : 0;
                                     for (let i = startsOn; i < rows.length; i++) {
                                         const [fecha, monto, tipo, dato, dato_cantidad, detalle] = rows[i];
                                         // console.log(`codigo:${code} Nombre:${nombre} NumStock:${stock} YYYY-MM-DD:${toYMD(fecha)}`);
                                         // $('#csvTable').append("<tr><td>" + code + "</td><td>" + nombre + "</td><td>" + stock + "</td><td>" + toYMD(fecha) + "</td></tr>");
-                                        $('#csvTable').append(`<tr><td>${toYMD(fecha)}</td><td>${monto}</td><td>${tipo}</td><td>${dato}</td><td>${dato_cantidad}</td><td>${detalle}</td></tr>`);
+                                        $('#csvTable').append(`
+                                        <tr>
+                                            <td>${toYMD(fecha)}</td>
+                                            <td>${monto}</td>
+                                            <td>${tipo}</td>
+                                            <td>${dato}</td>
+                                            <td>${dato_cantidad}</td>
+                                            <td>${detalle}</td>
+                                        </tr>`);
                                     }
                                 } catch (err) {
                                     console.error('Error procesando el archivo:', err);

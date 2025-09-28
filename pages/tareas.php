@@ -3,7 +3,7 @@
 // Si pages está en la raíz del proyecto y system está al mismo nivel que pages:
 // require(__DIR__ . '/../system/main.php');
 // Si require('system/main.php') te funcionó antes, podés usar esa línea.
-require(__DIR__ . '/../../system/main.php');
+require(__DIR__ . '/../system/main.php');
 session_start();
 $layout = new HTML(title: 'AppGro - Tareas');
 ?>
@@ -89,17 +89,16 @@ $layout = new HTML(title: 'AppGro - Tareas');
       <div><span style="display:inline-block;width:12px;height:12px;background:#f04747;border-radius:50%;"></span> cancelada</div>
     </div>
 
+    <div id="mensaje-eliminar" style="display:none; padding:8px; margin-bottom:10px; border-radius:4px; color:#fff;"></div>
+
     <div class="admin-controls">
-      <label for="auto-eliminar">ELIMINACIÓN AUTOMÁTICA:</label>
-      <form id="formEliminarTareas" action="eliminar_tareas.php" method="POST" onsubmit="return validarEliminar(this);">
-        <select id="auto-eliminar" name="criterio">
-          <option value="ninguno">NINGUNO</option>
-          <option value="semanal">SEMANAL</option>
-          <option value="mensual">MENSUAL</option>
-          <option value="anual">ANUAL</option>
-        </select>
-        <button type="submit">ELIMINAR</button>
-      </form>
+      <label for="criterioEliminar">ELIMINACIÓN SEMANAL - MENSUAL - ANUAL:</label>
+      <select id="criterioEliminar">
+        <option value="semanal">SEMANAL</option>
+        <option value="mensual">MENSUAL</option>
+        <option value="anual">ANUAL</option>
+      </select>
+      <button id="btnEliminarTareas">ELIMINAR</button>
     </div>
   </div>
 
@@ -163,7 +162,7 @@ $layout = new HTML(title: 'AppGro - Tareas');
 
     // ---- Cargar tareas ----
     function cargarTareas(estado = 'activa') {
-      const url = estado === 'todas' ? 'get_tareas.php' : `get_tareas.php?estado=${estado}`;
+      const url = estado === 'todas' ? 'get_tareas' : `get_tareas?estado=${estado}`;
       fetch(url)
         .then(r => r.json())
         .then(data => {
@@ -229,7 +228,7 @@ $layout = new HTML(title: 'AppGro - Tareas');
       clearTimeout(debounceTimers[id + campo]);
       debounceTimers[id + campo] = setTimeout(() => {
         const valor = input.value;
-        fetch('actualizar_tareas.php', {
+        fetch('actualizar_tareas', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, campo, valor })
@@ -269,13 +268,51 @@ $layout = new HTML(title: 'AppGro - Tareas');
       const btnCancelarTarea = document.getElementById('btnCancelarTarea');
       const btnVencimiento = document.getElementById('btnVencimiento');
       const flecha = document.getElementById('flechaOrden');
+      const btnEliminar = document.getElementById('btnEliminarTareas');
+      const criterioSelect = document.getElementById('criterioEliminar');
+      const mensajeEliminar = document.getElementById('mensaje-eliminar');
+
+      btnEliminar.addEventListener('click', () => {
+        const criterio = criterioSelect.value;
+        if (!criterio) return;
+
+        fetch('eliminar_tareas', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ criterio })
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.success) {
+            mostrarMensaje(`Se eliminaron ${data.eliminadas} tareas (${criterio}).`, true);
+            cargarTareas(document.getElementById('filtro').value);
+          } else {
+            mostrarMensaje("Error: " + data.error, false);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          mostrarMensaje("Error de conexión al eliminar tareas.", false);
+        });
+      });
+
+      // Función para mostrar mensaje dinámico
+      function mostrarMensaje(texto, exito) {
+        mensajeEliminar.textContent = texto;
+        mensajeEliminar.style.background = exito ? "#2ecc71" : "#e74c3c"; // verde o rojo
+        mensajeEliminar.style.display = "block";
+
+        setTimeout(() => {
+          mensajeEliminar.style.display = "none";
+        }, 3000);
+      }
 
       filtro.addEventListener('change', () => cargarTareas(filtro.value));
 
       btnVencimiento.addEventListener('click', () => {
         const orden = ordenAscendente ? 'asc' : 'desc';
         flecha.textContent = ordenAscendente ? '↓' : '↑';
-        fetch(`./get_tareas.php?estado=activa&orden=vencimiento&direccion=${orden}`)
+        fetch(`./get_tareas?estado=activa&orden=vencimiento&direccion=${orden}`)
           .then(r => r.json())
           .then(data => {
             // reutilizamos la carga manual para no mezclar filtros
@@ -336,7 +373,7 @@ $layout = new HTML(title: 'AppGro - Tareas');
         const venc = document.getElementById('inputVencimiento').value;
         const desc = document.getElementById('inputDescripcion').value;
         if (!inicio || !venc || !desc) { alert('Completa todos los campos'); return; }
-        fetch('/guardar_tarea.php', {
+        fetch('/guardar_tarea', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ estado: 'activa', fecha_hora_inicio: inicio, fecha_hora_fin: venc, texto: desc })

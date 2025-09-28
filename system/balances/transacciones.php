@@ -1,6 +1,17 @@
 <?php
-header('Content-Type: application/json');
+// api/transacciones.php
+header('Content-Type: application/json; charset=utf-8');
+
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+
+session_start(); // o token que uses
+
+if (!isset($_SESSION['user_id'])) {
+    http_response_code(403);
+    echo json_encode(['status' => 'error', 'message' => 'No autorizado']);
+    exit;
+}
+
 try {
     $stmt = $pdo->query("SELECT 
     t.id,
@@ -13,11 +24,11 @@ try {
     CONCAT(u.nombre, ' ', u.apellido) AS usuario_responsable
     FROM transacciones t
     INNER JOIN usuarios u ON t.id_usuario = u.id;
-     ORDER BY fecha DESC LIMIT 100");
-    $oldBalances = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($oldBalances);
-    exit();
-}catch (PDOException $e) {
+    ");
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode(['status' => 'success', 'data' => $rows]);
+} catch (PDOException $e) {
     echo json_encode(['error' => $e->getMessage()]);
     http_response_code(500);
 }

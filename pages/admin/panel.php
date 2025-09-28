@@ -29,7 +29,9 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
                             id="fecha_nacimiento" value="<?= htmlspecialchars($datos['fecha_nacimiento']) ?>" readonly>
                     </li>
                     <li><strong>Edad:</strong> <?= (int) $datos['edad'] ?> años</li>
-
+                    <li><strong>ELIMINAR?</strong> <button class="submit-button" id="btnEliminar"
+                            ondblclick="return clickEliminar($('#userId').val());">CONFIRMAR</button>
+                    </li>
                 </ul>
                 <ul>
                     <h2>Permisos</h2><br>
@@ -97,10 +99,29 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
             error: function () { //fallback en caso de que no exista conexión al backend
                 $("#report").prepend("error");
                 $('#report > span').slice(1).remove();
-
             }
         });
 
 
     });
+    function clickEliminar(uid) {
+        dropUserId = parseInt(uid);
+        console.log(dropUserId + '- Doble click en botón eliminar');
+        data = {
+            dropUId: dropUserId,
+        }
+        $.ajax({
+            type: "POST",
+            url: "/disableUser",
+            data: data,
+            dataType: "json",
+            success: function (response) {
+                console.log(response);
+                location.href = location.pathname
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al realizar cambio a usuario: " + status + " - " + error);
+            }
+        });
+    }
 </script>

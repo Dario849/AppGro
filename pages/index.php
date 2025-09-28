@@ -2,19 +2,11 @@
 require('system/main.php');
 session_start();
 $layout = new HTML(title: 'AppGro-Inicio');
-if(($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SESSION['logged'] ?? false)) {
+if (($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SESSION['logged'] ?? false)) {
   header('Location: /dashboard');
   exit;
 }
 ?>
-<!-- RECAPTCHA -->
-<!-- <script type="text/javascript">
-  var onloadCallback = function () {
-    alert("grecaptcha is ready!");
-  };
-</script> -->
-<script src="https://www.google.com/recaptcha/api.js?hl=es-419" async defer>
-</script><!-- RECAPTCHA -->
 <main class="main__content">
   <div class="main_container">
     <div class="main_containerLogin">
@@ -30,7 +22,7 @@ if(($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SESS
         endif;
         ?>
       </div>
-      <form action="/login" name="formLogin" autocomplete="on" method="POST">
+      <form action="/login" id="form_Login" autocomplete="on" method="POST">
         <div id="inputs" class="inputs">
           <label for="UserName">Correo Electrónico</label>
           <input type="email" name="Email" id="UserName" autocomplete="username" onkeypress="return validateinputs();">
@@ -39,12 +31,8 @@ if(($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SESS
           <input type="password" name="Password" id="Password" autocomplete="current-password"
             oninput="return validateinputs();" onkeypress="return validateinputs();">
           <br>
-          <!-- RECAPTCHA -->
-          <div class="g-recaptcha" data-sitekey="6LehHnsrAAAAAIU1rLgtG7CTnQfpw880nX_wFA40" data-action="LOGIN"></div>
-          <br />
-          <!-- RECAPTCHA -->
-          <button id="submitButton" name="submitButton" type="submit" class="cta"
-            onmouseover="return validateinputs();">
+          <button id="submitLoginButton" class="g-recaptcha cta" data-sitekey="6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq" data-callback='onSubmit'
+            data-action='submit' onmouseover="return validateinputs();">
             <span>Ingresar</span>
             <svg width="15px" height="10px" viewBox="0 0 13 10">
               <path d="M1,5 L11,5"></path>

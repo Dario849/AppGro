@@ -2,8 +2,8 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Panel de usuario');
-require dirname(__DIR__, 3) . '/system/resources/database.php';
-$sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM Usuarios WHERE id = :uid";
+require dirname(__DIR__, 2) . '/system/resources/database.php';
+$sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM usuarios WHERE id = :uid";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([
     'uid' => $_SESSION['user_id'],

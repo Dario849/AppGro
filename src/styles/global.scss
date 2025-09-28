@@ -88,7 +88,7 @@
 		color: #bbb;
 		text-decoration: none;
 		display: block;
-		padding: 12px 20px;
+		padding: 12px 8px;
 		font-size: 14px;
 		transition: background-color 0.2s;
 	}
@@ -108,13 +108,48 @@
 		}
 	}
 }
-
+body{
+	margin: 0;
+	padding: 0;
+	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	background-color: #f4f4f4;
+	color: #888;
+}
 .main {
 	&__content {
 		flex: 1;
 		overflow: auto;
 		background-color: cornsilk;
 		height: -webkit-fill-available;
+		--color: rgba(114, 114, 114, 0.3);
+		background-color: #191a1a;
+		background-image:
+			linear-gradient(
+				0deg,
+				transparent 24%,
+				var(--color) 25%,
+				var(--color) 26%,
+				transparent 27%,
+				transparent 74%,
+				var(--color) 75%,
+				var(--color) 76%,
+				transparent 77%,
+				transparent
+			),
+			linear-gradient(
+				90deg,
+				transparent 24%,
+				var(--color) 25%,
+				var(--color) 26%,
+				transparent 27%,
+				transparent 74%,
+				var(--color) 75%,
+				var(--color) 76%,
+				transparent 77%,
+				transparent
+			);
+		background-size: 55px 55px;
+		justify-items: center;
 	}
 }
 
@@ -124,29 +159,33 @@
 }
 
 .btn-to-top {
-	align-items: center;
-	background: #6b5ff8;
-	border-radius: 50%;
-	bottom: 2.5rem;
-	color: #fff;
-	cursor: pointer;
-	display: flex;
-	height: 6.875rem;
-	justify-content: center;
-	left: 2.5rem;
-	line-height: 1.2;
-	/* opacity: 0; */
-	padding: 2.25rem 1.25rem;
-	position: relative;
-	text-align: center;
-	transition: 0.4s;
-	/* visibility: hidden; */
-	width: 6.875rem;
-	z-index: 10;
+	    align-items: center;
+    background: #6b5ff8;
+    border-radius: 50%;
+    bottom: 1.5rem;
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    height: 4.875rem;
+    justify-content: center;
+    left: 1.5rem;
+    line-height: 1.2;
+    padding: 2.25rem 2.25rem;
+    position: relative;
+    text-align: center;
+    transition: 0.4s;
+    width: 4.875rem;
+    z-index: 10;
+	&:hover {
+		background: #4e42c8;
+		transform: scale(1.1);
+	}
 }
+
+
 .main_container {
-	height: 100%;
-	width: 100%;
+	height: fit-content;
+	width: fit-content;
 	&MenuEstadisticas {
 		display: flex;
 		flex-direction: column;
@@ -220,34 +259,6 @@
 	&Dashboard {
 		width: 100%;
 		height: 100%;
-		--color: rgba(114, 114, 114, 0.3);
-		background-color: #191a1a;
-		background-image:
-			linear-gradient(
-				0deg,
-				transparent 24%,
-				var(--color) 25%,
-				var(--color) 26%,
-				transparent 27%,
-				transparent 74%,
-				var(--color) 75%,
-				var(--color) 76%,
-				transparent 77%,
-				transparent
-			),
-			linear-gradient(
-				90deg,
-				transparent 24%,
-				var(--color) 25%,
-				var(--color) 26%,
-				transparent 27%,
-				transparent 74%,
-				var(--color) 75%,
-				var(--color) 76%,
-				transparent 77%,
-				transparent
-			);
-		background-size: 55px 55px;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
@@ -357,7 +368,7 @@
 	}
 
 	&Register {
-		background-color: eaddd7;
+		background: radial-gradient(#301d1d, #0b001861);
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
@@ -405,7 +416,7 @@
 	}
 
 	&Recover {
-		background-color: eaddd7;
+		background: radial-gradient(#301d1d, #0b001861);
 		margin: auto;
 		border-radius: 5%;
 		border: solid;
@@ -674,6 +685,31 @@
 				border-radius: 4vh;
 			}
 		}
+		.submit-button {
+			color: inherit;
+			border: inherit;
+			transition: inherit;
+			box-shadow: inherit;
+			border-radius: 5em;
+			background: rgba(141, 141, 141, 0.664);
+			box-shadow: #000000 0px 0px 0px 1px;
+			padding: 0.1em 0.5em;
+			font-size: 20px;
+			cursor: pointer;
+			right: 0;
+			align-self: anchor-center;
+			outline: none;
+			&:hover {
+				background: rgba(141, 141, 141, 0.856);
+			}
+
+			&:active {
+				color: #666;
+				box-shadow:
+					inset 4px 4px 12px #c5c5c5,
+					inset -4px -4px 12px #ffffff;
+			}
+		}
 	}
 
 	&Profile {
@@ -733,7 +769,13 @@
 	}
 	&Estadisticas {
 		/* === ESTADÍSTICAS === */
-
+		a {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0;
+			cursor: pointer;
+		}
 		.modal {
 			display: none; /* Hidden by default */
 			position: fixed; /* Stay in place */
@@ -1037,9 +1079,9 @@
 		}
 
 		.stats-canvas {
-			width: auto !important;
-			height: auto !important;
-			display: block;
+			width: 100% !important;
+			height: 100% !important;
+			// display: block;
 		}
 
 		button {
@@ -1100,4 +1142,32 @@
 			margin-left: 5vh;
 		}
 	}
+}
+/* escala con la fuente si querés: width/height en em */
+.icon {
+	width: 1.7em; /* ejemplo: 20px si font-size = 16px */
+	height: 1.7em;
+	display: inline-block;
+	vertical-align: middle;
+	color: #fff; /* controla el color del icono */
+	fill: currentColor; /* fallback: asegura herencia si el path no tiene fill */
+}
+
+/* margen entre icono y texto */
+.container-btn-file .icon {
+	margin-right: 0.5rem;
+}
+
+/* si querés tamaños fijos */
+.icon--sm {
+	width: 16px;
+	height: 16px;
+}
+.icon--md {
+	width: 20px;
+	height: 20px;
+}
+.icon--lg {
+	width: 32px;
+	height: 32px;
 }

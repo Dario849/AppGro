@@ -19,6 +19,7 @@ $layout = new HTML(title: 'AppGro-Menú');
                 ?>
             </div>
             <br>
+            <a id="top"></a>
             <div id="containerTiempo" class="main_containerDashboardTiempo">
                 <div class="with-perspective">
                     <div class="has-gradient-tracker weather-container">
@@ -82,18 +83,19 @@ $layout = new HTML(title: 'AppGro-Menú');
                         </div>
                     </div>
                 </div>
-
                 <script src="src/scripts/dashboard.js"></script>
-            </div>
                 <script type="module">
                     import Swal from 'sweetalert2/dist/sweetalert2.js'
                     import 'sweetalert2/src/sweetalert2.scss'
                     $(function () {
+                        var showOneTime = true;
                         $(window).resize(function () {
                             // your code 
                             var browserZoomLevel = Math.round(window.devicePixelRatio * 100);
                             console.log("Browser Zoom Level: " + browserZoomLevel + "%");
                             if (browserZoomLevel != 100) {
+                                if (!showOneTime) return;
+                                showOneTime = false;
                                 Swal.fire({
                                     icon: "error",
                                     title: "Oops...El zoom del navegador no es 100%.",
@@ -105,26 +107,19 @@ $layout = new HTML(title: 'AppGro-Menú');
                     });
                 </script>
             </div>
-            <!--FIN DE MAPA -->
-        <div class="mith-perspective">
-            <div class="has-gradient-tracker stats-graphs">
-                <div class="balance-container" id="balanceMenu"></div>
+            <div class="mith-perspective">
+                <div class="has-gradient-tracker stats-graphs">
+                    <div class="balance-container" id="balanceMenu"></div>
+                </div>
             </div>
-        </div>
-        <script> // Carga el HTML
-            $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
-        </script>
-        </div>
-        <!-- <script>
-            $(".btn-to-top").click(() => {
-                $("html, body").animate({ scrollTop: 0 });
-                });
+            <script>
+                $('#balanceMenu').load('/pages/estadisticas/balanceMenu.html');
             </script>
-            <div class="btn-to-top">Back To Top</div> -->
+        </div>
+        <a class="btn-to-top" href="#top">Back to top</a>
     </div>
     <script>
         $(function () {
-
             gradientTracker({
                 selector: '.stats-graphs',
                 color1: '',
