@@ -6,6 +6,7 @@ if (($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SES
   header('Location: /dashboard');
   exit;
 }
+
 ?>
 <main class="main__content">
   <div class="main_container">

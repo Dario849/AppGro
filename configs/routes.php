@@ -134,6 +134,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
 		require('system/admin/BchangePermission.php');
 	});
+	$r->addRoute('GET', '/generarQR', function ($ROUTE_PARAMS) {
+		require('pages/pdf/generarQR.php');
+	});
 });
 
 // Fetch method and URI from somewhere

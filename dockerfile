@@ -108,6 +108,7 @@ COPY --link --chown=www-data:www-data --chmod=755 . /var/www
 # Ensure correct permissions for static files
 RUN find /var/www -type f -name "*.css" -exec chmod 644 {} \;
 RUN find /var/www -type f -name "*.js" -exec chmod 644 {} \;
+RUN find /var/www -type f -name "*.php" -exec chmod 644 {} \;
 
 # install only PHP dependencies
 USER www-data

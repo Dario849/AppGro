@@ -29,7 +29,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                     <button class="stats-tab-btn" data-target="balance">Balance</button>
                     <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
                     <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
-                    <button id="btnAdd"><img width="20px" src="plus-solid-full.svg" alt="Agregar" class="stats-tab-icon"
+                    <button id="btnAdd"><img width="20px" src="public/plus-solid-full.svg" alt="Agregar" class="stats-tab-icon"
                             title="Agregar" data-target="agregar" /></button>
 
                     <!-- The Modal -->
@@ -116,7 +116,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                     <div class="csvContainer">
                                         <button id="csvBtn">
                                             <svg class="icon" style="color:black;">
-                                                <use href="excel_logo.svg#icon-libro"></use>
+                                                <use href="public/excel_logo.svg#icon-libro"></use>
                                             </svg>
                                         </button>
                                         <div id="csvModal" class="modal">
@@ -129,14 +129,14 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                     <legend>Exportar datos actuales</legend>
                                                     <button id="btnXlsx" class="container-btn-file">
                                                         <svg class="icon">
-                                                            <use href="excel_logo.svg#icon-libro"></use>
+                                                            <use href="public/excel_logo.svg#icon-libro"></use>
                                                         </svg>
                                                         Descargar archivo
                                                     </button>
                                                     <br>
                                                     <button id="btnCsv" class="container-btn-file">
                                                         <svg class="icon">
-                                                            <use href="ext_csv_filetype_icon_176252.svg"></use>
+                                                            <use href="public/ext_csv_filetype_icon_176252.svg"></use>
                                                         </svg>
                                                         Descargar archivo
                                                     </button>
@@ -192,7 +192,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                     <legend>Descargar plantilla</legend>
                                                     <button class="container-btn-file">
                                                         <svg class="icon">
-                                                            <use href="public\excel_logo.svg#icon-libro"></use>
+                                                            <use href="public/excel_logo.svg#icon-libro"></use>
                                                         </svg>
                                                         <a class="file" href="Plantilla_Balances-AppGro.xlsx"></a>
                                                         Descargar Archivo
@@ -248,7 +248,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         </div>
                     </div>
                 </div>
-                <script type="text/javascript" src="public/js/xlsx.full.min.js"></script>
+                <script src="js/xlsx.full.min.js"></script>
                 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
                 <script type="module">
                     // #TODO: Añadir resumen de ganado donde: Muestre total activo, toma en cuenta tablas de defuncion, debería de mostrar un intervalo, y relacionar datos de ventas y compras a su vez
