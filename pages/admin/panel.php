@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionAuth();
-require dirname(__DIR__, levels: 3) . '/system/resources/database.php'; // conecta con tu PDO $pdo
+require dirname(__DIR__, levels: 2) . '/system/resources/database.php'; // conecta con tu PDO $pdo
 require_once('system/admin/Bpanel.php');
 $layout = new HTML(title: 'AppGro-Panel Administrativo');
 ?>
