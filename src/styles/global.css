@@ -107,7 +107,8 @@ body {
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f4f4;
-  color: #888;
+  color: revert;
+  color: #888 !important;
 }
 
 .main__content {
