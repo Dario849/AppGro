@@ -278,25 +278,55 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                      * Salida: string "yyyy-mm-dd" si es válida, "" si input vacío, o null si inválida.
                      * Ejemplos: toYMD("05/09/2025")→"2025-09-05"; toYMD("")→""; toYMD("31/02/2024")→null.
                      */
-                    const toYMD = (dmy) => {
-                        const t = String(dmy).trim();
-                        if (t === "") return ""; // campo opcional
-                        const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(t);
-                        if (!m) return null; // formato incorrecto
+                    function toYMD(input) {
+                        if (!input) return "";
 
-                        const dd = +m[1], mm = +m[2], yyyy = +m[3];
+                        const str = String(input).trim();
+                        if (str === "") return "";
 
-                        // Construye fecha 
-                        const dt = new Date(yyyy, mm - 1, dd);
-                        const valida =
-                            dt.getFullYear() === yyyy &&
-                            dt.getMonth() === mm - 1 &&
-                            dt.getDate() === dd;
-                        if (!valida) return null;
+                        // Detecta separador
+                        const sep = str.includes("/") ? "/" : (str.includes("-") ? "-" : null);
+                        if (!sep) return null;
 
-                        // Formatea ISO yyyy-mm-dd
-                        return `${yyyy}-${String(mm).padStart(2, "0")}-${String(dd).padStart(2, "0")}`;
-                    };
+                        // Divide en partes
+                        const parts = str.split(sep).map(p => p.trim());
+                        if (parts.length !== 3) return null;
+
+                        let [d, m, y] = parts;
+
+                        d = parseInt(d, 10);
+                        m = parseInt(m, 10);
+                        y = parseInt(y, 10);
+
+                        if (isNaN(d) || isNaN(m) || isNaN(y)) return null;
+
+                        // --- PivotYear dinámico ---
+                        const currentYear = new Date().getFullYear();       // ej: 2025
+                        const century = Math.floor(currentYear / 100) * 100; // 2000
+                        const pivot = (currentYear % 100) + 5;        // ej: 30 si estamos en 2025
+
+                        if (y < 100) {
+                            if (y <= pivot) {
+                                y = century + y;           // ej: "29" -> 2029
+                            } else {
+                                y = (century - 100) + y;   // ej: "75" -> 1975
+                            }
+                        }
+
+                        // JS: meses empiezan en 0
+                        const date = new Date(y, m - 1, d);
+
+                        // Validación estricta (no acepta 31/04/2025, ni 29/02/2023, etc.)
+                        if (
+                            date.getFullYear() !== y ||
+                            date.getMonth() !== m - 1 ||
+                            date.getDate() !== d
+                        ) return null;
+
+                        // Devuelve en ISO yyyy-mm-dd
+                        return date.toISOString().slice(0, 10);
+                    }
+
 
                     /**
                      * ¿Celda CSV segura?
@@ -318,18 +348,32 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                     function parseCSV(text) {
                         const rows = [];
                         const lines = text.split(/\r?\n/);
-                        for (let i = 0; i < lines.length; i++) {
-                            let line = lines[i];
-                            if (!line || /^\s*$/.test(line)) continue; // saltear vacías
-                            // elegimos separador por conteo
-                            const semi = (line.match(/;/g) || []).length;
-                            const coma = (line.match(/,/g) || []).length;
-                            const sep = semi >= coma ? ';' : ',';
-                            const cols = line.split(sep).map(c => c.trim());
-                            rows.push(cols);
+
+                        for (let line of lines) {
+                            if (!line.trim()) continue;
+                            const values = [];
+                            let inQuotes = false;
+                            let value = "";
+
+                            for (let i = 0; i < line.length; i++) {
+                                const char = line[i];
+
+                                if (char === '"') {
+                                    inQuotes = !inQuotes;
+                                } else if (char === ',' && !inQuotes) {
+                                    values.push(value);
+                                    value = "";
+                                } else {
+                                    value += char;
+                                }
+                            }
+                            values.push(value);
+                            rows.push(values);
                         }
+
                         return rows;
                     }
+
                     function parseDateLocal(ymd) { // yyyy-mm-dd → Date local 00:00
                         const [y, m, d] = ymd.split('-').map(Number); // extrae partes y convierte a números
                         // console.log("parseDateLocal: y="+y+" m="+m+" d="+d);
@@ -346,6 +390,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         const num = parseFloat(input.toString().replace(/[^\d.-]/g, ''));
                         return isNaN(num) ? null : num;
                     }
+
 
                     // Sanitizar texto de tipo select (ej: COMPRA, VENTA)
                     function sanitizeText(input) {
@@ -531,6 +576,8 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             }
                         }
                         $('#fileImportCsv').on('change', function () {
+                            $('#csvTable').empty();
+                            $('#outputImportCsv').text('');
                             if (this.files && this.files.length > 0) {
                                 $('#outputImportCsv').text(this.files[0].name);
                             } else {
@@ -563,8 +610,8 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                         })()
                                         : e.target.result;
 
-                                    rows = parseCSV(text); // Devuelve array de caracteres comprendidos dentro de archivo .csv o arreglo de caracteres pre-separados por , en caso de archivo .xlsx/xlsm
-                                    const startsLikeHeader = rows[0] && /[F,f]echa/i.test(rows[0][0] || "") && /[M,m]onto/i.test(rows[0][1] || "") && /[T.t]ipo/i.test(rows[0][2] || "") && /[T,t]ipo_[P,p]roducto/i.test(rows[0][3] || "") && /[C,c]antidad_[P,p]roducto/i.test(rows[0][4] || "") && /[D,d]escripci[o,ó]n/i.test(rows[0][5] || "");
+                                    rows = parseCSV(text).filter(r => r.length > 0 && r.some(c => c.trim() !== "")); // Devuelve array de caracteres comprendidos dentro de archivo .csv o arreglo de caracteres pre-separados por , en caso de archivo .xlsx/xlsm
+                                    const startsLikeHeader = rows[0] && /[Ff]echa/i.test(rows[0][0] || "") && /[Mm]onto/i.test(rows[0][1] || "") && /[Tt]ipo/i.test(rows[0][2] || "") && /[Tt]ipo_[Pp]roducto/i.test(rows[0][3] || "") && /[Cc]antidad_[Pp]roducto/i.test(rows[0][4] || "") && /[D,d]escripci[oó]n/i.test(rows[0][5] || "");
                                     $('#csvTable').append(`
                                     <thead>
                                         <tr>
@@ -576,7 +623,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                             <td>Comentario</td>
                                         </tr>
                                     </thead>`);
-                                    const startsOn = startsLikeHeader ? 1 : 0;
+                                    const startsOn = startsLikeHeader ? 0 : 1;
                                     for (let i = startsOn; i < rows.length; i++) {
                                         const [fecha, monto, tipo, dato, dato_cantidad, detalle] = rows[i];
                                         // console.log(`codigo:${code} Nombre:${nombre} NumStock:${stock} YYYY-MM-DD:${toYMD(fecha)}`);
@@ -584,7 +631,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                         $('#csvTable').append(`
                                         <tr>
                                             <td>${toYMD(fecha)}</td>
-                                            <td>${monto}</td>
+                                            <td>${sanitizeNumber(monto, true)}</td>
                                             <td>${tipo}</td>
                                             <td>${dato}</td>
                                             <td>${dato_cantidad}</td>
@@ -609,13 +656,22 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         $("#btnImportCsv").click(function (e) {
                             e.preventDefault();
                             const uid = sanitizeNumber($('#uid_n').val());
-                            for (let i = 0; i < rows.length; i++) {
-                                var [csvFecha, csvMonto, csvTipo, csvDato, csvDato_Cantidad, csvDetalle] = rows[i];
+                            for (let i = 1; i < rows.length; i++) {
+                                let [csvFecha, csvMonto, csvTipo, csvDato, csvDato_Cantidad, csvDetalle] = rows[i];
+
+                                // Normalizar fecha
                                 csvFecha = toYMD(csvFecha);
+
+                                // Normalizar monto (maneja comas, puntos, moneda)
+                                csvMonto = sanitizeNumber(csvMonto, true);
+
+                                // Normalizar cantidad de producto (si viene con formato Excel)
+                                csvDato_Cantidad = sanitizeNumber(csvDato_Cantidad);
+
                                 saveToTable(csvFecha, csvMonto, csvTipo, uid, csvDato, csvDato_Cantidad, csvDetalle);
-                                // console.log(csvFecha, csvMonto, csvTipo, csvDato, csvDato_Cantidad, csvDetalle)
                             }
                         });
+
                     });
                 </script>
                 <!-- Contenedores de gráficos -->
