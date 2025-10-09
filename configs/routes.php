@@ -35,19 +35,19 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/user/recover', function ($ROUTE_PARAMS) {
 		include('pages/user/recover.php');
 	});
-	$r->addRoute(['GET','POST'], '/guardar_tarea.php', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/guardar_tarea.php', function ($ROUTE_PARAMS) {
 		include('pages/guardar_tarea.php');
 	});
-	$r->addRoute(['GET','POST'], '/get_tareas.php', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/get_tareas.php', function ($ROUTE_PARAMS) {
 		include('pages/get_tareas.php');
 	});
-	$r->addRoute(['GET','POST'], '/eliminar_tareas.php', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/eliminar_tareas.php', function ($ROUTE_PARAMS) {
 		include('pages/eliminar_tareas.php');
 	});
-	$r->addRoute(['GET','POST'], '/clasetareas.php', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/clasetareas.php', function ($ROUTE_PARAMS) {
 		include('pages/clasetareas.php');
 	});
-	$r->addRoute(['GET','POST'], '/actualizar_tareas.php', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/actualizar_tareas.php', function ($ROUTE_PARAMS) {
 		include('pages/actualizar_tareas.php');
 	});
 	$r->addRoute('GET', '/user/register', function ($ROUTE_PARAMS) {
@@ -131,11 +131,20 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
 	});
+		$r->addRoute('POST', '/BGuiaContent', function ($ROUTE_PARAMS) {
+		include('system/GuiaContent.php');
+	});
 	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
 		require('system/admin/BchangePermission.php');
 	});
-	$r->addRoute(['GET','POST'], '/Bpanel', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/getUserViews', function ($ROUTE_PARAMS) {
+		require('system/getUserViews.php');
+	});
+	$r->addRoute(['GET', 'POST'], '/Bpanel', function ($ROUTE_PARAMS) {
 		require('system/admin/Bpanel.php');
+	});
+	$r->addRoute(['GET', 'POST'], '/guia', function ($ROUTE_PARAMS) {
+		require('pages/guia.php');
 	});
 });
 

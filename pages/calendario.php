@@ -1,7 +1,7 @@
 <?php
 require(__DIR__ . '/../../system/main.php');
 session_start();
-$layout = new HTML(title: 'AppGro - Calendario');
+$layout = new HTML(title: 'AppGro - Calendario', uid: $_SESSION['user_id']);
 ?>
 
 <main class="main__content">

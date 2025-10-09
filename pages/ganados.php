@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'GanadoS UwU');
+$layout = new HTML(title: 'GanadoS UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 
 if (!isset($_GET['id_grupo'])) {

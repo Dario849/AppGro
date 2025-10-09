@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'Ganado UwU');
+$layout = new HTML(title: 'Ganado UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 
 if (!isset($_GET['nro_caravana'])) {

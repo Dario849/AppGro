@@ -1,6 +1,5 @@
 <?php
 require('system/main.php');
-require dirname(__DIR__, 3) . '\system\resources\database.php';
 sessionCheck();
 $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']);
 ?>

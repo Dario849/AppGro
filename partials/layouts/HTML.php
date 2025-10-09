@@ -25,8 +25,10 @@ class HTML
 			<link href="/src/styles/global.scss" rel="stylesheet" />
 			<script src="src/scripts/perspectiveCard.js"></script>
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
+			<script src="/node_modules/tinymce/tinymce.min.js" type="module"></script>
 			<script>
 				$(function () {
+					$('#navBar').load('/partials/navBar.html'); //Carga barra lateral para navegación de toda la página
 					$('#submitLoginButton').click(function () { // función on click, activa submit por POST a backend, añade token recaptcha y action explicita de login/validarUsuario
 						grecaptcha.ready(function () { // grecaptcha, añade token, action al form y lo envía (función propia de google API)
 							grecaptcha.execute('6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq', {
@@ -44,7 +46,8 @@ class HTML
 		</head>
 
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">
-			<?= renderNavbar($_SESSION['user_id'] ?? null), $output; ?>
+			<div id="navBar" style="height: inherit;"></div>
+			<?= $output; ?>
 		</body>
 
 		</html>

@@ -5,7 +5,7 @@
 // Si require('system/main.php') te funcionó antes, podés usar esa línea.
 require(__DIR__ . '/../../system/main.php');
 session_start();
-$layout = new HTML(title: 'AppGro - Tareas');
+$layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
 ?>
 
 <main class="main__content">

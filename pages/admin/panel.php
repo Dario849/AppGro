@@ -2,7 +2,7 @@
 require('system/main.php');
 sessionAuth();
 require dirname(__DIR__, levels: 3) . '\system\resources\database.php'; // conecta con tu PDO $pdo
-$layout = new HTML(title: 'AppGro-Panel Administrativo');
+$layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id']);
 ?>
 <main class="main__content">
     <div class="main_container">
@@ -114,7 +114,7 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo');
         ul = document.getElementById("users");
         li = ul.getElementsByTagName("li");
         for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("a")[0];
+            a = li[i].getElementsByTagName("p")[0];
             txtValue = a.textContent || a.innerText;
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
                 li[i].style.display = "";
