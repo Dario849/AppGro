@@ -16,7 +16,6 @@
 			display: flex;
 			margin-bottom: 1vh;
 			position: absolute;
-			// z-index: 1;
 			place-self: flex-end;
 			margin-right: 0.5vh;
 			.setting-btn {
@@ -123,7 +122,7 @@
 
 	&__navbar a button {
 		text-align: center;
-		position: relative; // crea un nuevo contexto de apilamiento
+		position: relative; 
 		-webkit-text-fill-color: azure;
 		border: 1px solid #ccc;
 		border-radius: 10px;
@@ -232,7 +231,7 @@ body {
 				}
 			}
 		}
-		/* Style the collapsible content. Note: hidden by default */
+
 		.content {
 			padding: 2vh 4vh;
 			display: none;
@@ -449,8 +448,6 @@ body {
 		--gt-color1: #00d18b;
 		/* color del centro del gradiente */
 		--gt-color2: #00787a;
-		/* color externo del gradiente */
-
 		/* Variables reactivas por elemento */
 		--X: 50%;
 		/* posición horizontal del hotspot (0%-100%) */
@@ -467,7 +464,6 @@ body {
 		padding: 16px;
 		color: #fff;
 
-		/* Hotspot + fondo. No animamos background en CSS para evitar repaints caros */
 		background: radial-gradient(
 			circle at var(--X) var(--Y),
 			var(--gt-color1) 0%,
@@ -698,7 +694,6 @@ body {
 		}
 	}
 
-	/* From Uiverse.io by alexmaracinaru */
 	.cta {
 		position: relative;
 		margin: auto;
@@ -801,7 +796,6 @@ body {
 			margin-top: 1vh;
 		}
 
-		/* To hide the checkbox */
 		.checkboxInput {
 			display: none;
 		}
@@ -845,7 +839,6 @@ body {
 			background-color: white;
 		}
 
-		/* Switch background change */
 		.checkboxInput:checked + .toggleSwitch {
 			background-color: rgb(148, 118, 255);
 			transition-duration: 0.2s;
@@ -947,18 +940,26 @@ body {
 			opacity: 0;
 			cursor: pointer;
 		}
+		.containerDatafilter{
+			select{
+				all: revert;
+			}
+			input[type='text']{
+				all:revert;
+			}
+		}
 		.modal {
-			display: none; /* Hidden by default */
-			position: fixed; /* Stay in place */
-			z-index: 1; /* Sit on top */
-			padding-top: 100px; /* Location of the box */
+			display: none; 
+			position: fixed; 
+			z-index: 1; 
+			padding-top: 100px; 
 			left: 0;
 			top: 0;
-			width: 100%; /* Full width */
-			height: 100%; /* Full height */
-			overflow: auto; /* Enable scroll if needed */
-			background-color: rgb(0, 0, 0); /* Fallback color */
-			background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+			width: 100%; 
+			height: 100%; 
+			overflow: auto; 
+			background-color: rgb(0, 0, 0); 
+			background-color: rgba(0, 0, 0, 0.4); 
 		}
 		.csvContainer {
 			button {
@@ -984,7 +985,7 @@ body {
 		/* Modal Content */
 		.modal-content,
 		.csvmodal-content {
-			background-color: #fefefe;
+			background-color: #2a2a2a;
 			margin: auto;
 			padding: 20px;
 			border: 1px solid #888;
@@ -997,7 +998,7 @@ body {
 				position: relative;
 				justify-content: center;
 				align-items: center;
-				background-color: #307750;
+				background-color: #16221b;
 				color: #fff;
 				border-style: none;
 				padding: 1em 2em;
@@ -1023,7 +1024,7 @@ body {
 				height: 100%;
 				width: 0;
 				border-radius: 0.5em;
-				background-color: #469b61;
+				background-color: #676767;
 				z-index: -1;
 				transition: all 350ms;
 			}
@@ -1034,7 +1035,6 @@ body {
 				display: flex;
 				gap: 1rem;
 				position: relative;
-				/* From Uiverse.io by andrew-demchenk0 */
 				.opcionBalance,
 				.opcionProducto {
 					--font-color-dark: #323232;
@@ -1134,7 +1134,7 @@ body {
 					transition: inherit;
 					box-shadow: inherit;
 					border-radius: 5em;
-					background: rgba(141, 141, 141, 0.664);
+					background: rgb(65 99 18 / 43%);
 					box-shadow: #000000 0px 0px 0px 1px;
 					padding: 0.1em 0.5em;
 					font-size: 20px;
@@ -1144,7 +1144,7 @@ body {
 					align-self: anchor-center;
 					outline: none;
 					&:hover {
-						background: rgba(141, 141, 141, 0.856);
+						background: rgb(10 12 154 / 86%);
 					}
 
 					&:active {
@@ -1172,7 +1172,6 @@ body {
 			}
 		}
 
-		/* The Close Button */
 		.close {
 			color: #aaaaaa;
 			float: right;
@@ -1235,10 +1234,6 @@ body {
 			}
 		}
 
-		.stats-graphs {
-			width: 80%;
-		}
-
 		.stats-chart-container {
 			background: #fff;
 			padding: 2rem;
@@ -1249,9 +1244,8 @@ body {
 		}
 
 		.stats-canvas {
-			width: 100% !important;
-			height: 100% !important;
-			// display: block;
+			width: 130vh !important;
+			height: 48vh !important;
 		}
 
 		button {
@@ -1311,33 +1305,18 @@ body {
 		.csvContainer {
 			margin-left: 5vh;
 		}
+		.icon {
+			width: 1.7em;
+			height: 1.7em;
+			color: #0b7c42; 
+			fill: currentColor; 
+		}
+		.iconCsv {
+			width: 2.7em;
+			height: 2.7em;
+		}
+		.container-btn-file .icon {
+			margin-right: 0.5rem;
+		}
 	}
-}
-/* escala con la fuente si querés: width/height en em */
-.icon {
-	width: 1.7em; /* ejemplo: 20px si font-size = 16px */
-	height: 1.7em;
-	display: inline-block;
-	vertical-align: middle;
-	color: #fff; /* controla el color del icono */
-	fill: currentColor; /* fallback: asegura herencia si el path no tiene fill */
-}
-
-/* margen entre icono y texto */
-.container-btn-file .icon {
-	margin-right: 0.5rem;
-}
-
-/* si querés tamaños fijos */
-.icon--sm {
-	width: 16px;
-	height: 16px;
-}
-.icon--md {
-	width: 20px;
-	height: 20px;
-}
-.icon--lg {
-	width: 32px;
-	height: 32px;
 }

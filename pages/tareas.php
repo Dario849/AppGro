@@ -12,84 +12,120 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
   <style>
     /* --- Estilos de la tabla --- */
     .tabla-container {
-      max-height: 500px;      /* altura máxima visible */
-      overflow-y: auto;       /* scroll vertical */
+      max-height: 500px;
+      /* altura máxima visible */
+      overflow-y: auto;
+      /* scroll vertical */
       border: 1px solid #40444b;
       border-radius: 6px;
       margin-bottom: 12px;
     }
-    .tabla-tareas { width:100%; border-collapse:collapse; }
-    .tabla-tareas th, .tabla-tareas td {
-      border:1px solid #40444b;
-      padding:8px;
-      text-align:center;
-      background:#2f3136;
-      color:#eee;
+
+    .tabla-tareas {
+      width: 100%;
+      border-collapse: collapse;
     }
+
+    .tabla-tareas th,
+    .tabla-tareas td {
+      border: 1px solid #40444b;
+      padding: 8px;
+      text-align: center;
+      background: #2f3136;
+      color: #eee;
+    }
+
     .tabla-tareas td input,
     .tabla-tareas td select {
-      width:100%;
-      padding:6px;
-      border-radius:4px;
-      background:#1f2124;
-      color:#eee;
-      border:1px solid #5865f2;
+      width: 100%;
+      padding: 6px;
+      border-radius: 4px;
+      background: #1f2124;
+      color: #eee;
+      border: 1px solid #5865f2;
     }
+
     .status-circle {
-      width:16px; height:16px; border-radius:50%;
-      display:inline-block; border:2px solid #ccc;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: inline-block;
+      border: 2px solid #ccc;
     }
-    .status-circle[data-estado="activa"]     { background:#f0c419; }
-    .status-circle[data-estado="completada"] { background:#43b581; }
-    .status-circle[data-estado="cancelada"]  { background:#f04747; }
+
+    .status-circle[data-estado="activa"] {
+      background: #f0c419;
+    }
+
+    .status-circle[data-estado="completada"] {
+      background: #43b581;
+    }
+
+    .status-circle[data-estado="cancelada"] {
+      background: #f04747;
+    }
 
     /* Botones */
     .btn-agregar {
-      margin:10px 0;
-      padding:8px 12px;
-      background:#5865f2;
-      color:#fff;
-      border:none;
-      border-radius:4px;
-      cursor:pointer;
+      margin: 2vh 0;
+      padding: 8px 12px;
+      background: #5865f2;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
+
     .admin-controls {
-      display:flex; gap:10px; align-items:center; margin-top:12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 12px;
     }
-    .admin-controls select, .admin-controls button {
-      padding:6px 10px;
-      border-radius:4px;
-      background:#2f3136;
-      color:#eee;
-      border:1px solid #5865f2;
-      cursor:pointer;
+
+    .admin-controls select,
+    .admin-controls button {
+      padding: 6px 10px;
+      border-radius: 4px;
+      background: #2f3136;
+      color: #eee;
+      border: 1px solid #5865f2;
+      cursor: pointer;
     }
 
     /* Modal */
     #modalAgregarTarea {
-      display:none;
-      position:fixed; inset:0;
-      background:rgba(0,0,0,0.7);
-      justify-content:center; align-items:center;
-      z-index:1000;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
     }
+
     #modalAgregarTarea .card {
-      background:#2c2f33; color:#fff;
-      padding:18px;
-      border-radius:8px;
-      width:320px;
+      background: #2c2f33;
+      color: #fff;
+      padding: 18px;
+      border-radius: 8px;
+      width: 320px;
     }
   </style>
 
-   <!-- Leyenda y controles -->
+  <!-- Leyenda y controles -->
   <div style="margin-top:14px;">
     <div style="display:flex; gap:12px; align-items:center;">
-      <div><span style="display:inline-block;width:12px;height:12px;background:#f0c419;border-radius:50%;"></span> activa</div>
-      <div><span style="display:inline-block;width:12px;height:12px;background:#43b581;border-radius:50%;"></span> completada</div>
-      <div><span style="display:inline-block;width:12px;height:12px;background:#f04747;border-radius:50%;"></span> cancelada</div>
+      <div><span style="display:inline-block;width:12px;height:12px;background:#f0c419;border-radius:50%;"></span>
+        activa</div>
+      <div><span style="display:inline-block;width:12px;height:12px;background:#43b581;border-radius:50%;"></span>
+        completada</div>
+      <div><span style="display:inline-block;width:12px;height:12px;background:#f04747;border-radius:50%;"></span>
+        cancelada</div>
     </div>
 
-    <div id="mensaje-eliminar" style="display:none; padding:8px; margin-bottom:10px; border-radius:4px; color:#fff;"></div>
+    <div id="mensaje-eliminar" style="display:none; padding:8px; margin-bottom:10px; border-radius:4px; color:#fff;">
+    </div>
 
     <div class="admin-controls">
       <label for="criterioEliminar">ELIMINACIÓN SEMANAL - MENSUAL - ANUAL:</label>
@@ -100,9 +136,9 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       </select>
       <button id="btnEliminarTareas">ELIMINAR</button>
     </div>
+    <button id="btnAgregar" class="btn-agregar">＋ Agregar Tarea</button>
   </div>
 
-  <button id="btnAgregar" class="btn-agregar">＋ Agregar Tarea</button>
 
   <!-- Filtros y orden -->
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -149,8 +185,10 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       <label>Descripción:</label>
       <input type="text" id="inputDescripcion" style="width:100%; margin-bottom:10px;"><br>
       <div style="display:flex; justify-content:flex-end; gap:8px;">
-        <button id="btnAceptarTarea" style="background:#2ecc71; color:#fff; padding:8px 12px; border:none; border-radius:4px;">Aceptar</button>
-        <button id="btnCancelarTarea" style="background:#f04747; color:#fff; padding:8px 12px; border:none; border-radius:4px;">Cancelar</button>
+        <button id="btnAceptarTarea"
+          style="background:#2ecc71; color:#fff; padding:8px 12px; border:none; border-radius:4px;">Aceptar</button>
+        <button id="btnCancelarTarea"
+          style="background:#f04747; color:#fff; padding:8px 12px; border:none; border-radius:4px;">Cancelar</button>
       </div>
     </div>
   </div>
@@ -182,7 +220,7 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
 
             const tdEstado = document.createElement('td');
             const select = document.createElement('select');
-            ['activa','completada','cancelada'].forEach(opt => {
+            ['activa', 'completada', 'cancelada'].forEach(opt => {
               const o = document.createElement('option');
               o.value = opt;
               o.textContent = opt;
@@ -233,29 +271,29 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ id, campo, valor })
         })
-        .then(r => r.json())
-        .then(resp => {
-          if (!resp.success) {
-            input.style.border = '1px solid red';
-            console.error(resp.error);
-          } else {
-            input.style.border = '';
-            if (campo === 'estado') {
-              const fila = document.querySelector(`tr[data-id='${id}']`);
-              if (fila) {
-                const circulo = fila.querySelector('.status-circle');
-                if (circulo) {
-                  circulo.setAttribute('data-estado', valor);
-                  circulo.title = `Estado: ${valor}`;
+          .then(r => r.json())
+          .then(resp => {
+            if (!resp.success) {
+              input.style.border = '1px solid red';
+              console.error(resp.error);
+            } else {
+              input.style.border = '';
+              if (campo === 'estado') {
+                const fila = document.querySelector(`tr[data-id='${id}']`);
+                if (fila) {
+                  const circulo = fila.querySelector('.status-circle');
+                  if (circulo) {
+                    circulo.setAttribute('data-estado', valor);
+                    circulo.title = `Estado: ${valor}`;
+                  }
                 }
               }
             }
-          }
-        })
-        .catch(err => {
-          input.style.border = '1px solid red';
-          console.error(err);
-        });
+          })
+          .catch(err => {
+            input.style.border = '1px solid red';
+            console.error(err);
+          });
       }, 600);
     }
 
@@ -281,19 +319,19 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ criterio })
         })
-        .then(r => r.json())
-        .then(data => {
-          if (data.success) {
-            mostrarMensaje(`Se eliminaron ${data.eliminadas} tareas (${criterio}).`, true);
-            cargarTareas(document.getElementById('filtro').value);
-          } else {
-            mostrarMensaje("Error: " + data.error, false);
-          }
-        })
-        .catch(err => {
-          console.error(err);
-          mostrarMensaje("Error de conexión al eliminar tareas.", false);
-        });
+          .then(r => r.json())
+          .then(data => {
+            if (data.success) {
+              mostrarMensaje(`Se eliminaron ${data.eliminadas} tareas (${criterio}).`, true);
+              cargarTareas(document.getElementById('filtro').value);
+            } else {
+              mostrarMensaje("Error: " + data.error, false);
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            mostrarMensaje("Error de conexión al eliminar tareas.", false);
+          });
       });
 
       // Función para mostrar mensaje dinámico
@@ -331,7 +369,7 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
               // estado
               const tdEstado = document.createElement('td');
               const select = document.createElement('select');
-              ['activa','completada','cancelada'].forEach(opt => {
+              ['activa', 'completada', 'cancelada'].forEach(opt => {
                 const o = document.createElement('option'); o.value = opt; o.textContent = opt;
                 if (opt === t.estado) o.selected = true;
                 select.appendChild(o);
@@ -378,18 +416,18 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ estado: 'activa', fecha_hora_inicio: inicio, fecha_hora_fin: venc, texto: desc })
         })
-        .then(r => r.json())
-        .then(res => {
-          if (res.success) {
-            modal.style.display = 'none';
-            document.getElementById('inputInicio').value = '';
-            document.getElementById('inputVencimiento').value = '';
-            document.getElementById('inputDescripcion').value = '';
-            document.getElementById('filtro').value = 'activa';
-            cargarTareas('activa');
-          } else alert('Error al guardar');
-        })
-        .catch(err => { console.error(err); alert('Error de conexión'); });
+          .then(r => r.json())
+          .then(res => {
+            if (res.success) {
+              modal.style.display = 'none';
+              document.getElementById('inputInicio').value = '';
+              document.getElementById('inputVencimiento').value = '';
+              document.getElementById('inputDescripcion').value = '';
+              document.getElementById('filtro').value = 'activa';
+              cargarTareas('activa');
+            } else alert('Error al guardar');
+          })
+          .catch(err => { console.error(err); alert('Error de conexión'); });
       });
 
       // carga inicial

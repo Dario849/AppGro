@@ -104,6 +104,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                 electrónico <strong><a
                         href="mailto:soporteappgro.zeabur@gmail.com">soporteappgro.zeabur@gmail.com</a></strong></p>
             <p>¡Gracias por utilizar nuestra aplicación!</p>
+            <p style="align-self: flex-end; margin-right: 7vh;">Versión: <strong>1.0.0</strong></p>
         </div>
     </div>
 </main>

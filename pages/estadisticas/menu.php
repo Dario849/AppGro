@@ -9,6 +9,9 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
         <div class="main_containerEstadisticas">
             <div class="stats-container">
                 <h1 class="stats-title">Estadísticas Productivas</h1>
+                <p>
+                    Filtre por periodos (fecha desde / fecha hasta) y agrupe datos por día, mes o año.
+                </p>
                 <!-- Filtros generales -->
                 <div class="stats-filtros">
                     <label>Desde: <input type="date" id="filtro_desde" class="stats-select" /></label>
@@ -24,13 +27,17 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
 
                 <!-- Selector de pestañas -->
                 <div class="stats-tabs">
-                    <button class="stats-tab-btn active" data-target="ventas">Ventas</button>
-                    <button class="stats-tab-btn" data-target="compras">Compras</button>
-                    <button class="stats-tab-btn" data-target="balance">Balance</button>
-                    <button class="stats-tab-btn" data-target="ganado">Altas Ganado</button>
-                    <button class="stats-tab-btn" data-target="cultivos">Altas Cultivos</button>
+                    <button class="stats-tab-btn active" data-target="ventas"
+                        title="Ver datos de ventas">Ventas</button>
+                    <button class="stats-tab-btn" data-target="compras" title="Ver datos de compras">Compras</button>
+                    <button class="stats-tab-btn" data-target="balance"
+                        title="Ver datos de cálculo: (compras - ventas)">Balance</button>
+                    <button class="stats-tab-btn" data-target="ganado" title="Ver datos de nuevos ganados">Altas
+                        Ganado</button>
+                    <button class="stats-tab-btn" data-target="cultivos" title="Ver datos de nuevos cultivos">Altas
+                        Cultivos</button>
                     <button id="btnAdd"><img width="20px" src="plus-solid-full.svg" alt="Agregar" class="stats-tab-icon"
-                            title="Agregar" data-target="agregar" /></button>
+                            title="Agregar nuevos registros" data-target="agregar" /></button>
 
                     <!-- The Modal -->
                     <div id="myModal" class="modal">
@@ -42,17 +49,19 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             <div id="inputs" class="modal-body">
                                 <fieldset>
                                     <legend>Fecha de compra/venta</legend>
-                                    <input type="date" value="" id="dateNewBalance">
+                                    <input type="date" value="" id="dateNewBalance"
+                                        title="Fecha en la que ocurrió dicha transacción">
                                 </fieldset>
                                 <fieldset>
                                     <legend>Monto</legend>
-                                    <input type="number" id="valueNewBalance" value="0" autocomplete="off">
+                                    <input type="number" id="valueNewBalance" value="0" autocomplete="off"
+                                        title="El precio total del producto que compra/vende">
                                     <br>
                                     <b><span id="monto-formateado"></span></b>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Tipo de nuevo balance</legend>
-                                    <div class="opcionBalance">
+                                    <div class="opcionBalance" title="Clase de transacción de la que se trata">
                                         <div class="option">
                                             <input class="input" type="radio" id="optNewCompra" name="optNewBalance"
                                                 value="Compra" checked="">
@@ -71,7 +80,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                 </fieldset>
                                 <fieldset>
                                     <legend>Tipo de producto</legend>
-                                    <div class="opcionProducto">
+                                    <div class="opcionProducto" title="Tipo del producto que compra/vende">
                                         <div class="option">
                                             <input class="input" type="radio" id="optNewGanado" name="opcionProducto"
                                                 value="Ganado" checked="">
@@ -104,17 +113,19 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                 </fieldset>
                                 <fieldset>
                                     <legend>Cantidad</legend>
-                                    <input type="number" id="valueNewCantidad" value="0" autocomplete="off">
+                                    <input type="number" id="valueNewCantidad" value="0" autocomplete="off"
+                                        title="La cantidad de dicho producto comprado/vendido">
                                 </fieldset>
                                 <fieldset>
                                     <legend>Descripción de producto</legend>
                                     <textarea placeholder="Ingrese posible descripción del producto"
-                                        class="textareaComentario" id="optNewComentario"></textarea>
+                                        class="textareaComentario" id="optNewComentario"
+                                        title="Descripción relevante para conocer el origen o infermación relevante acerca del producto"></textarea>
                                 </fieldset>
                                 <fieldset>
                                     <legend>Exportar/Importar</legend>
                                     <div class="csvContainer">
-                                        <button id="csvBtn">
+                                        <button id="csvBtn" title="Visualizar opciones para manejo en hoja de calculos">
                                             <svg class="icon" style="color:black;">
                                                 <use href="excel_logo.svg#icon-libro"></use>
                                             </svg>
@@ -131,14 +142,14 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                         <svg class="icon">
                                                             <use href="excel_logo.svg#icon-libro"></use>
                                                         </svg>
-                                                        Descargar archivo
+                                                        Descargar archivo en formato excel
                                                     </button>
                                                     <br>
                                                     <button id="btnCsv" class="container-btn-file">
-                                                        <svg class="icon">
+                                                        <svg class="iconCsv">
                                                             <use href="ext_csv_filetype_icon_176252.svg"></use>
                                                         </svg>
-                                                        Descargar archivo
+                                                        Descargar archivo en formato csv
                                                     </button>
                                                     <script>
                                                         async function fetchTransacciones() {
@@ -186,7 +197,6 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                             catch (e) { alert("Error: " + e.message); }
                                                         });
                                                     </script>
-
                                                 </fieldset>
                                                 <fieldset>
                                                     <legend>Descargar plantilla</legend>
@@ -195,22 +205,27 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                             <use href="public\excel_logo.svg#icon-libro"></use>
                                                         </svg>
                                                         <a class="file" href="Plantilla_Balances-AppGro.xlsx"></a>
-                                                        Descargar Archivo
+                                                        Descargar plantilla para importar nuevos datos
                                                     </button>
                                                     </button>
                                                 </fieldset>
                                                 <fieldset>
                                                     <legend>Importar datos al sistema</legend>
+                                                    <p><strong>Se advierte:</strong> Procure subir hoja de calculos que
+                                                        coincida con el ejemplo presente en la plantilla.<br>
+                                                        De lo contrario, no verá reflejados los nuevos datos de forma
+                                                        correcta.
+                                                    </p>
                                                     <button class="container-btn-file">
                                                         <svg class="icon">
                                                             <use href="public\excel_logo.svg#icon-libro"></use>
                                                         </svg>
-                                                        Subir archivo
+                                                        Subir/importar nuevos datos en bloque
                                                         <input class="file" id="fileImportCsv" type="file"
                                                             accept=".csv,.xlsx,.xlsm" />
                                                     </button>
 
-                                                    <p>Contenido a importar:</p>
+                                                    <p>Nombre de archivo a importar:</p>
                                                     <pre id="outputImportCsv"></pre>
                                                     <p>Preview tabla:</p>
                                                     <table id="csvTable">
@@ -228,6 +243,18 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                         &crarr; Añadir
                                     </button>
                                 </fieldset>
+                            </div>
+                            <div id="ContainerFilterData" class="containerDatafilter">
+                                <p>
+                                    Buscar por:
+                                    <select id="SelectFilterTable">
+                                        <option value="Fecha">Filtrar fecha</option>
+                                        <option value="Usuario reponsable">Nombre de usuario</option>
+                                        <option value="Valor">Monto total</option>
+                                        <option value="Comentario">Descripción</option>
+                                    </select>
+                                    <input type="text" id="InputFilterTable">
+                                </p>
                             </div>
                             <div class="table-container">
                                 <table>
@@ -248,13 +275,51 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         </div>
                     </div>
                 </div>
-                <script type="text/javascript" src="js/xlsx.full.min.js"></script>
                 <script type="module">
                     // #TODO: Añadir botón de importar desde archivo CSV
                     // #TODO: Añadir exportador de tabla a CSV
                     // #TODO: Añadir resumen de ganado donde: Muestre total activo, 
                     import Swal from 'sweetalert2/dist/sweetalert2.js';
                     import 'sweetalert2/src/sweetalert2.scss';
+                    $("#InputFilterTable").on('input', function () {
+                        var filter = $(this).val().toUpperCase();
+                        var selected = $("#SelectFilterTable").val(); // valor del <select>
+                        var table = $("#tableOldBalances");
+                        var tr = table.find("tr");
+                        // índice de columna según encabezado
+                        var index = -1;
+                        if (selected) {
+                            table.find("th").each(function (i) {
+                                if ($(this).text().toLowerCase() === selected.toLowerCase()) {
+                                    index = i;
+                                    return false;
+                                }
+                            });
+                        }
+
+                        tr.each(function () {
+                            var tds = $(this).find("td");
+                            var found = false;
+
+                            if (index >= 0 && tds.eq(index).length) {
+                                // filtra solo por la columna seleccionada
+                                var txt = tds.eq(index).text();
+                                found = txt.toUpperCase().indexOf(filter) > -1;
+                            } else {
+                                // si no hay selección, busca en todas las columnas
+                                tds.each(function () {
+                                    if ($(this).text().toUpperCase().indexOf(filter) > -1) {
+                                        found = true;
+                                        return false;
+                                    }
+                                });
+                            }
+                            console.log(found)
+                            $(this).toggle(found);
+                        });
+                    });
+
+
                     /**
                      * ¿Vacío?
                      * Propósito: detectar valores "vacíos" útiles para formularios/CSV.
@@ -504,7 +569,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             const optProd = sanitizeText($('input[name="opcionProducto"]:checked').val());
                             const cantProd = sanitizeNumber($('#valueNewCantidad').val());
                             const textDescription = $('#optNewComentario').val();
-                            console.log("New balance to add: " + date + " | " + value + " | " + type + " | " + optProd + " | " + cantProd + " | " + textDescription);
+                            // console.log("New balance to add: " + date + " | " + value + " | " + type + " | " + optProd + " | " + cantProd + " | " + textDescription);
                             if (value === 0) {
                                 let timerInterval;
                                 Swal.fire({
@@ -554,6 +619,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             }
                             csvmodal.style.display = "block";
                             $(".csvmodal-content").css(csvstyles);
+                            $('#btnImportCsv').hide();
                         }
                         // When the user clicks on <span> (x), close the modal
                         span.onclick = function () {
@@ -575,6 +641,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                             }
                         }
                         $('#fileImportCsv').on('change', function () {
+                            $('#btnImportCsv').show();
                             $('#csvTable').empty();
                             $('#outputImportCsv').text('');
                             if (this.files && this.files.length > 0) {
