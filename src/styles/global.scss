@@ -122,7 +122,7 @@
 
 	&__navbar a button {
 		text-align: center;
-		position: relative; 
+		position: relative;
 		-webkit-text-fill-color: azure;
 		border: 1px solid #ccc;
 		border-radius: 10px;
@@ -236,50 +236,6 @@ body {
 			padding: 2vh 4vh;
 			display: none;
 			overflow: hidden;
-		}
-		.glass-card {
-			background: rgb(92 92 92 / 10%);
-			backdrop-filter: blur(2px);
-			-webkit-backdrop-filter: blur(2px);
-			border-radius: 20px;
-			border: 1px solid rgba(255, 255, 255, 0.3);
-			box-shadow:
-				-8px -20px 32px 0px rgba(0, 0, 0, 0.1),
-				inset 14px 8px 0px 0px rgb(255 255 255 / 0%),
-				inset 0 -1px 0 rgba(255, 255, 255, 0.1),
-				inset 0 0 15px 3px rgb(255 255 255 / 59%);
-			position: relative;
-			overflow: hidden;
-		}
-
-		.glass-card::before {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			right: 0;
-			height: 1px;
-			background: linear-gradient(
-				90deg,
-				transparent,
-				rgba(255, 255, 255, 0.8),
-				transparent
-			);
-		}
-
-		.glass-card::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 1px;
-			height: 100%;
-			background: linear-gradient(
-				180deg,
-				rgba(255, 255, 255, 0.8),
-				transparent,
-				rgba(255, 255, 255, 0.3)
-			);
 		}
 		.menu-title {
 			font-size: 2.5rem;
@@ -758,6 +714,51 @@ body {
 		background-clip: content-box;
 		border-radius: 4vh;
 	}
+	.glass-card {
+		background: rgb(92 92 92 / 10%);
+		backdrop-filter: blur(2px);
+		-webkit-backdrop-filter: blur(2px);
+		border-radius: 20px;
+		border: 1px solid rgba(255, 255, 255, 0.3);
+		box-shadow:
+			-8px -20px 32px 0px rgba(0, 0, 0, 0.1),
+			inset 14px 8px 0px 0px rgb(255 255 255 / 0%),
+			inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+			inset 0 0 15px 3px rgb(255 255 255 / 59%);
+		position: relative;
+		overflow: hidden;
+		padding: 4vh;
+	}
+
+	.glass-card::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 1px;
+		background: linear-gradient(
+			90deg,
+			transparent,
+			rgba(255, 255, 255, 0.8),
+			transparent
+		);
+	}
+
+	.glass-card::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 1px;
+		height: 100%;
+		background: linear-gradient(
+			180deg,
+			rgba(255, 255, 255, 0.8),
+			transparent,
+			rgba(255, 255, 255, 0.3)
+		);
+	}
 
 	&Panel {
 		::-webkit-scrollbar-track {
@@ -785,10 +786,15 @@ body {
 		ul {
 			overflow-y: auto;
 			overflow-x: hidden;
-			height: 100vh;
+			height: fit-content;
 			margin-right: 2vh;
 		}
-
+		h2 {
+			all: revert;
+		}
+		h3 {
+			all: revert;
+		}
 		p {
 			color: #bbb;
 			font-size: 1.2em;
@@ -874,6 +880,15 @@ body {
 					inset -4px -4px 12px #ffffff;
 			}
 		}
+		#ContainerEnableNewUsers {
+			position: relative;
+			/* align-self: self-end; */
+			margin-top: 5vh;
+			height: fit-content;
+			div {
+				margin-top: 1vh;
+			}
+		}
 	}
 
 	&Profile {
@@ -940,26 +955,26 @@ body {
 			opacity: 0;
 			cursor: pointer;
 		}
-		.containerDatafilter{
-			select{
+		.containerDatafilter {
+			select {
 				all: revert;
 			}
-			input[type='text']{
-				all:revert;
+			input[type='text'] {
+				all: revert;
 			}
 		}
 		.modal {
-			display: none; 
-			position: fixed; 
-			z-index: 1; 
-			padding-top: 100px; 
+			display: none;
+			position: fixed;
+			z-index: 1;
+			padding-top: 100px;
 			left: 0;
 			top: 0;
-			width: 100%; 
-			height: 100%; 
-			overflow: auto; 
-			background-color: rgb(0, 0, 0); 
-			background-color: rgba(0, 0, 0, 0.4); 
+			width: 100%;
+			height: 100%;
+			overflow: auto;
+			background-color: rgb(0, 0, 0);
+			background-color: rgba(0, 0, 0, 0.4);
 		}
 		.csvContainer {
 			button {
@@ -1308,8 +1323,8 @@ body {
 		.icon {
 			width: 1.7em;
 			height: 1.7em;
-			color: #0b7c42; 
-			fill: currentColor; 
+			color: #0b7c42;
+			fill: currentColor;
 		}
 		.iconCsv {
 			width: 2.7em;

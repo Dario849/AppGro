@@ -1,21 +1,31 @@
 <?php
 require('system/main.php');
 sessionAuth();
-require dirname(__DIR__, levels: 3) . '\system\resources\database.php'; // conecta con tu PDO $pdo
+require dirname(__DIR__, levels: 3) . '/system/resources/database.php'; // conecta con tu PDO $pdo
 $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id']);
 ?>
 <main class="main__content">
     <div class="main_container">
         <div class="main_containerPanel">
-            <ul id="users">
-                <h2>Usuarios</h2> <br>
-                <input type="text" name="search_user" id="search_user" placeholder="Buscar..." style="border: solid;">
-                <div id="listUsers">
-                    <li>Cargando...</li>
-                </div>
+            <ul class="glass-card">
+                <ul id="users">
+                    <h3>Usuarios</h3> <br>
+                    <input type="text" name="search_user" id="search_user" placeholder="Buscar..."
+                        style="border: solid;">
+                    <div id="listUsers">
+                        <li>Cargando...</li>
+                    </div>
+                </ul>
+
+                <ul id="ContainerEnableNewUsers">
+                    <h3>Habilitar/Inhabilitar usuarios nuevos</h3>
+                    <div id="ListPendingUsers">
+                        <li>No hay usuarios pendientes...</li>
+                    </div>
+                </ul>
             </ul>
-            <ul>
-                <h2>Datos del Usuario</h2> <br>
+            <ul class="glass-card">
+                <h3>Datos del Usuario</h3> <br>
                 <input hidden type="number" name="userId" id="userId" value="">
                 <li id="userName"><strong>Nombre:</strong></li>
                 <li id="userLastName"><strong>Apellido:</strong></li>
@@ -24,149 +34,208 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                         value="" readonly>
                 </li>
                 <li id="userAge"><strong>Edad:</strong></li>
-                <li><strong>ELIMINAR?</strong> <button class="submit-button" id="btnEliminar"
-                        ondblclick="return clickEliminar($('#userId').val());">CONFIRMAR</button>
+                <li id="deleteUserBtn"><strong>ELIMINAR?</strong> (Esta acción no tiene vuelta atrás) <br><button
+                        class="submit-button" id="btnEliminar" ondblclick="return clickEliminar($('#userId').val());"
+                        title="Doble click para confirmar">CONFIRMAR</button>
                 </li>
             </ul>
-            <ul>
-                <h2>Permisos</h2><br>
+            <ul class="glass-card">
+                <h3>Permisos</h3><br>
                 <div class="permiso-item" id="listPermissions">
-                    <li>Seleccione un usuario</li>
+                    <li>Seleccione un usuario...</li>
                 </div><br>
             </ul>
             <div id="report"></div>
         </div>
     </div>
 </main>
-<script>
-    $(document).ready(function () {
-        loadUsers();
-    });
-    function loadUsers() {
-        $.ajax({
-            type: "GET",
-            url: "/Bpanel",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                var usersList = $("#listUsers");
-                usersList.empty(); // Limpiar la lista actual
-                response.forEach(function (user) {
-                    var listItem = $('<li></li>');
-                    var userLink = $('<p></p>')
-                        .attr('onclick', 'return getUserDetails(' + user.id_usuario + ');')
-                        .text(user.nombre);
-                    listItem.append(userLink);
-                    usersList.append(listItem);
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error("Error al cargar usuarios: " + status + " - " + error);
-            }
-        });
-    }
-    function loadPermissions(vistas, permisos) {
-        var permissionsList = $("#listPermissions");
-        permissionsList.find("li").remove(); // Limpiar permisos actuales
-        vistas.forEach(function (vista) {
-            var isChecked = permisos.includes(vista.nombre) ? 'checked' : '';
-            var listItem = $('<li></li>').text(vista.nombre + ' ');
-            var checkbox = $('<input type="checkbox" onchange=" return changePermission(permiso_' + vista.id + ')" class="checkboxInput">')
-                .attr('id', 'permiso_' + vista.id)
-                .attr('value', vista.nombre)
-                .prop('checked', isChecked);
-            var label = $('<label class="toggleSwitch"></label>')
-                .attr('for', 'permiso_' + vista.id)
-                .attr('onchange', ' return changePermission();');
-            listItem.append(checkbox).append(label);
-            permissionsList.append(listItem);
-        });
-    }
-    function getUserDetails(uid) {
+<script type="module">
+    import Swal from 'sweetalert2/dist/sweetalert2.js';
+    import 'sweetalert2/src/sweetalert2.scss';
+
+    window.loadUsers = function () {
+        $('#deleteUserBtn').hide();
+
         $.ajax({
             type: "POST",
             url: "/Bpanel",
-            data: { uid: uid },
             dataType: "json",
             success: function (response) {
                 console.log(response);
-                if (response) {
-                    $("#userId").val(response.datos.id);
-                    $("#userName").html("<strong>Nombre:</strong> " + response.datos.nombre);
-                    $("#userLastName").html("<strong>Apellido:</strong> " + response.datos.apellido);
-                    $("#userEmail").html("<strong>Email:</strong> " + response.datos.username);
-                    $("#fecha_nacimiento").val(response.datos.fecha_nacimiento);
-                    $("#userAge").html("<strong>Edad: " + response.datos.edad + " años</strong>");
-                    loadPermissions(response.vistas, response.permisos);
-                } else {
-                    console.warn("No se encontraron datos para el usuario con ID: " + uid);
-                }
+                const usersList = $("#listUsers");
+                const userEnableList = $('#ListPendingUsers');
+                usersList.empty();
+                userEnableList.empty();
+
+                response.forEach(user => {
+                    const listItem = $('<li></li>');
+                    const userLink = $('<p></p>');
+
+                    if (user.estado === 'activo') {
+                        userLink
+                            .attr('onclick', 'return getUserDetails(' + user.id_usuario + ');')
+                            .text(user.nombre + ' ' + user.apellido);
+                        listItem.append(userLink);
+                        usersList.append(listItem);
+                    } else if (user.estado === 'espera') {
+                        userLink
+                            .attr('onclick', 'return enableNewUser(' + user.id_usuario + ');')
+                            .text(user.nombre + ' ' + user.apellido);
+                        listItem.append(userLink);
+                        userEnableList.append(listItem);
+                    }
+                });
             },
-            error: function (xhr, status, error) {
-                console.error("Error al cargar detalles del usuario: " + status + " - " + error);
-            }
+            error: (xhr, status, error) => console.error("Error al cargar usuarios:", status, error)
         });
-    }
-    $("#search_user").on('input', function () {
-        var input, filter, ul, li, a, i, txtValue;
-        input = document.getElementById("search_user");
-        filter = input.value.toUpperCase();
-        ul = document.getElementById("users");
-        li = ul.getElementsByTagName("li");
-        for (i = 0; i < li.length; i++) {
-            a = li[i].getElementsByTagName("p")[0];
-            txtValue = a.textContent || a.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                li[i].style.display = "";
-            } else {
-                li[i].style.display = "none";
-            }
-        }
-    });
-    function changePermission(element) { //Llamada a función asincrona para cambiar el permiso cambiado (false or true)
+    };
+
+    window.getUserDetails = function (uid) {
+            $('#deleteUserBtn').show();
+        $.ajax({
+            type: "POST",
+            url: "/Bpanel",
+            data: { uid },
+            dataType: "json",
+            success: function (response) {
+                if (!response) return console.warn("No se encontraron datos para el usuario:", uid);
+                $("#userId").val(response.datos.id);
+                $("#userName").html("<strong>Nombre:</strong> " + response.datos.nombre);
+                $("#userLastName").html("<strong>Apellido:</strong> " + response.datos.apellido);
+                $("#userEmail").html("<strong>Email:</strong> " + response.datos.username);
+                $("#fecha_nacimiento").val(response.datos.fecha_nacimiento);
+                $("#userAge").html("<strong>Edad: " + response.datos.edad + " años</strong>");
+                loadPermissions(response.vistas, response.permisos);
+            },
+            error: (xhr, status, error) => console.error("Error al cargar detalles:", status, error)
+        });
+    };
+
+    window.loadPermissions = function (vistas, permisos) {
+        const permissionsList = $("#listPermissions");
+        permissionsList.empty();
+        vistas.forEach(vista => {
+            const isChecked = permisos.includes(vista.nombre);
+            const listItem = $('<li></li>').text(vista.nombre + ' ');
+            const checkbox = $('<input type="checkbox" class="checkboxInput">')
+                .attr('id', 'permiso_' + vista.id)
+                .attr('value', vista.nombre)
+                .prop('checked', isChecked)
+                .on('change', () => changePermission(checkbox[0]));
+            const label = $('<label class="toggleSwitch"></label>')
+                .attr('for', 'permiso_' + vista.id);
+            listItem.append(checkbox, label);
+            permissionsList.append(listItem);
+        });
+    };
+
+    window.changePermission = function (element) {
         let uid = parseInt($("#userId").val());
         let permissionId = parseInt(element.id.split('_')[1]);
         const parameter = {
             "permId": permissionId,
             "selectedUserId": uid,
         };
-        $.ajax({ //Envio de solicitud a back, envia id_usuario y id_vista
+        $.ajax({
             url: '/BchangePermission',
-            type: 'POST',
-            data: parameter,
+            type: 'POST', data: parameter,
             success: function (response) {
                 $(".toggleSwitch").attr('disabled', true);
                 $("input[type='checkbox']").attr('disabled', true);
                 console.log(response);
-                setTimeout(() => { //timeout para evitar flooding de envio de formulario
+                setTimeout(() => {
                     $(".toggleSwitch").attr('disabled', false);
                     $("input[type='checkbox']").attr('disabled', false);
                 }, 1000);
             },
-            error: function () { //fallback en caso de que no exista conexión al backend
+            error: function () {
                 $("#report").prepend("error");
                 $('#report > span').slice(1).remove();
             }
         });
     }
-    function clickEliminar(uid) {
-        dropUserId = parseInt(uid);
-        console.log(dropUserId + '- Doble click en botón eliminar');
-        data = {
-            dropUId: dropUserId,
-        };
+
+    window.clickEliminar = function (uid) {
         $.ajax({
             type: "POST",
             url: "/disableUser",
-            data: data,
+            data: { dropUId: uid },
             dataType: "json",
-            success: function (response) {
-                console.log(response);
-                location.href = location.pathname
-            },
-            error: function (xhr, status, error) {
-                console.error("Error al realizar cambio a usuario: " + status + " - " + error);
-            }
+            success: () => location.reload(),
+            error: (xhr, status, error) => console.error("Error al eliminar usuario:", status, error)
         });
-    }
+    };
+
+    window.enableNewUser = async function (uid) {
+        const { value: estado } = await Swal.fire({
+            title: "Activar o desactivar usuario",
+            html: `<p>Selecciona el estado que querés asignar al usuario #${uid}</p>`,
+            input: "radio",
+            inputOptions: {
+                activo: "Activo",
+                inactivo: "Inactivo"
+            },
+            inputValidator: (value) => {
+                if (!value) return "Seleccioná una opción antes de continuar.";
+            },
+            showCancelButton: true,
+            confirmButtonText: "Confirmar",
+            cancelButtonText: "Cancelar",
+            reverseButtons: true,
+            focusConfirm: false
+        });
+
+        if (estado) {
+            // Confirmación final
+            const confirm = await Swal.fire({
+                title: "¿Confirmar cambio?",
+                text: `El usuario será marcado como ${estado}.`,
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonText: "Sí, proceder",
+                cancelButtonText: "No, cancelar",
+                reverseButtons: true
+            });
+
+            if (confirm.isConfirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Bpanel",
+                    data: { uid, estado },
+                    dataType: "json",
+                    success: function (response) {
+                        console.log(response);
+                        Swal.fire({
+                            icon: "success",
+                            title: "Cambio aplicado",
+                            text: `El usuario fue marcado como ${estado}.`,
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        loadUsers();
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error al cambiar estado:", status, error);
+                        Swal.fire({
+                            icon: "error",
+                            title: "Error",
+                            text: "No se pudo aplicar el cambio."
+                        });
+                    }
+                });
+            }
+        }
+    };
+
+
+    $(document).ready(() => {
+        loadUsers();
+        $("#search_user").on('input', function () {
+            const filter = $(this).val().toUpperCase();
+            $("#users li").each(function () {
+                const name = $(this).text().toUpperCase();
+                $(this).toggle(name.includes(filter));
+            });
+        });
+    });
 </script>

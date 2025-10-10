@@ -36,7 +36,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                     <button type="button" id="colapsarNavBar" class="collapsible"></button>
                     <div class="content glass-card">
                         Esta lista se puede visualizar en el lado izquierdo de la pantalla en todas las secciones de la
-                        aplicación.
+                        aplicación en las cuales tenes permitido acceder.
                         <div class="guiaShowNavBar">
                             <div class="home__navbar">
                                 <div class="containerHide">
