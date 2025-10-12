@@ -24,16 +24,16 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                     </div>
                 </ul>
             </ul>
-            <ul class="glass-card">
+            <ul class="glass-card" id="userInfo">
                 <h3>Datos del Usuario</h3> <br>
+                <h4>Primero seleccione un usuario</h4>
                 <input hidden type="number" name="userId" id="userId" value="">
-                <li id="userName"><strong>Nombre:</strong></li>
-                <li id="userLastName"><strong>Apellido:</strong></li>
-                <li id="userEmail"><strong>Email:</strong></li>
-                <li id="userBirthDate"><strong>Fecha de nacimiento:</strong><input type="date" id="fecha_nacimiento"
-                        value="" readonly>
+                <li id="userName"></li>
+                <li id="userLastName"></li>
+                <li id="userEmail"></li>
+                <li id="userBirthDate"><input type="date" id="fecha_nacimiento" value="" readonly>
                 </li>
-                <li id="userAge"><strong>Edad:</strong></li>
+                <li id="userAge"></li>
                 <li id="deleteUserBtn"><strong>ELIMINAR?</strong> (Esta acción no tiene vuelta atrás) <br><button
                         class="submit-button" id="btnEliminar" ondblclick="return clickEliminar($('#userId').val());"
                         title="Doble click para confirmar">CONFIRMAR</button>
@@ -55,17 +55,18 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
 
     window.loadUsers = function () {
         $('#deleteUserBtn').hide();
-
+        $("#fecha_nacimiento").hide();
         $.ajax({
             type: "POST",
             url: "/Bpanel",
             dataType: "json",
             success: function (response) {
-                console.log(response);
+                if (response.some(u => u.estado === 'espera')) {
+                    userEnableList.empty();
+                }
                 const usersList = $("#listUsers");
                 const userEnableList = $('#ListPendingUsers');
                 usersList.empty();
-                userEnableList.empty();
 
                 response.forEach(user => {
                     const listItem = $('<li></li>');
@@ -91,7 +92,6 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
     };
 
     window.getUserDetails = function (uid) {
-            $('#deleteUserBtn').show();
         $.ajax({
             type: "POST",
             url: "/Bpanel",
@@ -99,10 +99,14 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
             dataType: "json",
             success: function (response) {
                 if (!response) return console.warn("No se encontraron datos para el usuario:", uid);
+                uid > 1?$('#deleteUserBtn').show():$('#deleteUserBtn').hide();
+                $('#userInfo h4').hide();
                 $("#userId").val(response.datos.id);
                 $("#userName").html("<strong>Nombre:</strong> " + response.datos.nombre);
                 $("#userLastName").html("<strong>Apellido:</strong> " + response.datos.apellido);
                 $("#userEmail").html("<strong>Email:</strong> " + response.datos.username);
+                $('#userBirthDate').html('<strong>Fecha de nacimiento:</strong>');
+                $("#fecha_nacimiento").show();
                 $("#fecha_nacimiento").val(response.datos.fecha_nacimiento);
                 $("#userAge").html("<strong>Edad: " + response.datos.edad + " años</strong>");
                 loadPermissions(response.vistas, response.permisos);
@@ -142,7 +146,6 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
             success: function (response) {
                 $(".toggleSwitch").attr('disabled', true);
                 $("input[type='checkbox']").attr('disabled', true);
-                console.log(response);
                 setTimeout(() => {
                     $(".toggleSwitch").attr('disabled', false);
                     $("input[type='checkbox']").attr('disabled', false);
@@ -156,14 +159,16 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
     }
 
     window.clickEliminar = function (uid) {
-        $.ajax({
-            type: "POST",
-            url: "/disableUser",
-            data: { dropUId: uid },
-            dataType: "json",
-            success: () => location.reload(),
-            error: (xhr, status, error) => console.error("Error al eliminar usuario:", status, error)
-        });
+        if (uid > 1) {
+            $.ajax({
+                type: "POST",
+                url: "/disableUser",
+                data: { dropUId: uid },
+                dataType: "json",
+                success: () => location.reload(),
+                error: (xhr, status, error) => console.error("Error al eliminar usuario:", status, error)
+            });
+        }
     };
 
     window.enableNewUser = async function (uid) {
@@ -204,7 +209,6 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                     data: { uid, estado },
                     dataType: "json",
                     success: function (response) {
-                        console.log(response);
                         Swal.fire({
                             icon: "success",
                             title: "Cambio aplicado",

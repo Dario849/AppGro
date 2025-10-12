@@ -223,15 +223,35 @@ body {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			cursor: help;
 			svg {
+				cursor: help;
 				fill: #bbb;
 				&:hover {
 					fill: #fff;
 				}
 			}
+			span{
+				cursor: pointer;
+			}
+		}
+		.collapsible {
+			display: none;
+		}
+		.collapsible:checked + .content {
+			display: block;
+			animation: fadeIn 0.3s ease;
 		}
 
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(-5px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
 		.content {
 			padding: 2vh 4vh;
 			display: none;
@@ -789,10 +809,9 @@ body {
 			height: fit-content;
 			margin-right: 2vh;
 		}
-		h2 {
-			all: revert;
-		}
-		h3 {
+		h2,
+		h3,
+		h4 {
 			all: revert;
 		}
 		p {

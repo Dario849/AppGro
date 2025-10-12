@@ -5,7 +5,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
 ?>
 <script>
     $(function () {
-        if($('#uid_n').val()==0){
+        if ($('#uid_n').val() == 0) {
             $('#btnEditUserContent').hide(true);
         }
         OnLoadBundledScript();
@@ -31,7 +31,10 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                             <path
                                 d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                        </svg> Ver ejemplo
+                        </svg>
+                        <span>
+                            Ver ejemplo
+                        </span>
                     </label>
                     <button type="button" id="colapsarNavBar" class="collapsible"></button>
                     <div class="content glass-card">
@@ -83,9 +86,12 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                             <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
                             <path
                                 d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
-                        </svg> Ver ejemplo
+                        </svg>
+                        <span>
+                            Ver ejemplo
+                        </span>
                     </label>
-                    <button type="button" id="colapsarTransacciones" class="collapsible"></button>
+                    <input type="checkbox" id="colapsarTransacciones" class="collapsible"></input>
                     <div class="content glass-card">
                         Esto es solo un resumen, para más detalles, consulta la sección de "Balance" en el menú
                         principal.
@@ -157,21 +163,170 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
 
         $('#btnEditUserContent').click(function () {
             const editorTinyMCE = tinymce.get("displayTinyMCE_LastUserContent");
-            const btnConfirm = $('#btnEditUserContent');
+            const btnConfirm = $(this);
             data.action = btnConfirm.attr('action');
             // Inicializar TinyMCE
             tinymce.init({
                 selector: '#displayTinyMCE_LastUserContent',
+                valid_elements: '*[*]',
+                extended_valid_elements: 'label[class|for|data-*],span[class|data-*],svg[*],path[*],input[type|id|class|checked],div[*],p[*]',
+                verify_html: false,
+                content_style: `
+  /* -------- Estilos de edición -------- */
+  body {
+    background-color: #1e1e1e;
+    color: #ddd;
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+    .PointerClass input[type="checkbox"]{
+        display: none;
+    }
+  /* Oculta iconos o wrappers visuales innecesarios */
+  .infoColapse {
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.9rem;
+    border: 1px dashed #555;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #2b2b2b;
+  }
+
+  .infoColapse svg {
+    fill: #999;
+  }
+
+  .label-text {
+    color: #aaa;
+  }
+
+  /* Forzar que el contenido colapsable esté siempre visible en el editor */
+  .collapsible,
+  .collapsible:checked + .content {
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .content {
+    background: #2d2d2d;
+    border: 1px solid #444;
+    border-radius: 8px;
+    margin-top: 8px;
+    padding: 10px 12px;
+  }
+
+  /* Quitar animaciones innecesarias en el editor */
+  @keyframes fadeIn {}
+`,
+
                 width: 1000,
-                height:700,
+                height: 700,
+                toolbar: 'customInfo',
                 setup: function (editor) {
                     editor.on('change input', function () {
                         $('#btnEditUserContent').text('Guardar cambios');
                         $('#btnEditUserContent').attr('action', '2');
                     });
+
+                    editor.on('keydown', function (e) {
+                        if (e.key === 'Enter') {
+                            const node = editor.selection.getNode();
+                            const blockAncestor = editor.dom.getParent(node, 'div.PointerClass');
+
+                            // Si estamos dentro del bloque colapsable
+                            if (blockAncestor) {
+                                const contentNode = blockAncestor.querySelector('.content.glass-card');
+                                const isAtEnd = editor.selection.isCollapsed() && editor.selection.getRng().endContainer === contentNode?.lastChild;
+
+                                // Si el usuario presiona Enter al final del bloque
+                                if (isAtEnd) {
+                                    e.preventDefault();
+
+                                    // Insertar un salto fuera del wrapper
+                                    editor.dom.insertAfter(
+                                        editor.dom.create('p', {}, '<br>'),
+                                        blockAncestor
+                                    );
+
+                                    // Mover el cursor al nuevo párrafo
+                                    const next = blockAncestor.nextSibling;
+                                    if (next) editor.selection.setCursorLocation(next, 0);
+                                }
+                            }
+                        }
+                    });
+
+                    editor.ui.registry.addToggleButton('customInfo', {
+                        text: 'Info',
+                        tooltip: 'Insertar/editar bloque colapsable',
+                        onAction: function () {
+                            const selContent = editor.selection.getContent({ format: 'html' });
+                            const node = editor.selection.getNode();
+                            const blockAncestor = editor.dom.getParent(node, 'div.PointerClass');
+
+                            if (blockAncestor) {
+                                // obtener solo el contenido real dentro de .content
+                                const contentNode = blockAncestor.querySelector('.content');
+                                const innerHtml = contentNode ? contentNode.innerHTML : blockAncestor.innerHTML;
+
+                                // eliminar wrapper y reinsertar el contenido + un párrafo vacío para salir del wrapper
+                                editor.dom.remove(blockAncestor);
+                                editor.insertContent(innerHtml + '<p><br></p>');
+
+                                // colocar cursor en el último <p> insertado para que el usuario siga escribiendo fuera
+                                const paras = editor.getBody().querySelectorAll('p');
+                                if (paras.length) {
+                                    const last = paras[paras.length - 1];
+                                    editor.selection.setCursorLocation(last, 0);
+                                }
+                                return;
+                            } else {
+                                // No dentro: insertar nuevo bloque
+                                // generar un id único (por ejemplo con timestamp)
+                                const uid = 'colapsar_' + Date.now();
+                                const divParent = 'example_' + Date.now();
+                                const fullHtml = `
+  <div id="${divParent}" class="PointerClass">
+    <label class="infoColapse" for="${uid}">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-info-circle" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                        </svg>
+      <span class="label-text">Ver ejemplo</span>
+    </label>
+    <input type="checkbox" id="${uid}" class="collapsible">
+    <div class="content glass-card">${selContent || '<p>Blank</p>'}</div>
+  </div>
+`;
+                                editor.insertContent(fullHtml);
+                                // si no había selección, posicionar cursor dentro del p
+                                if (!selContent) {
+                                    const newNode = editor.getBody().querySelector(`#${uid} ~ .content.glass-card p`);
+                                    if (newNode) editor.selection.setCursorLocation(newNode, 0);
+                                }
+                            }
+                        },
+                        onSetup: function (api) {
+                            const handler = function (e) {
+                                const inBlock = !!editor.dom.getParent(editor.selection.getNode(), 'div', 'class', 'glass-card');
+                                api.setActive(inBlock);
+                            };
+                            editor.on('NodeChange', handler);
+                            return function () {
+                                editor.off('NodeChange', handler);
+                            };
+                        }
+                    });
                 },
-                license_key: 'gpl' // gpl for open source, T8LK:... for commercial
+                license_key: 'gpl'
             });
+
+
             if (btnConfirm.attr('action') == 2) {
                 tinymce.triggerSave();
                 data.content = tinymce.get('displayTinyMCE_LastUserContent').getContent();
