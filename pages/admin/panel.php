@@ -49,10 +49,8 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
         </div>
     </div>
 </main>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="module">
-    import Swal from 'sweetalert2/dist/sweetalert2.js';
-    import 'sweetalert2/src/sweetalert2.scss';
-
     window.loadUsers = function () {
         $('#deleteUserBtn').hide();
         $("#fecha_nacimiento").hide();
