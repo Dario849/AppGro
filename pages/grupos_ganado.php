@@ -46,11 +46,17 @@ $id_grupo = $_GET['id_grupo'];
                         die("Conexión fallida: " . $conn->connect_error);
                     }
                     if ($id_grupo) {
-                        $sql = "SELECT id, fecha_desde, fecha_hasta, id_subdivision, comentario 
-                                FROM grupos 
-                                WHERE id = $id_grupo";
+                        $sql = "SELECT SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
+                        FROM grupos g 
+                        JOIN lotes l 
+                        ON g.id_lote = l.id 
+                        WHERE id = $id_grupo";
                     } else {
-                        $sql = "SELECT id, fecha_desde, fecha_hasta, id_subdivision, comentario FROM grupos";
+                        $sql = "SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
+                        FROM grupos g 
+                        JOIN lotes l 
+                        ON g.id_lote = l.id 
+                        ORDER BY g.id ";
                     }
 
                     $result = $conn->query($sql);

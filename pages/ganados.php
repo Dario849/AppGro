@@ -4,20 +4,32 @@ sessionCheck();
 $layout = new HTML(title: 'GanadoS UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) .'\system\resources\database.php';
 
-if (!isset($_GET['id_grupo'])) {
-    echo "Grupo no especificado.";
-    exit;
-}
-
-$id_grupo = $_GET['id_grupo'];
+$id_grupo = $_GET['id_grupo']??null;
 $nro_caravana = isset($_GET['nro_caravana']) ? trim($_GET['nro_caravana']) : '';
 
 $conn = new mysqli('localhost', 'root', '', 'app_campo');
 if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
+
+// Handle new diet form submission
+$success_message = '';
+$error_message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_alimento'])) {
+    $id_grupoForAlimento = $_POST['id_grupo_alimento'];
+    $id_alimento = $_POST['select_alimento'];
+    $stmt = $conn->prepare("INSERT INTO ganado_dietas (id_grupo, id_alimento, fecha_estado) VALUES (?, ?, NOW())");
+    $stmt->bind_param("ii", $id_grupoForAlimento, $id_alimento);
+    if ($stmt->execute()) {
+        $success_message = "Dieta agregada correctamente.";
+    } else {
+        $error_message = "Error al agregar la dieta: " . $conn->error;
+    }
+    $stmt->close();
+}
+
+// Fetch animals in the group
 if ($nro_caravana !== '' && $nro_caravana !== '0') {
-    // Busqueda por número de caravana
     $stmt = $conn->prepare("
         SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
         FROM ganado g
@@ -36,6 +48,27 @@ if ($nro_caravana !== '' && $nro_caravana !== '0') {
 }
 $stmt->execute();
 $result = $stmt->get_result();
+
+// Fetch available foods for the dropdown
+$alimentos_result = $conn->query("SELECT id, nombre, marca FROM alimentos");
+
+// Fetch the latest diet for the group
+$latest_diet = null;
+$stmt = $conn->prepare("
+    SELECT a.nombre, a.marca, gd.fecha_estado
+    FROM ganado_dietas gd
+    INNER JOIN alimentos a ON gd.id_alimento = a.id
+    WHERE gd.id_grupo = ?
+    ORDER BY gd.fecha_estado DESC
+    LIMIT 1
+");
+$stmt->bind_param("i", $id_grupo);
+$stmt->execute();
+$latest_diet_result = $stmt->get_result();
+if ($latest_diet_result->num_rows > 0) {
+    $latest_diet = $latest_diet_result->fetch_assoc();
+}
+$stmt->close();
 ?>
 
 <main class="main__content">
@@ -49,46 +82,85 @@ $result = $stmt->get_result();
             <form action="/grupos_ganado" method="GET">
                 <button type="submit">Volver a los grupos</button>
             </form>
-
         </div>
-        <div class="main_containerganados">
-            <title>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></title>
-        <fieldset>
-            <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>N° Caravana</th>
-                        <th>Tipo</th>
-                        <th>Sexo</th>
-                        <th>Fecha Nacimiento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    if ($result->num_rows > 0) {
-                        while ($animal = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($animal['id']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['nro_caravana']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
-                            echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
-                            echo "<td><a href='/ganado?nro_caravana=" . urlencode($animal['nro_caravana']) . "'>Ver detalles</a></td>";
-                            echo "</tr>";
+        <div class="main_containerganados">
+            <fieldset>
+                <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
+
+                <!-- Form to add a new diet -->
+                <div style="margin-bottom: 20px;">
+                    <h3>Agregar Nueva Dieta al Grupo</h3>
+                    <form action="/ganados" method="POST">
+                        <input type="hidden" name="id_grupo_alimento" value="<?php echo htmlspecialchars($id_grupo); ?>">
+                        <label for="id_alimento">Seleccionar Alimento:</label>
+                        <select name="select_alimento" id="id_alimento" required>
+                            <option value="">Seleccione un alimento</option>
+                            <?php
+                            while ($alimento = $alimentos_result->fetch_assoc()) {
+                                echo "<option value='" . htmlspecialchars($alimento['id']) . "'>" 
+                                    . htmlspecialchars($alimento['nombre']) . " (" . htmlspecialchars($alimento['marca']) . ")</option>";
+                            }
+                            ?>
+                        </select>
+                        <button type="submit">Agregar Dieta</button>
+                    </form>
+
+                    <!-- Display success or error message -->
+                    <?php if ($success_message): ?>
+                        <p style="color: green; margin-top: 10px;"><?php echo htmlspecialchars($success_message); ?></p>
+                    <?php endif; ?>
+                    <?php if ($error_message): ?>
+                        <p style="color: red; margin-top: 10px;"><?php echo htmlspecialchars($error_message); ?></p>
+                    <?php endif; ?>
+
+                    <!-- Display latest diet -->
+                    <?php if ($latest_diet): ?>
+                        <p style="margin-top: 10px;">
+                            <strong>Última Dieta:</strong> 
+                            <?php echo htmlspecialchars($latest_diet['nombre']) . " (" . htmlspecialchars($latest_diet['marca']) .")"; ?>
+                        </p>
+                    <?php else: ?>
+                        <p style="margin-top: 10px;">No hay dietas asignadas a este grupo.</p>
+                    <?php endif; ?>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>N° Caravana</th>
+                            <th>Tipo</th>
+                            <th>Sexo</th>
+                            <th>Fecha Nacimiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($result->num_rows > 0) {
+                            while ($animal = $result->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td>" . htmlspecialchars($animal['id']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['nro_caravana']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['id_tipo_ganado']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['sexo']) . "</td>";
+                                echo "<td>" . htmlspecialchars($animal['fecha_nacimiento']) . "</td>";
+                                echo "<td><a href='/ganado?nro_caravana=" . urlencode($animal['nro_caravana']) . "'>Ver detalles</a></td>";
+                                echo "</tr>";
+                            }
+                        } else {
+                            echo "<tr><td colspan='6'>Este grupo no tiene animales.</td></tr>";
                         }
-                    } else {
-                        echo "<tr><td colspan='6'>Este grupo no tiene animales.</td></tr>";
-                    }
-                    $stmt->close();
-                    $conn->close();
-                    ?>
-                </tbody>
-            </table>
-        </fieldset>
+                        $stmt->close();
+                        ?>
+                    </tbody>
+                </table>
+            </fieldset>
         </div>
     </div>
 </main>
+
+<?php
+$conn->close();
+?>

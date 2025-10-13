@@ -27,9 +27,8 @@ $stmt = $conn->prepare(" SELECT
         t.nombre_cientifico, 
         g.imagen, 
         g.comentario, 
-        gg.id_grupo, 
-        s.mapa_limitacion, 
-        l.ubicacion, 
+        gg.id_grupo,  
+        l.nombre AS ubicacion, 
         gp.peso,  
         gp.fecha_estado AS fecha_peso,
         v.nombre_vacuna,
@@ -39,8 +38,7 @@ $stmt = $conn->prepare(" SELECT
     JOIN tipos_ganado t ON g.id_tipo_ganado = t.id
     JOIN grupos_ganado gg ON g.id = gg.id_ganado
     JOIN grupos gr ON gg.id_grupo = gr.id
-    JOIN subdivisiones s ON gr.id_subdivision = s.id
-    JOIN lotes l ON l.id = s.id_lote
+    JOIN lotes l ON gr.id_lote = l.id
     LEFT JOIN (
         SELECT gp1.*
         FROM ganado_peso gp1
@@ -69,7 +67,7 @@ $stmt = $conn->prepare(" SELECT
         ) latest_gs ON gs1.id_ganado = latest_gs.id_ganado AND gs1.fecha_estado = latest_gs.max_fecha
     ) gs ON gs.id_ganado = g.id
     LEFT JOIN vacunas v ON v.id = gs.id_vacuna
-    WHERE g.nro_caravana = ?
+    WHERE g.nro_caravana =?
 ");
 $stmt->bind_param("s", $nro_caravana);
 $stmt->execute();

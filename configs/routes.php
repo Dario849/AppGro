@@ -62,7 +62,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/administrador', function ($ROUTE_PARAMS) {
 		include('pages/admin/panel.php');
 	});
-	$r->addRoute('GET', '/ganados', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET','POST'], '/ganados', function ($ROUTE_PARAMS) {
 		include('pages/ganados.php');
 	});
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
