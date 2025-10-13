@@ -1,8 +1,8 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'Ganado UwU');
-require dirname(__DIR__, 1) . '/system/resources/database.php';
+$layout = new HTML(title: 'Ganado UwU', uid: $_SESSION['user_id']);
+require dirname(__DIR__, 2) .'\system\resources\database.php';
 
 if (!isset($_GET['nro_caravana'])) {
     echo "Ganado no especificado.";

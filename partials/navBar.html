@@ -1,0 +1,70 @@
+<div class="home" id="nav_barContainer">
+  <div class="home__navbar" id="sidebar">
+    <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
+    <div class="containerHide" id="containerHide">
+      <button class="setting-btn" id="buttonHide" data-active="true" title="ocultar/mostrar">
+        <span class="bar bar1"></span>
+        <span class="bar bar2"></span>
+        <span class="bar bar1"></span>
+      </button>
+    </div>
+    <ul class="home__navbar-TopList" id="navBarViewList">
+    </ul>
+    <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
+    <ul class="home__navbar-BottomList" id="navBarUtilidades">
+      <li class="home__navbar-item"><a href="/dashboard"><button>Dashboard</button></a></li>
+      <li class="home__navbar-item"><a href="/guia"><button>Guía/ayuda</button></a></li>
+      <li class="home__navbar-item"><a href="/user/profile"><button>Perfil</button></a></li>
+      <li class="home__navbar-item"><a href="/user/logout"><button>Log-out</button></a></li>
+    </ul>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    uid = $('#uid_n').val();
+    console.log(uid);
+    if (uid == 0) {
+      $('#nav_barContainer').remove();
+      $('#sidebar').remove();
+    } else {
+      data = { uid: uid };
+      $.ajax({
+        type: "POST",
+        url: "/getUserViews",
+        data: data,
+        dataType: "json",
+        success: function (response) {
+          $.each(response, function (index, vista) {
+            $('#navBarViewList').append('<li><a href=/' + vista.toLowerCase() + '><button>' + vista + '</button></a></li>');
+          });
+        }
+      });
+    }
+    $('#buttonHide').click(function () {
+      const btnBool = $(this).data("active"); //se carga "false" o "true", JS admite como bool tal statement
+      $(this).data("active", !btnBool); // prepara en memoria el contrario del statement previo, para próximo press de button
+      if (!btnBool) {
+        $('#sidebar').css({
+          "transition": " transform 1s ease-out",
+          "transform": "translateX(0px)",
+        });
+        $('#nav_barContainer').css({
+          "transition": "transform 1s ease-out, visibility 1s, margin-right 1s ease-out",
+          "transform": "translateX(-130px)",
+          "margin-right": "-130px",
+        });
+      } else {
+        $('#sidebar').css({
+          "transition": "transform 1s ease-out",
+          "transform": "translateX(0px)",
+        });
+        $('#nav_barContainer').css({
+          "transition": "transform 1s ease-out, margin-right 1s ease-out",
+          "transform": "translateX(0px)",
+          "margin-right": "0px",
+        });
+      }
+
+    });
+  });
+</script>

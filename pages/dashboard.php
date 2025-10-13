@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'AppGro-Menú');
+$layout = new HTML(title: 'AppGro-Menú', uid: $_SESSION['user_id']);
 ?>
 <main class="main__content">
     <div class="main_container">

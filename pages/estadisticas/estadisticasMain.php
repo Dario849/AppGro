@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'Menú de Estadísticas');
+$layout = new HTML(title: 'Menú de Estadísticas', uid: $_SESSION['user_id']);
 ?>
 <main class="main__content">
     <div class="main_container">

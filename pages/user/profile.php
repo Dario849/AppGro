@@ -1,7 +1,7 @@
 <?php
 require('system/main.php');
 sessionCheck();
-$layout = new HTML(title: 'AppGro-Panel de usuario');
+$layout = new HTML(title: 'AppGro-Panel de usuario', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) . '/system/resources/database.php';
 $sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM usuarios WHERE id = :uid";
 $stmt = $pdo->prepare($sql);
@@ -153,10 +153,12 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     <br>
                     <input type="password" id="actualPass" name="current-password" autocomplete="current-password">
                     <br>
-                    <label for="newPass1">Ingrese su nueva contraseña</label>
-                    <input type="password" id="newPass1" name="new-password" autocomplete="new-password">
-                    <label for="newPass2">Confirme su nueva contraseña</label>
-                    <input type="password" id="newPass2" name="new-password-confirm" autocomplete="new-password">
+                    <label for="passwd">Ingrese su nueva contraseña</label>
+                    <input type="password" id="passwd" name="new-password"
+         autocomplete="new-password">
+                    <label for="passwdAgain">Confirme su nueva contraseña</label>
+                    <input type="password" id="passwdAgain" name="new-password-confirm"
+         autocomplete="new-password">
                     <button id="submitButtonPassword" name="submitButtonPassword" type="submit" class="cta">
                         <span>Ingresar</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">
