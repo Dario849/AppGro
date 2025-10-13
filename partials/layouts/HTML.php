@@ -27,7 +27,7 @@ class HTML
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
 			<script src="/src/scripts/perspectiveCard.js"></script>
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
-			<script src="/node_modules/tinymce/tinymce.min.js" type="module"></script>
+			<script src="js/tinymce/js/tinymce/tinymce.min.js" type="module"></script>
 			<script>
 				$(function () {
 					$('#navBar').load('/partials/navBar.html'); //Carga barra lateral para navegación de toda la página

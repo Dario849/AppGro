@@ -17,7 +17,10 @@
 }
 .home__navbar .containerHide {
   display: flex;
-  flex-direction: row-reverse;
+  margin-bottom: 1vh;
+  position: absolute;
+  place-self: flex-end;
+  margin-right: 0.5vh;
 }
 .home__navbar .containerHide .setting-btn {
   width: 45px;
@@ -66,6 +69,27 @@
 .home__navbar .containerHide .setting-btn:hover .bar2::before {
   transform: translateX(-4px);
 }
+.home__navbar ::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #2c2f33;
+  margin-top: 7vh;
+}
+.home__navbar ::-webkit-scrollbar {
+  width: 12px;
+  background-color: #2c2f33;
+}
+.home__navbar ::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #555;
+}
+.home__navbar-TopList {
+  margin-bottom: auto;
+  overflow: overlay;
+  height: 66vh;
+  width: 100%;
+}
 .home__navbar-BottomList {
   margin-top: auto;
 }
@@ -90,7 +114,7 @@
 }
 .home__navbar a button {
   text-align: center;
-  position: relative; /* crea un nuevo contexto de apilamiento */
+  position: relative;
   -webkit-text-fill-color: azure;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -107,8 +131,7 @@ body {
   padding: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f4f4;
-  color: revert;
-  color: #888 !important;
+  color: #888;
 }
 
 .main__content {
@@ -156,6 +179,113 @@ body {
   height: fit-content;
   width: fit-content;
 }
+.main_containerGuiaDeUsuario {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 3vh;
+  margin-top: 3vh;
+}
+.main_containerGuiaDeUsuario .infoColapse {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.main_containerGuiaDeUsuario .infoColapse svg {
+  cursor: help;
+  fill: #bbb;
+}
+.main_containerGuiaDeUsuario .infoColapse svg:hover {
+  fill: #fff;
+}
+.main_containerGuiaDeUsuario .infoColapse span {
+  cursor: pointer;
+}
+.main_containerGuiaDeUsuario .collapsible {
+  display: none;
+}
+.main_containerGuiaDeUsuario .collapsible:checked + .content {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.main_containerGuiaDeUsuario .content {
+  padding: 2vh 4vh;
+  display: none;
+  overflow: hidden;
+}
+.main_containerGuiaDeUsuario .menu-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #999;
+}
+.main_containerGuiaDeUsuario .menu-subtitle {
+  font-size: 1.5rem;
+  font-weight: semi-bold;
+  margin-bottom: 1rem;
+  color: #555;
+}
+.main_containerGuiaDeUsuario .menu-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-blend-mode: color-dodge;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align-last: center;
+  width: 45%;
+}
+.main_containerGuiaDeUsuario li {
+  margin-bottom: 1rem;
+}
+.main_containerGuiaDeUsuario #btnEditUserContent {
+  background: rgba(21, 96, 229, 0.62);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.19);
+  cursor: pointer;
+  color: white;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+}
+.main_containerGuiaDeUsuario .menu-link {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+.main_containerGuiaDeUsuario .menu-link:hover {
+  color: #0056b3;
+}
+.main_containerGuiaDeUsuario .guiaShowNavBar {
+  display: flex;
+  justify-content: center;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+  justify-self: center;
+}
+.main_containerGuiaDeUsuario .home__navbar-logo {
+  block-size: 15vh;
+  justify-self: center;
+}
+.main_containerGuiaDeUsuario .home_navbar-TopList hr {
+  border: 0.5px solid #bbb;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
 .main_containerMenuEstadisticas {
   display: flex;
   flex-direction: column;
@@ -165,7 +295,13 @@ body {
   font-size: 2.5rem;
   font-weight: bold;
   margin-bottom: 1rem;
-  color: #333;
+  color: #999;
+}
+.main_containerMenuEstadisticas .menu-subtitle {
+  font-size: 1.5rem;
+  font-weight: semi-bold;
+  margin-bottom: 1rem;
+  color: #555;
 }
 .main_containerMenuEstadisticas .menu-list {
   display: flex;
@@ -230,17 +366,10 @@ body {
   width: 100%;
   height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  align-content: center;
-}
-.main_containerDashboardTiempo {
-  margin-top: 3vh;
-}
-.main_containerDashboardMapa {
-  height: 50%;
-  width: 50%;
-  background-color: plum;
+  flex-direction: column;
+  align-items: center;
 }
 .main_containerDashboard .balance-container {
   width: 100%;
@@ -252,8 +381,6 @@ body {
 }
 .main_container .with-perspective {
   perspective: 1000px;
-  /*  inset: 0; */
-  /* margin-top: 1vh; */
 }
 .main_container {
   /* Estilo base del componente interactivo */
@@ -263,7 +390,6 @@ body {
   --gt-color1: #00d18b;
   /* color del centro del gradiente */
   --gt-color2: #00787a;
-  /* color externo del gradiente */
   /* Variables reactivas por elemento */
   --X: 50%;
   /* posición horizontal del hotspot (0%-100%) */
@@ -278,7 +404,6 @@ body {
   border-radius: 16px;
   padding: 16px;
   color: #fff;
-  /* Hotspot + fondo. No animamos background en CSS para evitar repaints caros */
   background: radial-gradient(circle at var(--X) var(--Y), var(--gt-color1) 0%, var(--gt-color2) 100%);
   /* La animación fluida sucede en la capa de composición (transform) */
   transform: rotateX(var(--rotation-X)) rotateY(var(--rotation-Y));
@@ -472,9 +597,6 @@ body {
 .main_containerganados a:hover, .main_containerbuscador a:hover, .main_containerganado a:hover {
   text-decoration: underline;
 }
-.main_container {
-  /* From Uiverse.io by alexmaracinaru */
-}
 .main_container .cta {
   position: relative;
   margin: auto;
@@ -532,14 +654,43 @@ body {
   background-clip: content-box;
   border-radius: 4vh;
 }
+.main_container .glass-card {
+  background: rgba(92, 92, 92, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: -8px -20px 32px 0px rgba(0, 0, 0, 0.1), inset 14px 8px 0px 0px rgba(255, 255, 255, 0), inset 0 -1px 0 rgba(255, 255, 255, 0.1), inset 0 0 15px 3px rgba(255, 255, 255, 0.59);
+  position: relative;
+  overflow: hidden;
+  padding: 4vh;
+}
+.main_container .glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+}
+.main_container .glass-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), transparent, rgba(255, 255, 255, 0.3));
+}
 .main_containerPanel ::-webkit-scrollbar-track {
   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
-  background-color: #f5f5f5;
+  background-color: #191a1a;
 }
 .main_containerPanel ::-webkit-scrollbar {
   width: 12px;
-  background-color: #f5f5f5;
+  background-color: #191a1a;
 }
 .main_containerPanel ::-webkit-scrollbar-thumb {
   border-radius: 10px;
@@ -555,10 +706,19 @@ body {
 .main_containerPanel ul {
   overflow-y: auto;
   overflow-x: hidden;
-  height: 100vh;
+  height: fit-content;
+  margin-right: 2vh;
 }
-.main_containerPanel {
-  /* To hide the checkbox */
+.main_containerPanel h2,
+.main_containerPanel h3,
+.main_containerPanel h4 {
+  all: revert;
+}
+.main_containerPanel p {
+  color: #bbb;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin-top: 1vh;
 }
 .main_containerPanel .checkboxInput {
   display: none;
@@ -599,9 +759,6 @@ body {
   transition-duration: 0.2s;
   background-color: white;
 }
-.main_containerPanel {
-  /* Switch background change */
-}
 .main_containerPanel .checkboxInput:checked + .toggleSwitch {
   background-color: rgb(148, 118, 255);
   transition-duration: 0.2s;
@@ -633,6 +790,15 @@ body {
 .main_containerPanel .submit-button:active {
   color: #666;
   box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+.main_containerPanel #ContainerEnableNewUsers {
+  position: relative;
+  /* align-self: self-end; */
+  margin-top: 5vh;
+  height: fit-content;
+}
+.main_containerPanel #ContainerEnableNewUsers div {
+  margin-top: 1vh;
 }
 .main_containerProfile {
   background-color: #eaddd7;
@@ -695,18 +861,24 @@ body {
   opacity: 0;
   cursor: pointer;
 }
+.main_containerEstadisticas .containerDatafilter select {
+  all: revert;
+}
+.main_containerEstadisticas .containerDatafilter input[type=text] {
+  all: revert;
+}
 .main_containerEstadisticas .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 .main_containerEstadisticas .csvContainer button {
   color: unset;
@@ -732,7 +904,7 @@ body {
 }
 .main_containerEstadisticas .modal-content,
 .main_containerEstadisticas .csvmodal-content {
-  background-color: #fefefe;
+  background-color: #2a2a2a;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
@@ -748,7 +920,7 @@ body {
   position: relative;
   justify-content: center;
   align-items: center;
-  background-color: #307750;
+  background-color: #16221b;
   color: #fff;
   border-style: none;
   padding: 1em 2em;
@@ -777,7 +949,7 @@ body {
   height: 100%;
   width: 0;
   border-radius: 0.5em;
-  background-color: #469b61;
+  background-color: #676767;
   z-index: -1;
   transition: all 350ms;
 }
@@ -790,7 +962,6 @@ body {
   display: flex;
   gap: 1rem;
   position: relative;
-  /* From Uiverse.io by andrew-demchenk0 */
 }
 .main_containerEstadisticas .modal-content .modal-body .opcionBalance,
 .main_containerEstadisticas .modal-content .modal-body .opcionProducto,
@@ -911,7 +1082,7 @@ body {
   transition: inherit;
   box-shadow: inherit;
   border-radius: 5em;
-  background: rgba(141, 141, 141, 0.664);
+  background: rgba(65, 99, 18, 0.43);
   box-shadow: #000000 0px 0px 0px 1px;
   padding: 0.1em 0.5em;
   font-size: 20px;
@@ -925,7 +1096,7 @@ body {
 .main_containerEstadisticas .modal-content .modal-body button[type=submit]:hover,
 .main_containerEstadisticas .csvmodal-content .modal-body .submit-button:hover,
 .main_containerEstadisticas .csvmodal-content .modal-body button[type=submit]:hover {
-  background: rgba(141, 141, 141, 0.856);
+  background: rgba(10, 12, 154, 0.86);
 }
 .main_containerEstadisticas .modal-content .modal-body .submit-button:active,
 .main_containerEstadisticas .modal-content .modal-body button[type=submit]:active,
@@ -953,9 +1124,6 @@ body {
   padding: 8px;
   text-align: left;
 }
-.main_containerEstadisticas {
-  /* The Close Button */
-}
 .main_containerEstadisticas .close {
   color: #aaaaaa;
   float: right;
@@ -972,7 +1140,6 @@ body {
   justify-items: center;
   padding: 2rem;
   font-family: "Segoe UI", sans-serif;
-  color: #222;
 }
 .main_containerEstadisticas .stats-title {
   font-size: 2rem;
@@ -1013,9 +1180,6 @@ body {
 .main_containerEstadisticas .stats-card:hover {
   transform: scale(1.02);
 }
-.main_containerEstadisticas .stats-graphs {
-  width: 80%;
-}
 .main_containerEstadisticas .stats-chart-container {
   background: #fff;
   padding: 2rem;
@@ -1025,8 +1189,8 @@ body {
   overflow-x: auto;
 }
 .main_containerEstadisticas .stats-canvas {
-  width: 100% !important;
-  height: 100% !important;
+  width: 130vh !important;
+  height: 48vh !important;
 }
 .main_containerEstadisticas button {
   all: revert;
@@ -1079,36 +1243,18 @@ body {
 .main_containerEstadisticas .csvContainer {
   margin-left: 5vh;
 }
-
-/* escala con la fuente si querés: width/height en em */
-.icon {
-  width: 1.7em; /* ejemplo: 20px si font-size = 16px */
+.main_containerEstadisticas .icon {
+  width: 1.7em;
   height: 1.7em;
-  display: inline-block;
-  vertical-align: middle;
-  color: #fff; /* controla el color del icono */
-  fill: currentColor; /* fallback: asegura herencia si el path no tiene fill */
+  color: #0b7c42;
+  fill: currentColor;
 }
-
-/* margen entre icono y texto */
-.container-btn-file .icon {
+.main_containerEstadisticas .iconCsv {
+  width: 2.7em;
+  height: 2.7em;
+}
+.main_containerEstadisticas .container-btn-file .icon {
   margin-right: 0.5rem;
-}
-
-/* si querés tamaños fijos */
-.icon--sm {
-  width: 16px;
-  height: 16px;
-}
-
-.icon--md {
-  width: 20px;
-  height: 20px;
-}
-
-.icon--lg {
-  width: 32px;
-  height: 32px;
 }
 
 /*# sourceMappingURL=global.css.map */
