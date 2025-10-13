@@ -376,14 +376,8 @@ body {
   height: 100%;
   display: flex;
 }
-.main_container {
-  /* El padre aporta perspectiva real 3D */
-}
 .main_container .with-perspective {
   perspective: 1000px;
-}
-.main_container {
-  /* Estilo base del componente interactivo */
 }
 .main_container .has-gradient-tracker {
   /* Paleta por elemento (se puede sobreescribir vía JS) */
@@ -851,9 +845,6 @@ body {
 .main_containerMenuEstadisticas li {
   margin-bottom: 1rem;
 }
-.main_containerEstadisticas {
-  /* === ESTADÍSTICAS === */
-}
 .main_containerEstadisticas a {
   position: absolute;
   width: 100%;
@@ -898,9 +889,6 @@ body {
 }
 .main_containerEstadisticas .csvContainer fieldset legend {
   all: revert;
-}
-.main_containerEstadisticas {
-  /* Modal Content */
 }
 .main_containerEstadisticas .modal-content,
 .main_containerEstadisticas .csvmodal-content {
