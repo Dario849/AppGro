@@ -27,7 +27,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_alimento'])) {
     }
     $stmt->close();
 }
-
+/*
+PARA HACER VACUNAS SI VAN TODAS JUNTAS
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_vacuna'])) {
+    $id_vacuna = $_POST['select_vacuna'];
+    $stmt = $conn->prepare("INSERT INTO ganado_sanidad (id_grupo, id_alimento, fecha_estado) VALUES (?, ?, NOW())");
+    $stmt->bind_param("ii", $id_grupoForAlimento, $id_alimento);
+    if ($stmt->execute()) {
+        $success_message = "Dieta agregada correctamente.";
+    } else {
+        $error_message = "Error al agregar la dieta: " . $conn->error;
+    }
+    $stmt->close();
+}
+*/
 // Fetch animals in the group
 if ($nro_caravana !== '' && $nro_caravana !== '0') {
     $stmt = $conn->prepare("

@@ -3,14 +3,27 @@ require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Grupos_ganado UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) .'\system\resources\database.php';
+$conn = new mysqli('localhost', 'root', '', 'app_campo');
 //require dirname(__DIR__,2) .'\system\ganados\Bganados.php';
-
 if (!isset($_GET['id_grupo'])) {
     // echo "Grupo no especificado.";
     // exit;
 }
 
 $id_grupo = $_GET['id_grupo'];
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nueva_vacuna'])) {
+    $nombre_vacuna = $_POST['nombre_vacuna'];
+    $proveedor_vacuna = $_POST['proveedor_vacuna'];
+    $stmt = $conn->prepare("INSERT INTO vacunas (nombre_vacuna, proveedor) VALUES (?, ?)");
+    $stmt->bind_param("ss", $nombre_vacuna, $proveedor_vacuna);
+    if ($stmt->execute()) {
+        $success_message = "Vacuna agregada correctamente.";
+    } else {
+        $error_message = "Error al agregar la vacuna: " . $conn->error;
+    }
+    $stmt->close();
+}
 
 ?>
 <main class="main__content">
@@ -23,6 +36,14 @@ $id_grupo = $_GET['id_grupo'];
 
         </div>
         <div class="main_containerganados">
+            <!-- Form to add a new VACUNA -->
+                <div style="margin-bottom: 20px;">
+                    <h3>Agregar Nueva Vacuna</h3>
+                    <form action="/grupos_ganado" method="POST">
+                        <input type="text" name="nombre_vacuna" placeholder="Nombre de la vacuna" required>
+                        <input type="text" name="proveedor_vacuna" placeholder="Proveedor de la vacuna" required>
+                        <button type="submit" name="nueva_vacuna">Agregar Vacuna</button>
+                    </form>
 
         <fieldset>
             <legend>Datos del Animal</legend>
@@ -40,7 +61,6 @@ $id_grupo = $_GET['id_grupo'];
                 <tbody>
                     <?php
                     // Conexión a la base de datos
-                    $conn = new mysqli('localhost', 'root', '', 'app_campo');
 
                     if ($conn->connect_error) {
                         die("Conexión fallida: " . $conn->connect_error);
