@@ -2,32 +2,26 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'GanadoS UwU', uid: $_SESSION['user_id']);
-require dirname(__DIR__, 2) .'\system\resources\database.php';
+require dirname(__DIR__, 1) . '/system/resources/database.php';
 
-$id_grupo = $_GET['id_grupo']??null;
+
+$id_grupo = $_GET['id_grupo'] ?? null;
 $nro_caravana = isset($_GET['nro_caravana']) ? trim($_GET['nro_caravana']) : '';
-
-$conn = new mysqli('localhost', 'root', '', 'app_campo');
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
-
-// Handle new diet form submission
-$success_message = '';
-$error_message = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_alimento'])) {
-    $id_grupoForAlimento = $_POST['id_grupo_alimento'];
-    $id_alimento = $_POST['select_alimento'];
-    $stmt = $conn->prepare("INSERT INTO ganado_dietas (id_grupo, id_alimento, fecha_estado) VALUES (?, ?, NOW())");
-    $stmt->bind_param("ii", $id_grupoForAlimento, $id_alimento);
-    if ($stmt->execute()) {
-        $success_message = "Dieta agregada correctamente.";
-    } else {
-        $error_message = "Error al agregar la dieta: " . $conn->error;
+try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $success_message = '';
+    $error_message = '';
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_alimento'])) {
+        $id_grupoForAlimento = $_POST['id_grupo_alimento'];
+        $id_alimento = $_POST['select_alimento'];
+        $stmt = $pdo->prepare("INSERT INTO ganado_dietas (id_grupo, id_alimento, fecha_estado) VALUES (?, ?, NOW())");
+        if ($stmt->execute([$id_grupoForAlimento, $id_alimento])) {
+            $success_message = "Dieta agregada correctamente.";
+        } else {
+            $error_message = "Error al agregar la dieta: " . implode(" ", $stmt->errorInfo());
+        }
     }
-    $stmt->close();
-}
-/*
+    /*
 PARA HACER VACUNAS SI VAN TODAS JUNTAS
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_vacuna'])) {
     $id_vacuna = $_POST['select_vacuna'];
@@ -41,33 +35,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['select_vacuna'])) {
     $stmt->close();
 }
 */
-// Fetch animals in the group
-if ($nro_caravana !== '' && $nro_caravana !== '0') {
-    $stmt = $conn->prepare("
-        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
-        FROM ganado g
-        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
-        WHERE gg.id_grupo = ? AND g.nro_caravana = ?
-    ");
-    $stmt->bind_param("is", $id_grupo, $nro_caravana);
-} else {
-    $stmt = $conn->prepare("
-        SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
-        FROM ganado g
-        INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
-        WHERE gg.id_grupo = ?
-    ");
-    $stmt->bind_param("i", $id_grupo);
-}
-$stmt->execute();
-$result = $stmt->get_result();
+    // Fetch animals in the group
+    if ($nro_caravana !== '' && $nro_caravana !== '0') {
+        $stmt = $pdo->prepare("
+            SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+            FROM ganado g
+            INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+            WHERE gg.id_grupo = ? AND g.nro_caravana = ? ");
+        $stmt->execute([$id_grupo, $nro_caravana]);
+    } else {
+        $stmt = $pdo->prepare("
+            SELECT g.id, g.nro_caravana, g.id_tipo_ganado, g.sexo, g.fecha_nacimiento
+            FROM ganado g
+            INNER JOIN grupos_ganado gg ON g.id = gg.id_ganado
+            WHERE gg.id_grupo = ?
+        ");
+        $stmt->execute([$id_grupo]);
+    }
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Fetch available foods for the dropdown
+    $alimentos_result = $pdo->query("SELECT id, nombre, marca FROM alimentos");
 
-// Fetch available foods for the dropdown
-$alimentos_result = $conn->query("SELECT id, nombre, marca FROM alimentos");
-
-// Fetch the latest diet for the group
-$latest_diet = null;
-$stmt = $conn->prepare("
+    // Fetch the latest diet for the group
+    $latest_diet = null;
+    $stmt = $pdo->prepare("
     SELECT a.nombre, a.marca, gd.fecha_estado
     FROM ganado_dietas gd
     INNER JOIN alimentos a ON gd.id_alimento = a.id
@@ -75,13 +66,13 @@ $stmt = $conn->prepare("
     ORDER BY gd.fecha_estado DESC
     LIMIT 1
 ");
-$stmt->bind_param("i", $id_grupo);
-$stmt->execute();
-$latest_diet_result = $stmt->get_result();
-if ($latest_diet_result->num_rows > 0) {
-    $latest_diet = $latest_diet_result->fetch_assoc();
+    $stmt->execute([$id_grupo]);
+    $latest_diet = $stmt->fetch(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    echo "Error en la conexión: " . $e->getMessage();
+    exit;
 }
-$stmt->close();
 ?>
 
 <main class="main__content">
@@ -95,8 +86,8 @@ $stmt->close();
             <form action="/grupos_ganado" method="GET">
                 <button type="submit">Volver a los grupos</button>
             </form>
-        </div>
 
+        </div>
         <div class="main_containerganados">
             <fieldset>
                 <legend>Ganado del Grupo <?php echo htmlspecialchars($id_grupo); ?></legend>
@@ -105,16 +96,19 @@ $stmt->close();
                 <div style="margin-bottom: 20px;">
                     <h3>Agregar Nueva Dieta al Grupo</h3>
                     <form action="/ganados" method="POST">
-                        <input type="hidden" name="id_grupo_alimento" value="<?php echo htmlspecialchars($id_grupo); ?>">
+                        <input type="hidden" name="id_grupo_alimento"
+                            value="<?php echo htmlspecialchars($id_grupo); ?>">
                         <label for="id_alimento">Seleccionar Alimento:</label>
                         <select name="select_alimento" id="id_alimento" required>
                             <option value="">Seleccione un alimento</option>
                             <?php
-                            while ($alimento = $alimentos_result->fetch_assoc()) {
-                                echo "<option value='" . htmlspecialchars($alimento['id']) . "'>" 
+                            $alimentos = $alimentos_result->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($alimentos as $alimento) {
+                                echo "<option value='" . htmlspecialchars($alimento['id']) . "'>"
                                     . htmlspecialchars($alimento['nombre']) . " (" . htmlspecialchars($alimento['marca']) . ")</option>";
                             }
                             ?>
+
                         </select>
                         <button type="submit">Agregar Dieta</button>
                     </form>
@@ -130,8 +124,8 @@ $stmt->close();
                     <!-- Display latest diet -->
                     <?php if ($latest_diet): ?>
                         <p style="margin-top: 10px;">
-                            <strong>Última Dieta:</strong> 
-                            <?php echo htmlspecialchars($latest_diet['nombre']) . " (" . htmlspecialchars($latest_diet['marca']) .")"; ?>
+                            <strong>Última Dieta:</strong>
+                            <?php echo htmlspecialchars($latest_diet['nombre']) . " (" . htmlspecialchars($latest_diet['marca']) . ")"; ?>
                         </p>
                     <?php else: ?>
                         <p style="margin-top: 10px;">No hay dietas asignadas a este grupo.</p>
@@ -151,8 +145,8 @@ $stmt->close();
                     </thead>
                     <tbody>
                         <?php
-                        if ($result->num_rows > 0) {
-                            while ($animal = $result->fetch_assoc()) {
+                        if (count($result) > 0) {
+                            foreach ($result as $animal) {
                                 echo "<tr>";
                                 echo "<td>" . htmlspecialchars($animal['id']) . "</td>";
                                 echo "<td>" . htmlspecialchars($animal['nro_caravana']) . "</td>";
@@ -165,7 +159,8 @@ $stmt->close();
                         } else {
                             echo "<tr><td colspan='6'>Este grupo no tiene animales.</td></tr>";
                         }
-                        $stmt->close();
+                        $stmt = null;
+                        $pdo = null;
                         ?>
                     </tbody>
                 </table>
@@ -173,7 +168,3 @@ $stmt->close();
         </div>
     </div>
 </main>
-
-<?php
-$conn->close();
-?>

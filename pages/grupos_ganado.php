@@ -2,27 +2,22 @@
 require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Grupos_ganado UwU', uid: $_SESSION['user_id']);
-require dirname(__DIR__, 2) .'\system\resources\database.php';
-$conn = new mysqli('localhost', 'root', '', 'app_campo');
-//require dirname(__DIR__,2) .'\system\ganados\Bganados.php';
-if (!isset($_GET['id_grupo'])) {
-    // echo "Grupo no especificado.";
-    // exit;
-}
+require dirname(__DIR__, 2) . '/system/resources/database.php';
+//require dirname(__DIR__,2) .'/system/ganados/Bganados.php';
 
-$id_grupo = $_GET['id_grupo'];
+
+$id_grupo = $_GET['id_grupo'] ?? null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nueva_vacuna'])) {
     $nombre_vacuna = $_POST['nombre_vacuna'];
     $proveedor_vacuna = $_POST['proveedor_vacuna'];
-    $stmt = $conn->prepare("INSERT INTO vacunas (nombre_vacuna, proveedor) VALUES (?, ?)");
-    $stmt->bind_param("ss", $nombre_vacuna, $proveedor_vacuna);
-    if ($stmt->execute()) {
+
+    $stmt = $pdo->prepare("INSERT INTO vacunas (nombre_vacuna, proveedor) VALUES (?, ?)");
+    if ($stmt->execute([$nombre_vacuna, $proveedor_vacuna])) {
         $success_message = "Vacuna agregada correctamente.";
     } else {
-        $error_message = "Error al agregar la vacuna: " . $conn->error;
+        $error_message = "Error al agregar la vacuna: " . implode(" ", $stmt->errorInfo());
     }
-    $stmt->close();
 }
 
 ?>
@@ -37,70 +32,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['nueva_vacuna'])) {
         </div>
         <div class="main_containerganados">
             <!-- Form to add a new VACUNA -->
-                <div style="margin-bottom: 20px;">
-                    <h3>Agregar Nueva Vacuna</h3>
-                    <form action="/grupos_ganado" method="POST">
-                        <input type="text" name="nombre_vacuna" placeholder="Nombre de la vacuna" required>
-                        <input type="text" name="proveedor_vacuna" placeholder="Proveedor de la vacuna" required>
-                        <button type="submit" name="nueva_vacuna">Agregar Vacuna</button>
-                    </form>
+            <div style="margin-bottom: 20px;">
+                <h3>Agregar Nueva Vacuna</h3>
+                <form action="/grupos_ganado" method="POST">
+                    <input type="text" name="nombre_vacuna" placeholder="Nombre de la vacuna" required>
+                    <input type="text" name="proveedor_vacuna" placeholder="Proveedor de la vacuna" required>
+                    <button type="submit" name="nueva_vacuna">Agregar Vacuna</button>
+                </form>
 
-        <fieldset>
-            <legend>Datos del Animal</legend>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Fecha Desde</th>
-                        <th>Fecha Hasta</th>
-                        <th>ID Subdivisión</th>
-                        <th>Comentario</th>
-                        <th>Detalles</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Conexión a la base de datos
+                <fieldset>
+                    <legend>Datos del Animal</legend>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Fecha Desde</th>
+                                <th>Fecha Hasta</th>
+                                <th>ID Subdivisión</th>
+                                <th>Comentario</th>
+                                <th>Detalles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Conexión a la base de datos
+                            
 
-                    if ($conn->connect_error) {
-                        die("Conexión fallida: " . $conn->connect_error);
-                    }
-                    if ($id_grupo) {
-                        $sql = "SELECT SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
+                            try {
+                                $stmt = $pdo->prepare(
+                                    $id_grupo ?
+                                    "SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
                         FROM grupos g 
                         JOIN lotes l 
                         ON g.id_lote = l.id 
-                        WHERE id = $id_grupo";
-                    } else {
-                        $sql = "SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
+                        WHERE id = ?" :
+                                    "SELECT g.id, g.fecha_desde, g.fecha_hasta, l.nombre , g.comentario 
                         FROM grupos g 
                         JOIN lotes l 
                         ON g.id_lote = l.id 
-                        ORDER BY g.id ";
-                    }
+                        ORDER BY g.id "
+                                );
 
-                    $result = $conn->query($sql);
+                                $stmt->execute($id_grupo ? [$id_grupo] : []);
+                                $grupos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            } catch (PDOException $e) {
+                                echo "Error en la conexión: " . $e->getMessage();
+                                exit;
+                            }
 
-                    if ($result->num_rows > 0) {
-                        while ($grupo = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . htmlspecialchars($grupo['id']) . "</td>";
-                            echo "<td>" . htmlspecialchars($grupo['fecha_desde']) . "</td>";
-                            echo "<td>" . htmlspecialchars($grupo['fecha_hasta']) . "</td>";
-                            echo "<td>" . htmlspecialchars($grupo['id_subdivision']) . "</td>";
-                            echo "<td>" . htmlspecialchars($grupo['comentario']) . "</td>";
-                            echo "<td><a href='/ganados?id_grupo=" . urlencode($grupo['id']) . "'>Ver animales</a></td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='6'>No hay registros disponibles</td></tr>";
-                    }
+                            if (count($grupos) > 0) {
+                                foreach ($grupos as $grupo) {
+                                    echo "<tr>";
+                                    echo "<td>" . htmlspecialchars($grupo['id']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($grupo['fecha_desde']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($grupo['fecha_hasta']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($grupo['nombre']) . "</td>";
+                                    echo "<td>" . htmlspecialchars($grupo['comentario']) . "</td>";
+                                    echo "<td><a href='/ganados?id_grupo=" . urlencode($grupo['id']) . "'>Ver animales</a></td>";
+                                    echo "</tr>";
+                                }
+                            } else {
+                                echo "<tr><td colspan='6'>No hay registros disponibles</td></tr>";
+                            }
 
-                    $conn->close();
-                    ?>
-                </tbody>
-            </table>
-        </fieldset>
-    </div>
-</div>
+                            $pdo = null;
+                            ?>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
 </main>

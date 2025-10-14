@@ -9,16 +9,11 @@ if (!isset($_GET['nro_caravana'])) {
     exit;
 }
 
-
 $nro_caravana = $_GET['nro_caravana'];
-
-$conn = new mysqli('localhost', 'root', '', 'app_campo');
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-}
-
-// Traer los datos del animal
-$stmt = $conn->prepare(" SELECT 
+try {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // Traer los datos del animal
+    $stmt = $pdo->prepare(" SELECT 
         g.id, 
         g.nro_caravana, 
         g.sexo, 
@@ -69,18 +64,20 @@ $stmt = $conn->prepare(" SELECT
     LEFT JOIN vacunas v ON v.id = gs.id_vacuna
     WHERE g.nro_caravana =?
 ");
-$stmt->bind_param("s", $nro_caravana);
-$stmt->execute();
-$result = $stmt->get_result();
+    $stmt->execute([$nro_caravana]);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if ($result->num_rows === 0) {
-    echo "Ganado no encontrado.";
+    if (count($result) === 0) {
+        echo "Ganado no encontrado.";
+        exit;
+    }
+
+    $ganado = $result[0];
+
+} catch (PDOException $e) {
+    echo "Error en la conexión: " . $e->getMessage();
     exit;
 }
-
-$ganado = $result->fetch_assoc();
-
-$conn->close();
 ?>
 <main class="main__content">
     <div class="main_container">
@@ -223,63 +220,55 @@ $conn->close();
 
 </form>
 
-<?php
-$conn = new mysqli('localhost', 'root', '', 'app_campo');
-if ($conn->connect_error) {
-    die("Conexión fallida: " . $conn->connect_error);
-} 
-// Guardamos en un array todas las vacunas del animal
-$vacunas_historial = [];
-if (isset($ganado['id'])) {
-    $stmtHist = $conn->prepare("
+        <?php
+
+        try {
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            // Traer el historial de vacunas del animal
+            // Guardamos en un array todas las vacunas del animal
+            $vacunas_historial = [];
+            if (isset($ganado['id'])) {
+                $stmtHist = $pdo->prepare("
         SELECT v.nombre_vacuna, v.proveedor, gs.fecha_estado
         FROM ganado_sanidad gs
         JOIN vacunas v ON v.id = gs.id_vacuna
         WHERE gs.id_ganado = ?
         ORDER BY gs.fecha_estado DESC
     ");
-    $stmtHist->bind_param("i", $ganado['id']);
-    $stmtHist->execute();
-    $res = $stmtHist->get_result();
-    while($row = $res->fetch_assoc()) {
-        $vacunas_historial[] = $row;
-    }
-}
-// Historial de Pesos
-$pesos_historial = [];
-if (isset($ganado['id'])) {
-    $stmtPeso = $conn->prepare("
+                $stmtHist->execute([$ganado['id']]);
+                $vacunas_historial = $stmtHist->fetchAll(PDO::FETCH_ASSOC);
+            }
+            // Historial de Pesos
+            $pesos_historial = [];
+            if (isset($ganado['id'])) {
+                $stmtPeso = $pdo->prepare("
         SELECT peso, fecha_estado
         FROM ganado_peso
         WHERE id_ganado = ?
         ORDER BY fecha_estado DESC
     ");
-    $stmtPeso->bind_param("i", $ganado['id']);
-    $stmtPeso->execute();
-    $resPeso = $stmtPeso->get_result();
-    while($row = $resPeso->fetch_assoc()) {
-        $pesos_historial[] = $row;
-    }
-}
+                $stmtPeso->execute([$ganado['id']]);
+                $pesos_historial = $stmtPeso->fetchAll(PDO::FETCH_ASSOC);
+            }
 
-// Historial de Baños
-$banos_historial = [];
-if (isset($ganado['id'])) {
-    $stmtBano = $conn->prepare("
+            // Historial de Baños
+            $banos_historial = [];
+            if (isset($ganado['id'])) {
+                $stmtBano = $pdo->prepare("
         SELECT fecha_estado
         FROM ganado_baños
         WHERE id_ganado = ?
         ORDER BY fecha_estado DESC
     ");
-    $stmtBano->bind_param("i", $ganado['id']);
-    $stmtBano->execute();
-    $resBano = $stmtBano->get_result();
-    while($row = $resBano->fetch_assoc()) {
-        $banos_historial[] = $row;
-    }
-}
-$conn->close();
-?>
+                $stmtBano->execute([$ganado['id']]);
+                $banos_historial = $stmtBano->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+        } catch (PDOException $e) {
+            echo "Error en la conexión: " . $e->getMessage();
+            exit;
+        }
+        ?>
 
 </body>
 <script>
