@@ -36,7 +36,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                         Ganado</button>
                     <button class="stats-tab-btn" data-target="cultivos" title="Ver datos de nuevos cultivos">Altas
                         Cultivos</button>
-                    <button id="btnAdd"><img width="20px" src="plus-solid-full.svg" alt="Agregar" class="stats-tab-icon"
+                    <button id="btnAdd"><img width="20px" src="public/plus-solid-full.svg" alt="Agregar" class="stats-tab-icon"
                             title="Agregar nuevos registros" data-target="agregar" /></button>
 
                     <!-- The Modal -->
@@ -204,7 +204,7 @@ $layout = new HTML(title: 'Estadísticas Productivas', uid: $_SESSION['user_id']
                                                         <svg class="icon">
                                                             <use href="public/excel_logo.svg#icon-libro"></use>
                                                         </svg>
-                                                        <a class="file" href="Plantilla_Balances-AppGro.xlsx"></a>
+                                                        <a class="file" href="public/Plantilla_Balances-AppGro.xlsx"></a>
                                                         Descargar plantilla para importar nuevos datos
                                                     </button>
                                                     </button>

@@ -1,5 +1,5 @@
 <?php
-require(__DIR__ . '/../../system/main.php');
+require(__DIR__ . '/../system/main.php');
 session_start();
 $layout = new HTML(title: 'AppGro - Calendario', uid: $_SESSION['user_id']);
 ?>
