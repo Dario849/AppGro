@@ -56,13 +56,13 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('GET', '/user/profile', function ($ROUTE_PARAMS) {
 		include('pages/user/profile.php');
 	});
-	$r->addRoute(['GET','POST'], '/grupos_ganado', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/grupos_ganado', function ($ROUTE_PARAMS) {
 		include('pages/grupos_ganado.php');
 	});
 	$r->addRoute('GET', '/administrador', function ($ROUTE_PARAMS) {
 		include('pages/admin/panel.php');
 	});
-	$r->addRoute(['GET','POST'], '/ganados', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET', 'POST'], '/ganados', function ($ROUTE_PARAMS) {
 		include('pages/ganados.php');
 	});
 	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
@@ -131,7 +131,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
 		include('system/ganados/Bganados.php');
 	});
-		$r->addRoute('POST', '/BGuiaContent', function ($ROUTE_PARAMS) {
+	$r->addRoute('POST', '/BGuiaContent', function ($ROUTE_PARAMS) {
 		include('system/GuiaContent.php');
 	});
 	$r->addRoute('POST', '/BchangePermission', function ($ROUTE_PARAMS) {
@@ -146,6 +146,15 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute(['GET', 'POST'], '/guia', function ($ROUTE_PARAMS) {
 		require('pages/guia.php');
 	});
+	$r->addGroup('/herramientas', function (FastRoute\RouteCollector $r) { //Permite agrupar rutas que comparten un prefijo común
+		$r->addRoute([ 'POST'], '/listener', function ($ROUTE_PARAMS) {
+			include('pages/herramientas/backend/listener.php');
+		});
+		$r->addRoute([ 'GET'], '/panel', function ($ROUTE_PARAMS) {
+			include('pages/herramientas/toolsPanel.php');
+		});
+	});
+
 });
 
 // Fetch method and URI from somewhere

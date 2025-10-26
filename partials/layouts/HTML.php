@@ -20,12 +20,13 @@ class HTML
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
 			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
-			<script src="../js/jquery-3.7.1.min.js"></script>
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
 			<link href="/src/styles/global.scss" rel="stylesheet" />
-			<script src="src/scripts/perspectiveCard.js"></script>
+			<script src="../js/jquery-3.7.1.min.js"></script>
+			<script src="/src/scripts/perspectiveCard.js"></script>
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
 			<script src="/node_modules/tinymce/tinymce.min.js" type="module"></script>
+			<script type="text/javascript" src="../js/xlsx.full.min.js"></script>
 			<script>
 				$(function () {
 					$('#navBar').load('/partials/navBar.html'); //Carga barra lateral para navegación de toda la página

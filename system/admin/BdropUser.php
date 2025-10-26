@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 $usuario_id = (int) $_POST["dropUId"] ?? null;
 $now = date("Y-m-d H:i:s");
 try {

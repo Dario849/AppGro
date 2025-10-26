@@ -3,6 +3,7 @@ require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Ganado UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) .'\system\resources\database.php';
+$pdo = DB::connect();
 
 if (!isset($_GET['nro_caravana'])) {
     echo "Ganado no especificado.";

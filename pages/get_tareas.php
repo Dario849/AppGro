@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require dirname(__DIR__, 2) . '/system/resources/database.php';
+$pdo = DB::connect();
 
 $estado = $_GET['estado'] ?? 'todas';
 $orden = $_GET['orden'] ?? '';

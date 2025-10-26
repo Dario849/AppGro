@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 $dateToSave = $_GET['fecha'] ?? null;
 $valueToSave = $_GET['monto'] ?? null;
 $typeToSave = $_GET['tipo'] ?? null;

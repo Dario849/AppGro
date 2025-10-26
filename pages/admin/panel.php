@@ -1,7 +1,6 @@
 <?php
 require('system/main.php');
 sessionAuth();
-require dirname(__DIR__, levels: 3) . '/system/resources/database.php'; // conecta con tu PDO $pdo
 $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id']);
 ?>
 <main class="main__content">

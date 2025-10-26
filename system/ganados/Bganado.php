@@ -1,5 +1,6 @@
 <?php
 require dirname(__DIR__, 2) .'\system\resources\database.php';
+$pdo = DB::connect();
 
 if (!isset($_GET['id'])) {
     echo "Error: ID no recibido";

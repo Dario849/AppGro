@@ -3,6 +3,7 @@ require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'AppGro-Panel de usuario', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 3) . '\system\resources\database.php';
+$pdo = DB::connect();
 $sql = "SELECT nombre, apellido, username, fecha_nacimiento FROM Usuarios WHERE id = :uid";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([

@@ -2,6 +2,7 @@
     header('Content-Type: application/json');
     session_start();
     require dirname(__DIR__) . '/system/resources/database.php'; // conexión PDO
+    $pdo = DB::connect();
     $uid = $_SESSION['user_id'] ?? 0;
     $currentPerm = $pdo->prepare("SELECT v.nombre
     FROM usuarios_vistas uv

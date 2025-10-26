@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 $uid = $_POST['uid'] ?? null;
 $newEstado = $_POST['estado'] ?? null;
 // Obtener usuarios

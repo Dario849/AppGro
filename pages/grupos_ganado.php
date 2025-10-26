@@ -3,7 +3,7 @@ require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Grupos_ganado UwU', uid: $_SESSION['user_id']);
 require dirname(__DIR__, 2) . '/system/resources/database.php';
-//require dirname(__DIR__,2) .'/system/ganados/Bganados.php';
+$pdo = DB::connect();
 
 
 $id_grupo = $_GET['id_grupo'] ?? null;
