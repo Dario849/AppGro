@@ -3,7 +3,16 @@ require('system/main.php');
 sessionCheck();
 $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id']);
 ?>
+<!-- 
+TODO: Añadir panel para editar tipos de estados
+TODO: Completar panel para añadir tipos de Herramientas
+TODO: Añadir botón ver en grande las imagenes que se muestran de cada historial de herramientas
+TODO: Cambiar lista de imagenes a estilo carousel
+TODO: Añadir paginación para lista del historial de las herramientas (tantas imagenes podrían provocar lentitud)
+TODO: Añadir opción en creación de herramientas para añadir una imagen miniaturizada de la herramienta
+TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vacío, presentar imagen placeholder
 
+-->
 <style>
     :root {
         --primary: #417a7c;
@@ -27,6 +36,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         margin: 0 auto;
         padding: 2rem;
         color: white;
+        overflow: hidden;
     }
 
     /* Filtros */
@@ -40,10 +50,14 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
     }
 
     .filtros-grid {
-        display: grid;
+        display: none;
+        opacity: 0;
+        transform: translateY(-10%);
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 1rem;
         align-items: end;
+        transition: opacity 0.6s, display 0.6s, transform 0.6s ease-in-out;
+        transition-behavior: allow-discrete;
     }
 
     .filtro-group {
@@ -406,6 +420,121 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
     .space-y-4>*+* {
         margin-top: 1rem;
     }
+
+    .filtro-close {
+        place-self: end;
+        cursor: pointer;
+        color: var(--primary);
+        font-size: 1.5rem;
+
+        /* &:after {
+            content: "Cerrar Filtros";
+        } */
+
+        &:hover {
+            color: white;
+
+        }
+
+        transform: rotate(180deg);
+    }
+
+    .filtros-show {
+        transition: opacity 0.6s, display 0.6s, transform 0.6s ease-in-out;
+        display: grid;
+        opacity: 1;
+        transform: translateY(0);
+        transition-behavior: allow-discrete;
+    }
+
+    .historial-section {
+        margin-top: 2rem;
+    }
+
+    .historial-list {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .historial-item {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 1.5rem;
+    }
+
+    .historial-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 1rem;
+    }
+
+    .historial-fecha {
+        color: var(--muted-foreground);
+        font-size: 0.875rem;
+    }
+
+    .historial-usuario {
+        color: var(--primary);
+        font-weight: 500;
+    }
+
+    .historial-descripcion {
+        color: white;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    .historial-imagenes {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .historial-imagen {
+        aspect-ratio: 1;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+
+    .historial-imagen:hover {
+        transform: scale(1.05);
+    }
+
+    .historial-imagen img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .text-muted {
+        color: var(--muted-foreground);
+        font-style: italic;
+    }
+
+    .justify-between {
+        justify-content: space-between;
+    }
+
+    .items-center {
+        align-items: center;
+    }
+
+    @media (width >= 600px) and (width <= 1200px) {
+        .herramientas-container {
+            /* background-color: greenyellow; */
+        }
+    }
+
+    //nuevo operador para ayudar responsiveness de la página (compatibilidad completa con últimas versiones de navegador)
+    @media (600px<=width<=1200px) {
+        .herramientas-container {
+            /* background-color: rebeccapurple; */
+        }
+    }
 </style>
 <main class="main__content">
     <div class="main_container">
@@ -462,6 +591,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                             </button>
                         </div>
                     </div>
+                    <div id="closeFilters" class="filtro-close" onclick="return hideFiltros();">^</div>
                 </div>
 
                 <!-- Acciones principales -->
@@ -469,14 +599,13 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                     <button class="btn btn-primary" onclick="mostrarModalNuevaHerramienta()">
                         <i class="fas fa-plus"></i> Nueva Herramienta
                     </button>
-                    <button class="btn btn-secondary" onclick="cargarTiposHerramientas()">
+                    <button class="btn btn-secondary" onclick="mostrarPanelTiposHerramientas()">
                         <i class="fas fa-tools"></i> Gestionar Tipos
                     </button>
                 </div>
 
                 <!-- Lista de herramientas -->
                 <div id="herramientas-list" class="herramientas-list">
-                    <!-- Las herramientas se cargan aquí dinámicamente -->
                 </div>
 
                 <!-- Vista de detalle -->
@@ -526,7 +655,8 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                             </div>
                             <div class="form-group">
                                 <label for="herramienta-horas_uso">Horas de uso *</label>
-                                <input type="number" value="0" id="herramienta-horas_uso" disabled title="Campo Estado es nuevo, modifique si es que posee horas de uso previas a la compra">
+                                <input type="number" value="0" id="herramienta-horas_uso" disabled
+                                    title="Campo Estado es nuevo, modifique si es que posee horas de uso previas a la compra">
                             </div>
                             <div class="form-group">
                                 <label for="herramienta-estado">Estado *</label>
@@ -562,7 +692,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                         <button class="close-modal" onclick="cerrarModal('modal-agregar-historial')">&times;</button>
                     </div>
                     <form id="form-agregar-historial" onsubmit="guardarHistorial(event)">
-                        <input type="hidden-tools-tools" id="historial-herramienta-id">
+                        <span id="historial-herramienta-id"></span>
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="historial-descripcion">Descripción *</label>
@@ -579,7 +709,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                         </div>
 
                         <div class="form-group full-width mt-4">
-                            <label>Imágenes (máximo 5)</label>
+                            <label>Imágenes (cargue grupo de imagenes, <strong>máximo 5</strong> )</label>
                             <div class="image-upload" onclick="document.getElementById('historial-imagenes').click()">
                                 <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; margin-bottom: 1rem;"></i>
                                 <p>Haz clic para seleccionar imágenes</p>
@@ -600,7 +730,11 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         </div>
     </div>
 </main>
-
+<!-- 
+TODO: Habilitar modificación del estado de la herramienta al visualizar detalles y historial.
+TODO: Habilitar eliminación de historial de una herramienta si el usuario es administador (uid = 1).
+TODO: 
+-->
 <script>
     // Variables globales
     let herramientas = [];
@@ -612,6 +746,20 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         cargarHerramientas();
         cargarTiposHerramientas('#filtro-tipo');
     });
+    //FUNCIONALIDADES DE UI
+    // Esconder o mostrar filtros del panel
+    function hideFiltros() {
+        const filtrosSection = $('.filtros-grid');
+        const closeBtn = $('#closeFilters');
+        if (filtrosSection.hasClass('filtros-show')) {
+            filtrosSection.removeClass('filtros-show');
+            closeBtn.css({ 'transform': 'rotate(180deg)', 'transition': 'transform 0.3s ease-in-out', }); // Cambiar el texto del botón
+        } else {
+            filtrosSection.addClass('filtros-show');
+            closeBtn.css({ 'transform': 'rotate(0deg)', 'transition': 'transform 0.3s ease-in-out', }); // Cambiar el texto del botón
+        }
+    }
+    // Modificador dinamico de campo numero de horas de uso para creación de nuevas herramientas
     function toggleInputHorasUso(selectElement) {
         const horasUsoInput = document.getElementById('herramienta-horas_uso');
         if (selectElement.value === 'Nuevo') {
@@ -619,11 +767,12 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
             horasUsoInput.value = 0;
             horasUsoInput.disabled = true;
         } else {
-            horasUsoInput.title='';
+            horasUsoInput.title = '';
             horasUsoInput.disabled = false;
         }
     }
     // Funciones de API
+    // trae todos los registros, si existe, carga en array, y pasa datos a función "mostrarHerramientas" 
     async function cargarHerramientas() {
         try {
             $.ajax({
@@ -645,9 +794,8 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
             mostrarError('Error al cargar las herramientas');
         }
     }
-
+    // Trae listado de tipos de herramientas para select box (función dinámica) 
     async function cargarTiposHerramientas(element) {
-        console.log(element);
         try {
             $.ajax({
                 type: "POST",
@@ -657,7 +805,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                 },
                 dataType: "json",
                 success: function (response) {
-                    const select = document.getElementById(element? $(element).attr('id') :'herramienta-tipo');
+                    const select = document.getElementById(element ? $(element).attr('id') : 'herramienta-tipo');
                     select.innerHTML = '<option value="">Seleccionar tipo...</option>';
 
                     (response.data || []).forEach(tipo => {
@@ -672,7 +820,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
             console.error('Error al cargar tipos:', error);
         }
     }
-
+    // captura todos los datos ingresados en Nueva herramienta, envia a backend, en éxito, carga nuevamente registro de herramientas en panel principal
     async function guardarHerramienta(event) {
         event.preventDefault();
 
@@ -711,19 +859,19 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
             mostrarError('Error al crear la herramienta');
         }
     }
-
+    // captura todos los datos ingresados en Agregar Registro, envia a backend, en éxito, carga nuevamente detalles de la herramienta seleccionada previamente
     async function guardarHistorial(event) {
         event.preventDefault();
 
         const formData = new FormData();
         formData.append('method', 'agregarHistorial');
-        formData.append('id_herramienta', document.getElementById('historial-herramienta-id').value);
+        formData.append('id_herramienta', $('#historial-herramienta-id').html());
         formData.append('descripcion', document.getElementById('historial-descripcion').value);
         formData.append('horas_uso', document.getElementById('historial-horas').value);
         formData.append('fecha', document.getElementById('historial-fecha').value);
 
-        // Agregar imágenes
         imagenesSeleccionadas.forEach((imagen, index) => {
+            console.log('CONTENIDO DE IMAGEN:' + imagen + 'IMAGEN:' + index)
             formData.append(`imagenes[${index}]`, imagen);
         });
 
@@ -758,7 +906,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
             fecha_compra: document.getElementById('filtro-fecha').value
         };
     }
-
+    // presenta todos los datos pasados dentro de variable hacia elemento "herramientas-list"
     function mostrarHerramientas(herramientas) {
         const container = document.getElementById('herramientas-list');
 
@@ -804,7 +952,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         document.getElementById('herramientas-list').classList.add('hidden-tools');
         document.getElementById('detalle-herramienta').classList.remove('hidden-tools');
 
-        // Aquí cargarías el historial completo de la herramienta
+
         cargarHistorialHerramienta(id);
     }
 
@@ -821,7 +969,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
     }
 
     function mostrarModalAgregarHistorial(herramientaId) {
-        document.getElementById('historial-herramienta-id').value = herramientaId;
+        $('#historial-herramienta-id').html(herramientaId);
         document.getElementById('modal-agregar-historial').style.display = 'flex';
         document.getElementById('form-agregar-historial').reset();
         document.getElementById('image-preview').innerHTML = '';
@@ -868,17 +1016,14 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
 
     // Funciones de utilidad
     function mostrarExito(mensaje) {
-        // Implementar notificación de éxito
         console.log('Éxito:', mensaje);
     }
 
     function mostrarError(mensaje) {
-        // Implementar notificación de error
         console.error('Error:', mensaje);
         alert(mensaje);
     }
 
-    // Reemplazar estas funciones placeholder
     async function cargarHistorialHerramienta(id) {
         try {
             $.ajax({
@@ -901,9 +1046,52 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         }
     }
 
+    function mostrarModalAgregarHistorial(herramientaId) {
+        $('#historial-herramienta-id').html(herramientaId);
+        document.getElementById('modal-agregar-historial').style.display = 'flex';
+        document.getElementById('form-agregar-historial').reset();
+        document.getElementById('image-preview').innerHTML = '';
+        imagenesSeleccionadas = [];
+    }
+
+    function previewImages(input) {
+        const preview = document.getElementById('image-preview');
+        preview.innerHTML = '';
+        imagenesSeleccionadas = [];
+
+        if (input.files.length > 5) {
+            mostrarError('Máximo 5 imágenes permitidas');
+            input.value = '';
+            return;
+        }
+
+        Array.from(input.files).forEach((file, index) => {
+            if (index >= 5) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewItem = document.createElement('div');
+                previewItem.className = 'preview-item';
+                previewItem.innerHTML = `
+                <img src="${e.target.result}" alt="Preview">
+                <button type="button" class="remove-image" onclick="removerImagen(${index})">&times;</button>
+            `;
+                preview.appendChild(previewItem);
+            };
+            reader.readAsDataURL(file);
+            imagenesSeleccionadas.push(file);
+        });
+    }
+
+    function removerImagen(index) {
+        imagenesSeleccionadas.splice(index, 1);
+        previewImages({ files: imagenesSeleccionadas });
+    }
+    //Muestra los historiales para herramienta seleccionada
     function mostrarDetalleContenido(herramientaId, historial) {
         const herramienta = herramientas.find(h => h.id === herramientaId);
         const container = document.getElementById('detalle-contenido');
+
         container.innerHTML = `
         <div class="herramienta-card">
             <div class="herramienta-header">
@@ -938,7 +1126,7 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
         
         <div class="flex justify-between items-center mt-6">
             <h3>Historial de la Herramienta</h3>
-            <button class="btn btn-primary" onclick="mostrarModalAgregarHistorial(${herramientaId})">
+            <button class="btn btn-primary" onclick="mostrarModalAgregarHistorial(${herramienta.id})">
                 <i class="fas fa-plus"></i> Agregar Registro
             </button>
         </div>
@@ -955,16 +1143,49 @@ $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id'])
                             ${item.horas_uso > 0 ? `<div>${item.horas_uso}h de uso</div>` : ''}
                         </div>
                         <div class="historial-descripcion">${item.descripcion}</div>
-                        ${item.imagenes_ids ? `
+                        ${item.imagenes && item.imagenes.length > 0 ? `
                             <div class="historial-imagenes">
-                                <!-- Las imágenes se cargarían aquí -->
+                                ${item.imagenes.map((imagen, index) => `
+                                    <div class="historial-imagen">
+                                        <img src="${imagen.ruta || 'ruta/por/defecto.jpg'}" 
+                                             alt="Imagen ${index + 1} del historial"
+                                             onclick="ampliarImagen('${imagen.ruta || 'ruta/por/defecto.jpg'}')">
+                                    </div>
+                                `).join('')}
                             </div>
-                        ` : ''}
+                        ` : '<div class="text-muted">No hay imágenes en este registro</div>'}
                     </div>
                 `).join('') : '<div class="text-center">No hay registros en el historial</div>'}
             </div>
         </div>
     `;
     }
+    // Función auxiliar para ampliar imágenes
+    function ampliarImagen(rutaImagen) {
+        // Crear modal para visualización ampliada
+        const modalAmpliada = document.createElement('div');
+        modalAmpliada.className = 'modal';
+        modalAmpliada.style.display = 'flex';
+        modalAmpliada.innerHTML = `
+        <div class="modal-content" style="max-width: 90%; max-height: 90%;">
+            <div class="modal-header">
+                <h3 class="modal-title">Imagen Ampliada</h3>
+                <button class="close-modal" onclick="this.parentElement.parentElement.parentElement.remove()">&times;</button>
+            </div>
+            <div style="text-align: center; padding: 1rem;">
+                <img src="${rutaImagen}" 
+                     alt="Imagen ampliada" 
+                     style="max-width: 100%; max-height: 70vh; object-fit: contain;">
+            </div>
+        </div>
+    `;
+        // Cerrar modal al hacer clic fuera
+        modalAmpliada.addEventListener('click', function (e) {
+            if (e.target === this) {
+                this.remove();
+            }
+        });
 
+        document.body.appendChild(modalAmpliada);
+    }
 </script>
