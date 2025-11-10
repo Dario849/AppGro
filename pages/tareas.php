@@ -404,17 +404,48 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       });
 
       btnAgregar.addEventListener('click', () => modal.style.display = 'flex');
+      // --- Restricciones de fechas ---
+      const inputInicio = document.getElementById('inputInicio');
+      const inputVencimiento = document.getElementById('inputVencimiento');
+
+      // No permitir fechas anteriores a hoy
+      const hoy = new Date().toISOString().split('T')[0];
+      inputInicio.setAttribute('min', hoy);
+
+      // Cuando cambia la fecha de inicio, limitar vencimiento
+      inputInicio.addEventListener('change', () => {
+        inputVencimiento.value = '';
+        inputVencimiento.setAttribute('min', inputInicio.value);
+      });
+
       btnCancelarTarea.addEventListener('click', () => modal.style.display = 'none');
 
+      // --- Validación y guardado ---
       btnAceptarTarea.addEventListener('click', () => {
         const inicio = document.getElementById('inputInicio').value;
         const venc = document.getElementById('inputVencimiento').value;
         const desc = document.getElementById('inputDescripcion').value;
-        if (!inicio || !venc || !desc) { alert('Completa todos los campos'); return; }
+
+        if (!inicio || !venc || !desc) {
+          alert('Completa todos los campos');
+          return;
+        }
+
+        // Validar que el vencimiento sea posterior al inicio
+        if (venc < inicio) {
+          alert('La fecha de vencimiento no puede ser anterior al inicio');
+          return;
+        }
+
         fetch('/guardar_tarea.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ estado: 'activa', fecha_hora_inicio: inicio, fecha_hora_fin: venc, texto: desc })
+          body: JSON.stringify({
+            estado: 'activa',
+            fecha_hora_inicio: inicio,
+            fecha_hora_fin: venc,
+            texto: desc
+          })
         })
           .then(r => r.json())
           .then(res => {
@@ -425,14 +456,19 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
               document.getElementById('inputDescripcion').value = '';
               document.getElementById('filtro').value = 'activa';
               cargarTareas('activa');
-            } else alert('Error al guardar');
+            } else {
+              alert('Error al guardar');
+            }
           })
-          .catch(err => { console.error(err); alert('Error de conexión'); });
+          .catch(err => {
+            console.error(err);
+            alert('Error de conexión');
+          });
       });
 
-      // carga inicial
+      // --- Carga inicial ---
       cargarTareas(filtro.value);
-    });
+      });
 
     // ---- validar y enviar baja lógica por form ----
     function validarEliminar(form) {
