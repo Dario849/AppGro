@@ -179,9 +179,9 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
     <div class="card">
       <h3>Agregar Nueva Tarea</h3>
       <label>Inicio:</label>
-      <input type="date" id="inputInicio" style="width:100%; margin-bottom:10px;"><br>
+      <input type="date" id="inputInicio" onkeydown="return false;" style="width:100%; margin-bottom:10px;"><br>
       <label>Vencimiento:</label>
-      <input type="date" id="inputVencimiento" style="width:100%; margin-bottom:10px;"><br>
+      <input type="date" id="inputVencimiento" onkeydown="return false;" style="width:100%; margin-bottom:10px;"><br>
       <label>Descripción:</label>
       <input type="text" id="inputDescripcion" style="width:100%; margin-bottom:10px;"><br>
       <div style="display:flex; justify-content:flex-end; gap:8px;">
@@ -256,6 +256,28 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
             tr.appendChild(tdDesc);
 
             tabla.appendChild(tr);
+
+            // --- Restricciones dinámicas en fechas dentro de la tabla ---
+            inputInicio.onkeydown = () => false; // no permitir escribir manualmente
+            inputVenc.onkeydown = () => false;   // idem
+
+            // fecha mínima de inicio: hoy
+            const hoy = new Date().toISOString().split('T')[0];
+            inputInicio.setAttribute('min', hoy);
+
+            // cuando cambia el inicio, actualiza el mínimo del vencimiento
+            inputInicio.addEventListener('change', () => {
+              inputVenc.value = ''; // resetear vencimiento
+              inputVenc.setAttribute('min', inputInicio.value);
+            });
+
+            // validación: vencimiento no puede ser anterior al inicio
+            inputVenc.addEventListener('change', () => {
+              if (inputVenc.value < inputInicio.value) {
+                alert('La fecha de vencimiento no puede ser anterior al inicio');
+                inputVenc.value = '';
+              }
+            });
           });
         })
         .catch(err => console.error('Error cargando tareas:', err));
