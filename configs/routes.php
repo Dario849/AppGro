@@ -65,7 +65,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	$r->addRoute(['GET', 'POST'], '/ganados', function ($ROUTE_PARAMS) {
 		include('pages/ganados.php');
 	});
-	$r->addRoute('GET', '/ganado', function ($ROUTE_PARAMS) {
+	$r->addRoute(['GET','POST'], '/ganado', function ($ROUTE_PARAMS) {
 		include('pages/ganado.php');
 	});
 	$r->addRoute('GET', '/cultivos', function ($ROUTE_PARAMS) {
@@ -128,9 +128,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 	// $r->addRoute('POST', '/user/profile', function ($ROUTE_PARAMS) {
 	// 	include('system/login/Bprofile.php');
 	// });
-	$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
-		include('system/ganados/Bganados.php');
-	});
+	//$r->addRoute('POST', '/ganado', function ($ROUTE_PARAMS) {
+	//	include('system/ganados/Bganados.php');
+	//});
 	$r->addRoute('POST', '/BGuiaContent', function ($ROUTE_PARAMS) {
 		include('system/GuiaContent.php');
 	});
