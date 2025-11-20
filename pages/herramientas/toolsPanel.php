@@ -4,14 +4,10 @@ sessionCheck();
 $layout = new HTML(title: 'Gestión de Herramientas', uid: $_SESSION['user_id']);
 ?>
 <!-- 
-TODO: Añadir panel para editar tipos de estados
 TODO: Completar panel para añadir tipos de Herramientas
-TODO: Añadir botón ver en grande las imagenes que se muestran de cada historial de herramientas
-TODO: Cambiar lista de imagenes a estilo carousel
 TODO: Añadir paginación para lista del historial de las herramientas (tantas imagenes podrían provocar lentitud)
 TODO: Añadir opción en creación de herramientas para añadir una imagen miniaturizada de la herramienta
 TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vacío, presentar imagen placeholder
-
 -->
 <style>
     :root {
@@ -382,12 +378,6 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
         margin-bottom: 1rem;
     }
 
-    .historial-imagenes {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-        gap: 0.5rem;
-    }
-
     .historial-imagen {
         aspect-ratio: 1;
         border-radius: 4px;
@@ -488,7 +478,7 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
 
     .historial-imagenes {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(5, minmax(100px, 1fr));
         gap: 0.5rem;
     }
 
@@ -523,7 +513,7 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
         align-items: center;
     }
 
-    @media (width >= 600px) and (width <= 1200px) {
+    @media (width >=600px) and (width <=1200px) {
         .herramientas-container {
             /* background-color: greenyellow; */
         }
@@ -599,7 +589,8 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
                     <button class="btn btn-primary" onclick="mostrarModalNuevaHerramienta()">
                         <i class="fas fa-plus"></i> Nueva Herramienta
                     </button>
-                    <button class="btn btn-secondary" onclick="mostrarPanelTiposHerramientas()">
+                    <button id="btnTiposHerramientas" class="btn btn-secondary"
+                        onclick="mostrarPanelTiposHerramientas()">
                         <i class="fas fa-tools"></i> Gestionar Tipos
                     </button>
                 </div>
@@ -619,6 +610,61 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
                             <!-- El detalle se carga aquí dinámicamente -->
                         </div>
                     </div>
+                </div>
+            </div>
+            <!-- Modal Administrar tipos de herramientas -->
+            <div id="modal-tipo-herramienta" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Gestionar Tipos de Herramientas</h3>
+                        <button class="close-modal" onclick="cerrarModal('modal-tipo-herramienta')">&times;</button>
+                    </div>
+                    <form id="form-modificar-tipo-herramienta" onsubmit="modificarTipoHerramienta(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="herramienta-tipo">Tipo *</label>
+                                <select id="herramienta-tipo" required>
+                                    <option value="">Seleccionar tipo...</option>
+                                </select>
+                            </div>
+                            <!-- 
+                            TODO: [
+                                En caso de que se trate de una modificación, el campo nombre se utilizará, si se trata de una 
+                                eliminación de este tipo de herramienta se pedirá doble confirmación.
+                                Se presentarán 2 botones, uno para modificar el nombre del tipo de la herramienta, y el otro para realizar la eliminación del tipo de herramienta 
+                                (En este proceso de eliminación se va a requerir en caso de que existan herramientas con este tipo, que se seleccione otro 
+                                tipo de herramienta existente para que se realize el reemplazo pertinente en todas las herramientas, 
+                                de esta forma una eliminación en cascada se podría realizar, eliminando efectivamente dicho tipo de herramienta)
+                            ]
+                            -->
+                            <div class="form-group">
+                                <label for="tipo-herramienta-nombre">Nombre *</label>
+                                <input type="text" id="tipo-herramienta-nombre" required>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 mt-4">
+                            <button type="submit" id="btnModificarTipoHerramienta"
+                                class="btn btn-primary">Modificar</button>
+                            <button type="submit" id="btnEliminarTipoHerramienta"
+                                class="btn btn-primary">Eliminar</button>
+                            <button type="button" class="btn btn-outline"
+                                onclick="cerrarModal('modal-tipo-herramienta')">Cancelar</button>
+                        </div>
+                    </form>
+
+                    <form id="form-nuevo-tipo-herramienta" onsubmit="guardarTipoHerramienta(event)">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="tipo-herramienta-nombre">Nombre *</label>
+                                <input type="text" id="tipo-herramienta-nombre" required>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 mt-4">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <button type="button" class="btn btn-outline"
+                                onclick="cerrarModal('modal-tipo-herramienta')">Cancelar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -733,7 +779,6 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
 <!-- 
 TODO: Habilitar modificación del estado de la herramienta al visualizar detalles y historial.
 TODO: Habilitar eliminación de historial de una herramienta si el usuario es administador (uid = 1).
-TODO: 
 -->
 <script>
     // Variables globales
@@ -746,7 +791,7 @@ TODO:
         cargarHerramientas();
         cargarTiposHerramientas('#filtro-tipo');
     });
-    //FUNCIONALIDADES DE UI
+
     // Esconder o mostrar filtros del panel
     function hideFiltros() {
         const filtrosSection = $('.filtros-grid');
@@ -819,6 +864,17 @@ TODO:
         } catch (error) {
             console.error('Error al cargar tipos:', error);
         }
+    }
+    async function guardarTipoHerramienta(event) {
+        event.preventDefault();
+        // TODO: Programar toda la lógica de proceso para almacenar en DB el nuevo tipo de herramienta.
+    }
+    async function modificarTipoHerramienta(event) {
+        event.preventDefault();
+        // TODO: Programar flujo para prevenir eliminación de tipos de herramientas sin antes verificar diseño del flujo comentado con anterioridad dentro del formulario HTML (Ir a Linea: 635)
+        // TODO: Programar flujo en edición del nombre de tipo de herramienta.
+        // Boton Eliminar id: btnEliminarTipoHerramienta
+        // Boton Modificar id: btnModificarTipoHerramienta
     }
     // captura todos los datos ingresados en Nueva herramienta, envia a backend, en éxito, carga nuevamente registro de herramientas en panel principal
     async function guardarHerramienta(event) {
@@ -906,6 +962,9 @@ TODO:
             fecha_compra: document.getElementById('filtro-fecha').value
         };
     }
+    function btnModificarEstado(idHerramienta, currentState) {
+        //TODO: Desarrollar flujo de cambio del estado de una herramienta presente, captura actual para pre-seleccionar estado actual, y habilitar select-box con todos los estados posibles a cambiar.
+    }
     // presenta todos los datos pasados dentro de variable hacia elemento "herramientas-list"
     function mostrarHerramientas(herramientas) {
         const container = document.getElementById('herramientas-list');
@@ -920,6 +979,7 @@ TODO:
             <div class="herramienta-header">
                 <h3 class="herramienta-nombre">${herramienta.nombre}</h3>
                 <span class="herramienta-estado">${herramienta.estado}</span>
+                <button id="btnModificarEstado" onclick="modificarEstadoHerramienta(${herramienta.id},${herramienta.estado})">Modificar Estado</button>
             </div>
             <div class="herramienta-info">
                 <div class="info-item">
@@ -951,14 +1011,16 @@ TODO:
 
         document.getElementById('herramientas-list').classList.add('hidden-tools');
         document.getElementById('detalle-herramienta').classList.remove('hidden-tools');
-
-
+        $('#btnTiposHerramientas').addClass('hidden-tools'); //Oculta botón para editar los tipos de herramientas existentes, ya que estaría visualizando los detalles ya presentes en una herramienta (tal opción no formaría parte del flujo de proceso habitual)
+        $('.filtros-section').addClass('hidden-tools');//Oculta filtro, ya que no existe lista a filtrar, debido a que la lista pertenece al historial, y no existe la misma información a filtrar
         cargarHistorialHerramienta(id);
     }
 
     function mostrarLista() {
         document.getElementById('detalle-herramienta').classList.add('hidden-tools');
         document.getElementById('herramientas-list').classList.remove('hidden-tools');
+        $('#btnTiposHerramientas').removeClass('hidden-tools'); //Oculta botón para editar los tipos de herramientas existentes, ya que estaría visualizando los detalles ya presentes en una herramienta (tal opción no formaría parte del flujo de proceso habitual)
+        $('.filtros-section').removeClass('hidden-tools');//Oculta filtro, ya que no existe lista a filtrar, debido a que la lista pertenece al historial, y no existe la misma información a filtrar
         herramientaSeleccionada = null;
     }
 
@@ -966,6 +1028,11 @@ TODO:
         cargarTiposHerramientas('#herramienta-tipo');
         document.getElementById('modal-nueva-herramienta').style.display = 'flex';
         document.getElementById('form-nueva-herramienta').reset();
+    }
+    function mostrarPanelTiposHerramientas() {
+        cargarTiposHerramientas('#herramienta-tipo'); // TODO: Cambiar id para listado de tipos de herramientas presentes, para posterior edición de dichos tipos, en caso de que requiera eliminar o modificar
+        document.getElementById('modal-tipo-herramienta').style.display = 'flex';
+        document.getElementById('form-nuevo-tipo-herramienta').reset();
     }
 
     function mostrarModalAgregarHistorial(herramientaId) {

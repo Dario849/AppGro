@@ -3,6 +3,7 @@ dist
 
 # generated files
 .php-tmp
+public/uploads
 
 # dependencies
 node_modules

@@ -60,10 +60,10 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
             url: "/Bpanel",
             dataType: "json",
             success: function (response) {
+                const usersList = $("#listUsers");
                 if (response.some(u => u.estado === 'espera')) {
                     userEnableList.empty();
                 }
-                const usersList = $("#listUsers");
                 const userEnableList = $('#ListPendingUsers');
                 usersList.empty();
 

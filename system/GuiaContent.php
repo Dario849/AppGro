@@ -5,7 +5,7 @@ require dirname(__DIR__) . '/system/resources/database.php'; // conexión PDO
 $pdo = DB::connect();
 $action = $_POST['action'] ?? null;
 $content = $_POST['content'] ?? null;
-$uid = $_SESSION['user_id']??null;
+$uid = $_SESSION['user_id'] ?? null;
 try {
     switch ($action) {
         case 0:
@@ -42,5 +42,6 @@ try {
     }
 
 } catch (\Throwable $th) {
+    $pdo->rollBack();
     echo json_encode(['error' => $th->getMessage()]);
 }
