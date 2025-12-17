@@ -134,7 +134,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     <input type="password" id="confirmPass" autocomplete="current-password" name="confirmPass">
                     <br>
                     <label for="newMail">Ingrese su nuevo correo</label>
-                    <input type="email" name="newMail" id="newMail">
+                    <input type="email" name="newMail" id="newMail" autocomplete="off">
                     <button id="submitButtonEmail" name="submitButtonEmail" type="submit" class="cta">
                         <span>Ingresar</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">
@@ -152,7 +152,7 @@ $usuarios = $stmt->fetchAll(); // array de filas
                     <br>
                     <label for="actualPass">Ingrese su contraseña actual</label>
                     <br>
-                    <input type="password" id="actualPass" name="current-password" autocomplete="current-password">
+                    <input type="password" id="actualPass" name="current-password" autocomplete="userPassword">
                     <br>
                     <label for="passwd">Ingrese su nueva contraseña</label>
                     <input type="password" id="passwd" name="new-password"
