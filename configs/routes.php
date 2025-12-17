@@ -147,11 +147,11 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		require('pages/guia.php');
 	});
 	$r->addGroup('/herramientas', function (FastRoute\RouteCollector $r) { //Permite agrupar rutas que comparten un prefijo común
+		$r->addRoute([ 'GET'], '', function ($ROUTE_PARAMS) {
+			include('pages/herramientas/toolsPanel.php');
+		});
 		$r->addRoute([ 'POST'], '/listener', function ($ROUTE_PARAMS) {
 			include('pages/herramientas/backend/listener.php');
-		});
-		$r->addRoute([ 'GET'], '/panel', function ($ROUTE_PARAMS) {
-			include('pages/herramientas/toolsPanel.php');
 		});
 		$r->addRoute([ 'GET','POST'], '/panel/images', function ($ROUTE_PARAMS) {
 			include('pages/herramientas/backend/images.php');
