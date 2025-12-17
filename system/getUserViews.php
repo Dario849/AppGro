@@ -3,7 +3,7 @@
     session_start();
     require dirname(__DIR__) . '/system/resources/database.php'; // conexión PDO
     $pdo = DB::connect();
-    $uid = $_SESSION['user_id'] ?? 0;
+    $uid = $_SESSION['user_id'] ?? $_POST['uid']?? null;
     $currentPerm = $pdo->prepare("SELECT v.nombre
     FROM usuarios_vistas uv
     JOIN vistas v ON uv.id_vista = v.id
