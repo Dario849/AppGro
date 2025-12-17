@@ -1,60 +1,73 @@
 <?php
 class Tareas {
-    private $conexion;
+    private $pdo;
 
-    public function __construct($servidor, $usuario, $password, $bd) {
-        $this->conexion = new mysqli($servidor, $usuario, $password, $bd);
-        if ($this->conexion->connect_error) {
-            die("Error de conexión: " . $this->conexion->connect_error);
-        }
-        $this->conexion->set_charset("utf8");
+
+    public function __construct()
+    {
+        $this->pdo = DB::connect();
+        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     public function obtenerTareas($estado = null) {
-        $sql = "SELECT id, texto, fecha_hora_inicio, fecha_hora_fin, estado FROM tareas";
+        $sql = "SELECT id, texto, fecha_hora_inicio, fecha_hora_fin, estado FROM tareas WHERE baja_logica = 0";
         $params = [];
 
-        if ($estado) {
-            $sql .= " WHERE estado = ?";
-            $stmt = $this->conexion->prepare($sql);
-            $stmt->bind_param("s", $estado);
-        } else {
-            $stmt = $this->conexion->prepare($sql);
+        if ($estado && $estado !== 'todas') {
+            $sql .= " AND estado = :estado";
+            $params[':estado'] = $estado;
         }
 
-        $stmt->execute();
-        $res = $stmt->get_result();
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
 
-        $tareas = [];
-        while ($row = $res->fetch_assoc()) {
-            $tareas[] = [
-                'id' => (int)$row['id'],
-                'texto' => $row['texto'],
-                'inicio' => $row['fecha_hora_inicio'],
-                'fin' => $row['fecha_hora_fin'],
-                'estado' => $row['estado']
-            ];
-        }
-
-        return $tareas;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function insertarTarea($texto, $inicio, $fin) {
-        $estado = 'activa';
-        $sql = "INSERT INTO tareas (texto, fecha_hora_inicio, fecha_hora_fin, estado) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("ssss", $texto, $inicio, $fin, $estado);
-        return $stmt->execute();
+        $sql = "INSERT INTO tareas (texto, fecha_hora_inicio, fecha_hora_fin, estado) 
+                VALUES (:texto, :inicio, :fin, 'activa')";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':texto' => $texto,
+            ':inicio' => $inicio,
+            ':fin' => $fin
+        ]);
     }
 
     public function actualizarTarea($id, $campo, $valor) {
         $permitidos = ['texto', 'fecha_hora_inicio', 'fecha_hora_fin', 'estado'];
         if (!in_array($campo, $permitidos)) return false;
 
-        $sql = "UPDATE tareas SET $campo = ? WHERE id = ?";
-        $stmt = $this->conexion->prepare($sql);
-        $stmt->bind_param("si", $valor, $id);
-        return $stmt->execute();
+        $sql = "UPDATE tareas SET $campo = :valor WHERE id = :id";
+        $stmt = $this->pdo->prepare($sql);
+        return $stmt->execute([
+            ':valor' => $valor,
+            ':id' => $id
+        ]);
+    }
+
+    // Ejemplo: filtro por mes y año
+    public function obtenerTareasPorFecha($mes, $anio, $estado = null) {
+        $sql = "SELECT id, texto, fecha_hora_inicio, fecha_hora_fin, estado FROM tareas WHERE baja_logica = 0";
+        $params = [];
+
+        if ($estado && $estado !== 'todas') {
+            $sql .= " AND estado = :estado";
+            $params[':estado'] = $estado;
+        }
+
+        if ($mes > 0 && $anio > 0) {
+            $fechaInicio = "$anio-" . str_pad($mes, 2, '0', STR_PAD_LEFT) . "-01";
+            $fechaFin = date("Y-m-t", strtotime($fechaInicio));
+            $sql .= " AND fecha_hora_inicio BETWEEN :inicio AND :fin";
+            $params[':inicio'] = $fechaInicio;
+            $params[':fin'] = $fechaFin;
+        }
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
