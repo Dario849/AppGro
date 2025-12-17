@@ -582,7 +582,9 @@ body {
 		}
 	}
 
-	&ganados,&buscador,&ganado {
+	&ganados,
+	&buscador,
+	&ganado {
 		#contenedor {
 			display: flex;
 			flex-direction: row;
@@ -611,8 +613,7 @@ body {
 			width: 33%;
 		}
 		input[type='text'] {
-			field-sizing: content; 
-			/* asigna tamaño dependiendo del contenido(incluye placeholder) */
+			field-sizing: content; //asigna tamaño dependiendo del contenido(incluye placeholder)
 		}
 		input[type='submit'] {
 			margin-left: 2vh;
@@ -634,6 +635,7 @@ body {
 					inset -4px -4px 12px #ffffff;
 			}
 		}
+
 		fieldset {
 			border: 2px solid #007bff;
 			border-radius: 10px;
