@@ -2,8 +2,10 @@
 class Tareas {
     private $pdo;
 
-    public function __construct(PDO $pdo) {
-        $this->pdo = $pdo;
+
+    public function __construct()
+    {
+        $this->pdo = DB::connect();
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 

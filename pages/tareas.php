@@ -110,6 +110,12 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       padding: 18px;
       border-radius: 8px;
       width: 320px;
+
+      input {
+        background: #2c2f33;
+        color: #fff;
+        border: 1px solid #5865f2;
+      }
     }
   </style>
 
@@ -372,7 +378,7 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       btnVencimiento.addEventListener('click', () => {
         const orden = ordenAscendente ? 'asc' : 'desc';
         flecha.textContent = ordenAscendente ? '↓' : '↑';
-        fetch(`./get_tareas?estado=activa&orden=vencimiento&direccion=${orden}`)
+        fetch(`./get_tareas?estado=${filtro.value}&orden=vencimiento&direccion=${orden}`)
           .then(r => r.json())
           .then(data => {
             // reutilizamos la carga manual para no mezclar filtros
@@ -490,7 +496,7 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
 
       // --- Carga inicial ---
       cargarTareas(filtro.value);
-      });
+    });
 
     // ---- validar y enviar baja lógica por form ----
     function validarEliminar(form) {

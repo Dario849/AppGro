@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 require dirname(__DIR__, 1) . '/system/resources/database.php';
-
+$pdo = DB::connect();
 
 // Obtener y validar los datos JSON
 $data = json_decode(file_get_contents("php://input"), true);
