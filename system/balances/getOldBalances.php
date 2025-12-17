@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 try {
     $stmt = $pdo->query("SELECT 
     t.id,

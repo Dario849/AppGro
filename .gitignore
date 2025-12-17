@@ -3,6 +3,7 @@ dist
 
 # generated files
 .php-tmp
+public/uploads
 public/uploads/herramientas
 
 # dependencies

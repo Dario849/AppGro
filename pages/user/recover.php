@@ -23,7 +23,7 @@ $layout = new HTML(title: 'AppGro-Restablecer Contraseña');
                 <div id="inputs" class="inputs">
                     <h2>Recuperar contraseña</h2>
                     <label for="email">Correo electrónico:</label> <br>
-                    <input type="email" name="email" id="email" required> <br>
+                    <input type="email" name="email" id="email" autocomplete="email" required> <br>
                     <button type="submit" class="cta" id="buttonRecover">
                         <span id="spanRecover">Enviar nueva contraseña</span>
                         <svg width="15px" height="10px" viewBox="0 0 13 10">

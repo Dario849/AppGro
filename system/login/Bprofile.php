@@ -2,6 +2,7 @@
 echo "Back de perfil, cambio de contraseña/mail";
 session_start();
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 // 1) Recoger y sanitizar
 $emailPassConfirm = trim($_POST['confirmPass'] ?? '');
 $emailNew = filter_input(INPUT_POST, 'newMail', FILTER_SANITIZE_EMAIL);

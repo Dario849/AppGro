@@ -1,6 +1,8 @@
 <?php
 session_start();
 require __DIR__ . '/../resources/database.php';
+$pdo = DB::connect();
+
 function obtenerGanadoPorId($pdo, int $id) {
     $sql = "SELECT 
         g.id, 

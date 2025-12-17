@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 // 1) Recoger y sanitizar
 $email = filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL);
 // $password = trim($_POST['Password'] ?? ''); // Almacena en variable, el campo sin encriptar

@@ -3,6 +3,7 @@
 header('Content-Type: application/json; charset=utf-8');
 
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 
 session_start(); // o token que uses
 

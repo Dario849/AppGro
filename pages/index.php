@@ -26,7 +26,7 @@ if (($_SESSION['cookie'] ?? false) == ($_COOKIE['PHPSESSID'] ?? false) && ($_SES
       <form action="/login" id="form_Login" autocomplete="on" method="POST">
         <div id="inputs" class="inputs">
           <label for="UserName">Correo Electrónico</label>
-          <input type="email" name="Email" id="UserName" autocomplete="username" onkeypress="return validateinputs();">
+          <input type="email" name="Email" id="UserName" autocomplete="email" onkeypress="return validateinputs();">
           <br>
           <label for="Password">Contraseña</label>
           <input type="password" name="Password" id="Password" autocomplete="current-password"

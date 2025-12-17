@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json');
 require dirname(__DIR__, 3) . '/system/resources/database.php';
-
+$pdo = DB::connect();
 // Activar logs visibles para debug
 ini_set('display_errors', 1);
 error_reporting(E_ALL);

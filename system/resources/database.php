@@ -12,6 +12,14 @@ foreach ($bootstrap_paths as $path) {
         break;
     }
 }
+class DB
+{
+    private static ?PDO $pdo = null;
+
+    public static function connect(): PDO
+    {
+        if (self::$pdo)
+            return self::$pdo;
 
 $host = $_ENV['MYSQL_HOST'] ?? null;
 $dbname = $_ENV['DB_NAME'] ?? null;
@@ -20,11 +28,15 @@ $dsn = 'mysql:host=' .  $host .';port='. $port . ';dbname=' . $dbname  . ';chars
 $user = $_ENV['MYSQL_USERNAME'] ?? null;
 $pass = $_ENV['MYSQL_PASSWORD'] ?? null;
 
-try {
-    $pdo = new PDO($dsn, $user, $pass, [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    ]);
-} catch (PDOException $e) {
-    die('Error de conexión a la base de datos: ' . $e->getMessage());
+        try {
+            self::$pdo = new PDO($dsn, $user, $pass, [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]);
+            return self::$pdo;
+        } catch (PDOException $e) {
+            http_response_code(500);
+            die('Error de conexión a la base de datos: ' . $e->getMessage());
+        }
+    }
 }

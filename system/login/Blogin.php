@@ -1,6 +1,7 @@
 <?php
 session_start();
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 try {
     $email = filter_input(INPUT_POST, 'Email', FILTER_SANITIZE_EMAIL);
     $password = trim($_POST['Password'] ?? '');

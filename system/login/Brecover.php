@@ -1,6 +1,7 @@
 <?php
 require_once 'system/resources/phpMailer.php'; // función externa de envío
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 session_start();
 $email = $_POST['email'] ?? '';
 $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE username = ?");

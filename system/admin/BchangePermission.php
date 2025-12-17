@@ -1,5 +1,6 @@
 <?php
 require __DIR__ . '/../resources/database.php';   // conexión PDO
+$pdo = DB::connect();
 $selectedUserId = intval($_POST['selectedUserId']); //ID del usuario a relacionar con ID de vista
 $permissionId = intval($_POST['permId']); //ID de la vista
 if (!empty($permissionId) && !empty($selectedUserId)) {

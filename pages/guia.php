@@ -36,12 +36,12 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                             Ver ejemplo
                         </span>
                     </label>
-                    <button type="button" id="colapsarNavBar" class="collapsible"></button>
+                    <input type="checkbox" id="colapsarNavBar" class="collapsible"></input>
                     <div class="content glass-card">
                         Esta lista se puede visualizar en el lado izquierdo de la pantalla en todas las secciones de la
                         aplicación en las cuales tenes permitido acceder.
                         <div class="guiaShowNavBar">
-                            <div class="home__navbar">
+                            <div class="home__navbar-guide" id="sidebar">
                                 <div class="containerHide">
                                     <button title="Oculta o expande la lista" class="setting-btn" id="buttonHide"
                                         data-active="true" title="ocultar/mostrar">
@@ -52,22 +52,28 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                                 </div>
                                 <br>
                                 <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
-                                <ul class="home_navbar-TopList">
+                                <ul class="home__navbar-guide-TopList" id="navbarContent">
                                     <br>
                                     <hr>
-                                    <li>Todas las secciones de la página se listarían acá</li>
+                                    <ul>
+                                        <li></li>
+                                        <li></li>
+                                        <li>Todas las secciones de la página se listarían acá</li>
+                                        <li></li>
+                                        <li></li>
+                                    </ul>
                                     <hr>
                                 </ul>
                                 <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
-                                <ul class="home__navbar-BottomList">
+                                <ul class="home__navbar-guide-BottomList">
                                     <li>Estos elementos son fijos y los verá siempre ⇓</li>
-                                    <li class="home__navbar-item"><a href="/dashboard"
+                                    <li class="home__navbar-guide-item"><a href="/dashboard"
                                             title="Lleva al menú principal"><button>Dashboard</button></a>
                                     </li>
-                                    <li class="home__navbar-item"><a href="/guia"
+                                    <li class="home__navbar-guide-item"><a href="/guia"
                                             title="Ver esta guía"><button>Guía/ayuda</button></a>
                                     </li>
-                                    <li class="home__navbar-item"><a href="/user/profile"
+                                    <li class="home__navbar-guide-item"><a href="/user/profile"
                                             title="Ver/modificar perfil del usuario"><button>Perfil</button></a>
                                     </li>
                                     <li class="home__navbar-item"><a href="/user/logout"
