@@ -153,7 +153,7 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
 		$r->addRoute([ 'POST'], '/listener', function ($ROUTE_PARAMS) {
 			include('pages/herramientas/backend/listener.php');
 		});
-		$r->addRoute([ 'GET'], '/panel', function ($ROUTE_PARAMS) {
+		$r->addRoute([ 'GET'], '', function ($ROUTE_PARAMS) {
 			include('pages/herramientas/toolsPanel.php');
 		});
 		$r->addRoute([ 'GET','POST'], '/panel/images', function ($ROUTE_PARAMS) {

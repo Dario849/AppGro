@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require dirname(__DIR__, 4) . '\system\resources\database.php';
+require dirname(__DIR__, 3) . '/system/resources/database.php';
 class Collector
 {
     private $handlers = [];
