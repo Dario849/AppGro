@@ -11,7 +11,7 @@ class HistorialToolsData
     
     // Configuración de rutas y límites
     private const DIRECTORIO_BASE = '/var/www/public/uploads/herramientas/';
-    private const DIRECTORIO_PUBLICO = '/uploads/herramientas/';
+    private const DIRECTORIO_PUBLICO = '/public/uploads/herramientas/';
     private const MAX_IMAGENES = 5;
     private const MAX_TAMANO_MB = 5;
     private const TIPOS_PERMITIDOS = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
