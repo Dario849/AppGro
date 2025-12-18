@@ -690,8 +690,8 @@ TODO: Mostrar esas miniaturas en la lista de herramientas, en caso de estar vac�
                                 <input type="text" id="herramienta-modelo" required>
                             </div>
                             <div class="form-group">
-                                <label for="herramienta-tipo">Tipo *</label>
-                                <select id="herramienta-tipo" required>
+                                <label for="herramienta-tipoNewTool">Tipo *</label>
+                                <select id="herramienta-tipoNewTool" required>
                                     <option value="">Seleccionar tipo...</option>
                                 </select>
                             </div>
@@ -884,7 +884,7 @@ TODO: Habilitar eliminación de historial de una herramienta si el usuario es ad
             nombre: document.getElementById('herramienta-nombre').value,
             marca: document.getElementById('herramienta-marca').value,
             modelo: document.getElementById('herramienta-modelo').value,
-            id_tipo_herramienta: document.getElementById('herramienta-tipo').value,
+            id_tipo_herramienta: document.getElementById('herramienta-tipoNewTool').value,
             fecha_compra: document.getElementById('herramienta-fecha-compra').value,
             estado: document.getElementById('herramienta-estado').value,
             descripcion: document.getElementById('herramienta-descripcion').value,
@@ -901,7 +901,7 @@ TODO: Habilitar eliminación de historial de una herramienta si el usuario es ad
                 },
                 dataType: "json",
                 success: function (response) {
-                    if (response.success) {
+                    if (response.status === 'success') {
                         cerrarModal('modal-nueva-herramienta');
                         cargarHerramientas();
                         mostrarExito('Herramienta creada correctamente');
@@ -1025,7 +1025,7 @@ TODO: Habilitar eliminación de historial de una herramienta si el usuario es ad
     }
 
     function mostrarModalNuevaHerramienta() {
-        cargarTiposHerramientas('#herramienta-tipo');
+        cargarTiposHerramientas('#herramienta-tipoNewTool');
         document.getElementById('modal-nueva-herramienta').style.display = 'flex';
         document.getElementById('form-nueva-herramienta').reset();
     }
@@ -1088,7 +1088,7 @@ TODO: Habilitar eliminación de historial de una herramienta si el usuario es ad
 
     function mostrarError(mensaje) {
         console.error('Error:', mensaje);
-        alert(mensaje);
+        swal.fire('Error', mensaje, 'error');
     }
 
     async function cargarHistorialHerramienta(id) {

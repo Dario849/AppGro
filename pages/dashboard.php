@@ -90,7 +90,6 @@ $layout = new HTML(title: 'AppGro-Menú', uid: $_SESSION['user_id']);
                     $(function () {
                         var showOneTime = true;
                         $(window).resize(function () {
-                            // your code 
                             var browserZoomLevel = Math.round(window.devicePixelRatio * 100);
                             console.log("Browser Zoom Level: " + browserZoomLevel + "%");
                             if (browserZoomLevel != 100) {
