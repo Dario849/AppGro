@@ -27,6 +27,7 @@ class HTML
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
 			<script src="/node_modules/tinymce/tinymce.min.js" type="module"></script>
 			<script type="text/javascript" src="../js/xlsx.full.min.js"></script>
+			<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 			<script>
 				$(function () {
 					$('#navBar').load('/partials/navBar.html'); //Carga barra lateral para navegación de toda la página
@@ -41,6 +42,75 @@ class HTML
 							});
 						});
 					});
+
+					$('#reportBox').on({
+						'mouseenter': function () {
+							console.log("Mouse entered!");
+							//Construye el contenido para el formulario de reporte de problemas de la página, presenta cuadro de texto, botón para enviar reporte.
+							let reportContent = `<h3 class="reportFormContent">Reportar un problema</h3>
+							<h4>No salga de esta ventana hasta enviar el reporte.</h4>
+							<textarea class="reportFormContent" id="txtReportProblem" placeholder="Describe el problema..." rows="4" cols="50" maxlength="3500"></textarea>
+							<br>
+							<span class="reportFormContent" id="charCountLabel">0 / 3500 caracteres</span>
+							<br>
+							<button class="reportFormContent" id="btnSubmitReport">Enviar reporte</button>`;
+							$('#reportBox').html(reportContent);
+							$('#txtReportProblem').on('input', function () {
+								let charCount = $(this).val().length;
+								$('#charCountLabel').text(charCount + ' / 3500 caracteres');
+							});
+							
+						},
+						'mouseleave': function () {
+							console.log("Mouse left!");
+							$('#reportBox').empty();
+						}
+					});
+					// Ajax envia a backend reporte de usuario a soporte técnico
+					$('#reportBox').on('click', '#btnSubmitReport', function () {
+						let reportText = $('#txtReportProblem').val();
+						if (reportText.trim() === '') {
+							swal.fire({
+								title: 'Atención',
+								text: 'Por favor, ingresa una descripción del problema antes de enviar el reporte.',
+								icon: 'warning',
+								timer: 2500,
+								showConfirmButton: false
+							});
+							return;
+						}
+						let uid = $('#uid_n').val();
+						$.ajax({
+							type: 'POST',
+							url: '/system/admin/ReportIssue',
+							data: {
+								action: 'reportIssue',
+								uid: uid,
+								report: reportText
+							},
+							success: function (response) {
+								// SweetAler2 con timer de auto-cerrado del cuadro de reporte tras 5 segundos
+								swal.fire({
+									title: 'Reporte enviado',
+									text: 'Gracias por tu colaboración. El equipo de soporte técnico revisará el problema.',
+									icon: 'success',
+									timer: 2500,
+									showConfirmButton: false
+								});
+
+								$('#reportBox').empty();
+							},
+							error: function () {
+								swal.fire({
+									title: 'Ups...',
+									text: 'Error al enviar el reporte. Inténtalo de nuevo más tarde.',
+									icon: 'error',
+									timer: 2500,
+									showConfirmButton: false
+								});
+							}
+						});
+					});
 				});
 			</script>
 
@@ -49,6 +119,7 @@ class HTML
 		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">
 			<div id="navBar" style="height: inherit;"></div>
 			<?= $output; ?>
+			<div id="reportBox"></div>
 		</body>
 
 		</html>
