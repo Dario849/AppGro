@@ -105,7 +105,7 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                 $("#userEmail").html("<strong>Email:</strong> " + response.datos.username);
                 $('#userBirthDate').prepend('<strong>Fecha de nacimiento:</strong>');
                 $("#fecha_nacimiento").show();
-                $("#fecha_nacimiento").val(Date(response.datos.fecha_nacimiento));
+                $("#fecha_nacimiento").val(response.datos.fecha_nacimiento);
                 $("#userAge").html("<strong>Edad: " + response.datos.edad + " años</strong>");
                 loadPermissions(response.vistas, response.permisos);
             },
