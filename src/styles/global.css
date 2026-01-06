@@ -870,6 +870,13 @@ body {
   cursor: pointer;
   margin-top: 1vh;
 }
+.main_containerPanel #userInfo input[type=date] {
+  border: 1px solid #ccc;
+  all: revert;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.52);
+  padding: 0.5vh;
+}
 .main_containerPanel .checkboxInput {
   display: none;
 }

@@ -1,5 +1,5 @@
 <?php
-echo "Back de perfil, cambio de contraseña/mail";
+// echo "Back de perfil, cambio de contraseña/mail";
 session_start();
 require __DIR__ . '/../resources/database.php';   // conexión PDO
 $pdo = DB::connect();

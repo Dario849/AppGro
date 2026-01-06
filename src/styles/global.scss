@@ -1000,6 +1000,15 @@ body {
 			margin-top: 1vh;
 		}
 
+		#userInfo {
+			input[type='date'] {
+				border: 1px solid #ccc;
+				all: revert;
+				border-radius: 4px;
+				background: rgb(255 255 255 / 52%);
+				padding: 0.5vh;
+			}
+		}
 		.checkboxInput {
 			display: none;
 		}

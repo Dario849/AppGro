@@ -30,7 +30,8 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                 <li id="userName"></li>
                 <li id="userLastName"></li>
                 <li id="userEmail"></li>
-                <li id="userBirthDate"><input type="date" id="fecha_nacimiento" value="" readonly>
+                <li id="userBirthDate">
+                    <input type="date" id="fecha_nacimiento" readonly>
                 </li>
                 <li id="userAge"></li>
                 <li id="deleteUserBtn"><strong>ELIMINAR?</strong> (Esta acción no tiene vuelta atrás) <br><button
@@ -102,9 +103,9 @@ $layout = new HTML(title: 'AppGro-Panel Administrativo', uid: $_SESSION['user_id
                 $("#userName").html("<strong>Nombre:</strong> " + response.datos.nombre);
                 $("#userLastName").html("<strong>Apellido:</strong> " + response.datos.apellido);
                 $("#userEmail").html("<strong>Email:</strong> " + response.datos.username);
-                $('#userBirthDate').html('<strong>Fecha de nacimiento:</strong>');
+                $('#userBirthDate').prepend('<strong>Fecha de nacimiento:</strong>');
                 $("#fecha_nacimiento").show();
-                $("#fecha_nacimiento").val(response.datos.fecha_nacimiento);
+                $("#fecha_nacimiento").val(Date(response.datos.fecha_nacimiento));
                 $("#userAge").html("<strong>Edad: " + response.datos.edad + " años</strong>");
                 loadPermissions(response.vistas, response.permisos);
             },
