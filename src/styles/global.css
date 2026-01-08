@@ -366,9 +366,9 @@ body {
   overflow: hidden;
 }
 #reportBox:hover {
-  width: 20vw;
-  height: 30vh;
-  overflow: hidden;
+  width: auto;
+  height: auto;
+  overflow: auto;
 }
 #reportBox:hover::before {
   display: none;

@@ -382,7 +382,7 @@ body {
 		transform: scale(1.1);
 	}
 }
-#btnSubmitReport{
+#btnSubmitReport {
 	position: absolute;
 	background: #7c7b86;
 	border-radius: 12px;
@@ -395,21 +395,21 @@ body {
 		background: #3f3f3f;
 	}
 }
-#txtReportProblem{
-		background: #2c2f33;
-		width: inherit;
-		// corner-shape: squircle;
-		border-radius: 5px;
-		border: 1px solid black;
+#txtReportProblem {
+	background: #2c2f33;
+	width: inherit;
+	// corner-shape: squircle;
+	border-radius: 5px;
+	border: 1px solid black;
 }
-#reportBox h3{
+#reportBox h3 {
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 1.5rem;
 }
 .reportFormContent {
-    display: flex;
-    font-size: 1.2rem;
-    justify-self: anchor-center;
+	display: flex;
+	font-size: 1.2rem;
+	justify-self: anchor-center;
 }
 #reportBox {
 	position: fixed;
@@ -425,9 +425,9 @@ body {
 		height 0.3s ease;
 	overflow: hidden;
 	&:hover {
-		width: 20vw;
-		height: 30vh;
-		overflow: hidden;
+		width: auto;
+		height: auto;
+		overflow: auto;
 		&::before {
 			display: none;
 		}
