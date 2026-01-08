@@ -43,9 +43,22 @@ class HTML
 						});
 					});
 
+					// Genera o recupera el ID único del usuario para reportes de problemas
+					function obtenerOAsignarID() {
+						// 1. Intentar recuperar el ID del almacenamiento local
+						let idUsuario = localStorage.getItem('report_device_id');
+
+						// 2. Si no existe, generar uno nuevo (UUID v4)
+						if (!idUsuario) {
+							idUsuario = crypto.randomUUID();
+							localStorage.setItem('report_device_id', idUsuario);
+						}
+
+						return idUsuario;
+					}
+					// Manejo de eventos mouseenter y mouseleave en el cuadro de reporte de problemas
 					$('#reportBox').on({
 						'mouseenter': function () {
-							console.log("Mouse entered!");
 							//Construye el contenido para el formulario de reporte de problemas de la página, presenta cuadro de texto, botón para enviar reporte.
 							let reportContent = `<h3 class="reportFormContent">Reportar un problema</h3>
 							<h4>No salga de esta ventana hasta enviar el reporte.</h4>
@@ -62,7 +75,6 @@ class HTML
 							
 						},
 						'mouseleave': function () {
-							console.log("Mouse left!");
 							$('#reportBox').empty();
 						}
 					});
@@ -79,6 +91,7 @@ class HTML
 							});
 							return;
 						}
+						let visitorID = obtenerOAsignarID();
 						let uid = $('#uid_n').val();
 						$.ajax({
 							type: 'POST',
@@ -86,6 +99,7 @@ class HTML
 							data: {
 								action: 'reportIssue',
 								uid: uid,
+								visitor_id: visitorID,
 								report: reportText
 							},
 							success: function (response) {

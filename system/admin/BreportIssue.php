@@ -21,11 +21,12 @@ class reportIssue{
     private function reportIssue($data)
     {
         try {
-            $sql = "INSERT INTO reportes_problemas (id_usuario, descripcion, fecha_reporte) 
-                    VALUES (:id_usuario, :descripcion, NOW())";
+            $sql = "INSERT INTO reportes_problemas (id_emisor, id_usuario, descripcion, fecha_reporte) 
+                    VALUES (:id_emisor, :id_usuario, :descripcion, NOW())";
 
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([
+                ':id_emisor' => $data['visitor_id'],
                 ':id_usuario' => $data['uid'],
                 ':descripcion' => $data['report']
             ]);
