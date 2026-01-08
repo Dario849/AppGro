@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-require dirname(__DIR__, 1) . '/system/resources/database.php';
-require dirname(__DIR__, 1) . '/system/resources/phpMailer.php';
+require dirname(__DIR__, 2) . '/system/resources/database.php';
+require dirname(__DIR__, 2) . '/system/resources/phpMailer.php';
 class reportIssue
 {
     private $pdo;
