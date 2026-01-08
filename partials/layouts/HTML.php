@@ -28,6 +28,7 @@ class HTML
 			<script src="/src/scripts/perspectiveCard.js"></script>
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
 			<script src="/js/tinymce/js/tinymce/tinymce.min.js" type="module"></script>
+			<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 			<script>
 				$(function () {
 					$('#navBar').load('/partials/navBar.html'); //Carga barra lateral para navegación de toda la página

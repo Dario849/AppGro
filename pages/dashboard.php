@@ -85,8 +85,6 @@ $layout = new HTML(title: 'AppGro-Menú', uid: $_SESSION['user_id']);
                 </div>
                 <script src="src/scripts/dashboard.js"></script>
                 <script type="module">
-                    import Swal from 'sweetalert2/dist/sweetalert2.js'
-                    import 'sweetalert2/src/sweetalert2.scss'
                     $(function () {
                         var showOneTime = true;
                         $(window).resize(function () {
