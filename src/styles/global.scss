@@ -425,9 +425,9 @@ body {
 		height 0.3s ease;
 	overflow: hidden;
 	&:hover {
-		width: 20vw;
-		height: 30vh;
-		overflow: hidden;
+		width: auto;
+		height: auto;
+		overflow: auto;
 		&::before {
 			display: none;
 		}
