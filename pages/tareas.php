@@ -378,7 +378,7 @@ $layout = new HTML(title: 'AppGro - Tareas', uid: $_SESSION['user_id']);
       btnVencimiento.addEventListener('click', () => {
         const orden = ordenAscendente ? 'asc' : 'desc';
         flecha.textContent = ordenAscendente ? '↓' : '↑';
-        fetch(`./get_tareas?estado=${filtro.value}&orden=vencimiento&direccion=${orden}`)
+        fetch(`./get_tareas.php?estado=${filtro.value}&orden=vencimiento&direccion=${orden}`)
           .then(r => r.json())
           .then(data => {
             // reutilizamos la carga manual para no mezclar filtros
