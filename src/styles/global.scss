@@ -1,5 +1,363 @@
-// Guia NavBar
-.home__navbar-guide {
+/* ======================================================
+   APPGRO DESIGN SYSTEM — CSS CUSTOM PROPERTIES
+   ====================================================== */
+:root {
+	/* ── Backgrounds ── */
+	--bg-base:       #0d0f14;
+	--bg-surface:    #161a23;
+	--bg-raised:     #1c2030;
+	--bg-overlay:    #242840;
+	/* ── Borders ── */
+	--border:        rgba(255, 255, 255, 0.06);
+	--border-subtle: rgba(255, 255, 255, 0.11);
+	/* ── Accent ── */
+	--accent:          #7c5cfc;
+	--accent-dim:      rgba(124, 92, 252, 0.18);
+	--accent-2:        #22d4c8;
+	--accent-gradient: linear-gradient(135deg, #7c5cfc 0%, #22d4c8 100%);
+	--accent-glow:     0 0 24px rgba(124, 92, 252, 0.30);
+	/* ── Text ── */
+	--text-primary:   #e4e6f0;
+	--text-secondary: #8792a8;
+	--text-muted:     #484d65;
+	/* ── Status ── */
+	--success: #22d478;
+	--warning: #f59e0b;
+	--error:   #f43f5e;
+	--info:    #3b82f6;
+	/* ── Sidebar ── */
+	--sidebar-w:           240px;
+	--sidebar-w-collapsed: 64px;
+	--sidebar-bg:          #0e1018;
+	--sidebar-border:      rgba(255, 255, 255, 0.05);
+	--sidebar-hover:       rgba(255, 255, 255, 0.05);
+	--sidebar-active-bg:   rgba(124, 92, 252, 0.14);
+	--sidebar-active-line: #7c5cfc;
+	/* ── Typography ── */
+	--font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+	/* ── Border-radius ── */
+	--r-sm: 6px;
+	--r-md: 10px;
+	--r-lg: 16px;
+	/* ── Shadows ── */
+	--shadow-sm: 0 1px 4px rgba(0, 0, 0, 0.35);
+	--shadow-md: 0 4px 16px rgba(0, 0, 0, 0.45);
+	--shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.55);
+	/* ── Transitions ── */
+	--t-fast: 0.15s ease;
+	--t-base: 0.25s ease;
+	--t-slow: 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Light-mode overrides — keep sidebar dark for contrast */
+html.light-mode {
+	--bg-base:       #f0f2f8;
+	--bg-surface:    #ffffff;
+	--bg-raised:     #f5f7fe;
+	--bg-overlay:    #e8ecf8;
+	--border:        rgba(0, 0, 0, 0.07);
+	--border-subtle: rgba(0, 0, 0, 0.13);
+	--text-primary:   #1a1c2e;
+	--text-secondary: #545878;
+	--text-muted:     #9095b0;
+}
+
+/* ======================================================
+   APP SHELL — Flex row: Sidebar + PageArea
+   ====================================================== */
+.AppShell {
+	display: flex;
+	flex-direction: row;
+	min-height: 100svh;
+	width: 100%;
+	background: var(--bg-base);
+}
+
+.PageArea {
+	flex: 1;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+}
+
+/* #navBar is the mount point — transparent to flex layout */
+#navBar {
+	display: contents;
+}
+
+/* ======================================================
+   PAGE ENTRANCE ANIMATION
+   ====================================================== */
+@keyframes pageSlideIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* ======================================================
+   SIDEBAR — Permanent, collapsible to icon-only
+   ====================================================== */
+.Sidebar {
+	width: var(--sidebar-w);
+	height: 100svh;
+	background: var(--sidebar-bg);
+	border-right: 1px solid var(--sidebar-border);
+	display: flex;
+	flex-direction: column;
+	flex-shrink: 0;
+	overflow: hidden;
+	overflow-y: auto;
+	position: sticky;
+	top: 0;
+	transition: width var(--t-slow);
+	z-index: 200;
+
+	/* Hide scrollbar visually but keep scroll */
+	scrollbar-width: none;
+	&::-webkit-scrollbar { display: none; }
+
+	/* ── Collapsed state ── */
+	&[data-collapsed="true"] {
+		width: var(--sidebar-w-collapsed);
+
+		.SidebarLogoText,
+		.SidebarLabel,
+		.SidebarSectionLabel {
+			opacity: 0;
+			max-width: 0;
+			overflow: hidden;
+			pointer-events: none;
+		}
+
+		.CollapseIcon { transform: rotate(180deg); }
+
+		/* Tooltip on hover in collapsed mode */
+		.SidebarItem,
+		.SidebarActionBtn {
+			position: relative;
+			&:hover::after {
+				content: attr(data-tooltip);
+				position: absolute;
+				left: calc(100% + 10px);
+				top: 50%;
+				transform: translateY(-50%);
+				background: var(--bg-overlay);
+				color: var(--text-primary);
+				padding: 6px 12px;
+				border-radius: var(--r-sm);
+				font-size: 13px;
+				font-weight: 500;
+				white-space: nowrap;
+				z-index: 9999;
+				border: 1px solid var(--border-subtle);
+				box-shadow: var(--shadow-md);
+				pointer-events: none;
+			}
+		}
+	}
+}
+
+/* ── Sidebar sub-components ── */
+.SidebarHeader {
+	padding: 18px 14px;
+	border-bottom: 1px solid var(--sidebar-border);
+	flex-shrink: 0;
+}
+
+.SidebarLogo {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+}
+
+.SidebarLogoIcon {
+	width: 32px;
+	height: 32px;
+	flex-shrink: 0;
+	border-radius: 9px;
+}
+
+.SidebarLogoText {
+	font-family: var(--font-sans);
+	font-size: 17px;
+	font-weight: 700;
+	color: var(--text-primary);
+	letter-spacing: -0.4px;
+	white-space: nowrap;
+	transition: opacity var(--t-slow), max-width var(--t-slow);
+}
+
+.SidebarNav {
+	flex: 1;
+	padding: 10px 8px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: rgba(255,255,255,0.1) transparent;
+}
+
+.SidebarSectionLabel {
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--text-muted);
+	padding: 6px 10px 4px;
+	margin: 0;
+	white-space: nowrap;
+	overflow: hidden;
+	transition: opacity var(--t-slow), max-width var(--t-slow);
+}
+
+.SidebarNavList,
+.SidebarFooterList {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.SidebarItem { position: relative; }
+
+.SidebarLink {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 10px;
+	border-radius: var(--r-md);
+	text-decoration: none;
+	color: var(--text-secondary);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	font-weight: 500;
+	white-space: nowrap;
+	overflow: hidden;
+	position: relative;
+	transition: background var(--t-fast), color var(--t-fast);
+
+	&:hover {
+		background: var(--sidebar-hover);
+		color: var(--text-primary);
+	}
+
+	&--active {
+		background: var(--sidebar-active-bg);
+		color: var(--accent);
+		&::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 4px;
+			bottom: 4px;
+			width: 3px;
+			background: var(--sidebar-active-line);
+			border-radius: 0 3px 3px 0;
+		}
+	}
+
+	&--danger:hover {
+		background: rgba(244, 63, 94, 0.09);
+		color: #f43f5e;
+	}
+}
+
+.SidebarIcon {
+	width: 20px;
+	height: 20px;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.SidebarLabel {
+	white-space: nowrap;
+	overflow: hidden;
+	transition: opacity var(--t-slow), max-width var(--t-slow);
+}
+
+.SidebarBadge {
+	margin-left: auto;
+	background: var(--accent);
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	min-width: 18px;
+	height: 18px;
+	border-radius: 999px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 5px;
+	flex-shrink: 0;
+}
+
+.SidebarFooter {
+	padding: 10px 8px;
+	border-top: 1px solid var(--sidebar-border);
+	flex-shrink: 0;
+}
+
+.SidebarFooterList { margin-bottom: 6px; }
+
+.SidebarDivider {
+	height: 1px;
+	background: var(--sidebar-border);
+	margin: 6px 0;
+}
+
+.SidebarActions {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
+
+.SidebarActionBtn {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 10px;
+	border-radius: var(--r-md);
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	color: var(--text-secondary);
+	font-family: var(--font-sans);
+	font-size: 14px;
+	font-weight: 500;
+	white-space: nowrap;
+	width: 100%;
+	text-align: left;
+	transition: background var(--t-fast), color var(--t-fast);
+	position: relative;
+
+	&:hover {
+		background: var(--sidebar-hover);
+		color: var(--text-primary);
+	}
+}
+
+.CollapseIcon {
+	transition: transform var(--t-slow);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Theme icon visibility */
+html:not(.light-mode) {
+	.ThemeIcon--light, .ThemeLabel--light { display: none; }
+	.ThemeIcon--dark,  .ThemeLabel--dark  { display: flex; }
+}
+html.light-mode {
+	.ThemeIcon--dark,  .ThemeLabel--dark  { display: none; }
+	.ThemeIcon--light, .ThemeLabel--light { display: flex; }
+}
+
+/* Guia NavBar */
+.HomeNavbarGuide {
 	transition: transform 1s ease-out;
 	transform: translateX(0px);
 	width: 180px;
@@ -14,7 +372,7 @@
 		position: absolute;
 		place-self: flex-end;
 		margin-right: 0.5vh;
-		.setting-btn {
+		.SettingBtn {
 			width: 45px;
 			height: 45px;
 			display: flex;
@@ -55,10 +413,10 @@
 		.bar2::before {
 			transform: translateX(4px);
 		}
-		.setting-btn:hover .bar1::before {
+		.SettingBtn:hover .bar1::before {
 			transform: translateX(4px);
 		}
-		.setting-btn:hover .bar2::before {
+		.SettingBtn:hover .bar2::before {
 			transform: translateX(-4px);
 		}
 	}
@@ -80,17 +438,17 @@
 		background-color: #555;
 	}
 
-	&-TopList {
+	.HomeNavbarGuideTopList {
 		margin-bottom: auto;
 		overflow: overlay;
 		height: 100%;
 		width: 100%;
 	}
 
-	&-BottomList {
+	.HomeNavbarGuideBottomList {
 		margin-top: auto;
 	}
-	.navigation-bar {
+	.NavigationBar {
 		transform: translateX(-300px);
 		transition:
 			transform 1s ease-out,
@@ -99,7 +457,7 @@
 		width: 300px;
 	}
 
-	.navigation-bar.active {
+	.NavigationBar.active {
 		transform: translateX(0px);
 		transition:
 			transform 1s ease-out,

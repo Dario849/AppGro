@@ -12,15 +12,15 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
         ClickEditorTinyMCE();
     });
 </script>
-<main class="main__content">
-    <div class="main_container">
-        <div class="main_containerGuiaDeUsuario">
-            <h1 class="menu-title">Guía de usuario</h1>
+<main class="MainContent">
+    <div class="MainContainer">
+        <div class="MainContainerGuiaDeUsuario">
+            <h1 class="MenuTitle">Guía de usuario</h1>
             <p>Bienvenido a la guía de usuario. Aquí encontrarás información útil para navegar y
                 utilizar las diferentes funcionalidades de la aplicación.</p>
             <br>
-            <h2 class="menu-subtitle">Navegación</h2>
-            <ul class="menu-list">
+            <h2 class="MenuSubTitle">Navegación</h2>
+            <ul class="MenuList">
                 <li><strong>Barra lateral:</strong> La página posee una barra lateral que permite navegar de forma
                     sensilla
                     entre las diferentes secciones de la aplicación. Simplemente haz clic en el ícono correspondiente
@@ -37,13 +37,13 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                         </span>
                     </label>
                     <input type="checkbox" id="colapsarNavBar" class="collapsible"></input>
-                    <div class="content glass-card">
+                    <div class="content GlassCard">
                         Esta lista se puede visualizar en el lado izquierdo de la pantalla en todas las secciones de la
                         aplicación en las cuales tenes permitido acceder.
                         <div class="guiaShowNavBar">
-                            <div class="home__navbar-guide" id="sidebar">
+                            <div class="HomeNavbarGuide" id="sidebar">
                                 <div class="containerHide">
-                                    <button title="Oculta o expande la lista" class="setting-btn" id="buttonHide"
+                                    <button title="Oculta o expande la lista" class="SettingBtn" id="buttonHide"
                                         data-active="true" title="ocultar/mostrar">
                                         <span class="bar bar1"></span>
                                         <span class="bar bar2"></span>
@@ -52,7 +52,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                                 </div>
                                 <br>
                                 <!-- DIRECCIONES, ELEMENTOS SECCION SUPERIOR DE LA BARRA -->
-                                <ul class="home__navbar-guide-TopList" id="navbarContent">
+                                <ul class="HomeNavbarGuideTopList" id="navbarContent">
                                     <br>
                                     <hr>
                                     <ul>
@@ -65,18 +65,18 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                                     <hr>
                                 </ul>
                                 <!-- UTILIDADES, ELEMENTOS SECCION INFERIOR DE LA BARRA -->
-                                <ul class="home__navbar-guide-BottomList">
+                                <ul class="HomeNavbarGuideBottomList">
                                     <li>Estos elementos son fijos y los verá siempre ⇓</li>
-                                    <li class="home__navbar-guide-item"><a href="/dashboard"
+                                    <li class="HomeNavbarGuideItem"><a href="/dashboard"
                                             title="Lleva al menú principal"><button>Dashboard</button></a>
                                     </li>
-                                    <li class="home__navbar-guide-item"><a href="/guia"
+                                    <li class="HomeNavbarGuideItem"><a href="/guia"
                                             title="Ver esta guía"><button>Guía/ayuda</button></a>
                                     </li>
-                                    <li class="home__navbar-guide-item"><a href="/user/profile"
+                                    <li class="HomeNavbarGuideItem"><a href="/user/profile"
                                             title="Ver/modificar perfil del usuario"><button>Perfil</button></a>
                                     </li>
-                                    <li class="home__navbar-item"><a href="/user/logout"
+                                    <li class="HomeNavbarItem"><a href="/user/logout"
                                             title="Cerrar sesión"><button>Log-out</button></a>
                                     </li>
                                 </ul>
@@ -98,7 +98,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                         </span>
                     </label>
                     <input type="checkbox" id="colapsarTransacciones" class="collapsible"></input>
-                    <div class="content glass-card">
+                    <div class="content GlassCard">
                         Esto es solo un resumen, para más detalles, consulta la sección de "Balance" en el menú
                         principal.
                         <div id="balanceMenu"></div>
@@ -111,7 +111,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                 </div>
                 <button id="btnEditUserContent" action="0">Editar contenido</button>
             </ul>
-            <h2 class="menu-subtitle">Soporte</h2>
+            <h2 class="MenuSubTitle">Soporte</h2>
             <p>Si necesitas ayuda adicional, no dudes en contactar con nuestro equipo de soporte a través del correo
                 electrónico <strong><a
                         href="mailto:soporteappgro.zeabur@gmail.com">soporteappgro.zeabur@gmail.com</a></strong></p>
@@ -205,7 +205,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
     fill: #999;
   }
 
-  .label-text {
+    .LabelText {
     color: #aaa;
   }
 
@@ -244,7 +244,7 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
 
                             // Si estamos dentro del bloque colapsable
                             if (blockAncestor) {
-                                const contentNode = blockAncestor.querySelector('.content.glass-card');
+                                const contentNode = blockAncestor.querySelector('.content.GlassCard');
                                 const isAtEnd = editor.selection.isCollapsed() && editor.selection.getRng().endContainer === contentNode?.lastChild;
 
                                 // Si el usuario presiona Enter al final del bloque
@@ -303,23 +303,23 @@ $layout = new HTML(title: 'Guía de usuario', uid: $_SESSION['user_id'] ?? 0);
                             <path
                                 d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
                         </svg>
-      <span class="label-text">Ver ejemplo</span>
+    <span class="LabelText">Ver ejemplo</span>
     </label>
     <input type="checkbox" id="${uid}" class="collapsible">
-    <div class="content glass-card">${selContent || '<p>Blank</p>'}</div>
+    <div class="content GlassCard">${selContent || '<p>Blank</p>'}</div>
   </div>
 `;
                                 editor.insertContent(fullHtml);
                                 // si no había selección, posicionar cursor dentro del p
                                 if (!selContent) {
-                                    const newNode = editor.getBody().querySelector(`#${uid} ~ .content.glass-card p`);
+                                    const newNode = editor.getBody().querySelector(`#${uid} ~ .content.GlassCard p`);
                                     if (newNode) editor.selection.setCursorLocation(newNode, 0);
                                 }
                             }
                         },
                         onSetup: function (api) {
                             const handler = function (e) {
-                                const inBlock = !!editor.dom.getParent(editor.selection.getNode(), 'div', 'class', 'glass-card');
+                                const inBlock = !!editor.dom.getParent(editor.selection.getNode(), 'div', 'class', 'GlassCard');
                                 api.setActive(inBlock);
                             };
                             editor.on('NodeChange', handler);

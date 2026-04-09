@@ -19,9 +19,18 @@ class HTML
 			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<title><?= $this->title; ?></title>
-			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
 			<link href="/src/styles/tailwind.css" rel="stylesheet" />
-			<link href="/src/styles/global.scss" rel="stylesheet" />
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+			<script>
+				// Initialize theme before render to prevent flash
+				(function() {
+					if (localStorage.getItem('appgro-theme') === 'light') {
+						document.documentElement.classList.add('light-mode');
+					}
+				})();
+			</script>
 			<script src="../js/jquery-3.7.1.min.js"></script>
 			<script src="/src/scripts/perspectiveCard.js"></script>
 			<script src="https://www.google.com/recaptcha/api.js?render=6LdT2NcrAAAAAOGcZpBzPxpkbUHJvCz7aT7Rmqwq"></script>
@@ -130,9 +139,14 @@ class HTML
 
 		</head>
 
-		<body class="w-screen h-screen flex items-center justify-center bg-neutral-50">
-			<div id="navBar" style="height: inherit;"></div>
-			<?= $output; ?>
+		<body>
+			<input type="hidden" id="uid_n" value="<?= $this->uid; ?>">
+			<div class="AppShell">
+				<div id="navBar"></div>
+				<div class="PageArea">
+					<?= $output; ?>
+				</div>
+			</div>
 			<div id="reportBox"></div>
 		</body>
 
