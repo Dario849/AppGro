@@ -1,0 +1,14 @@
+"Marca temporal","Esquema de gastos/ganancias
+Que tipo de registro precisaría, seleccione todas las necesarias, en caso de que no exista, seleccione ""otro"" y especifique.","En caso de una compra, de un insumo, que tipo de dato le gustaría registrar en el sistema, lo registraría? Formato recomendado a seguir: -tipo de dato1 (ejemplo)
+-tipo de dato2 (ejemplo)
+…
+Ejemplo: -Nro. factura (FA89954) - tipo de producto (Bazar)
+…","Que profundidad de detalles precisa para cultivos? Otra: detalle, separando por , (coma) todos los datos que requeriría.","Que profundidad de detalles precisa para el ganado? Otra: detalle, separando por , (coma) todos los datos que requeriría.","Precisa seguimiento de los cultivos individualmente? Otra: Detalle tipo de seguimiento, ej. seguimiento por fecha del crecimiento.","Precisa seguimiento del ganado? Otra: Detalle tipo de seguimiento, ej. seguimiento por etapa de crecimiento.","Vacunas, químicos, etc.. que tipo de detalle precisa?","Que tipo de permisos requeriría cada persona/empleado del campo?
+Peón, veterinario, agrónomo, encargado, etc..   [Peón]","Que tipo de permisos requeriría cada persona/empleado del campo?
+Peón, veterinario, agrónomo, encargado, etc..   [veterinario]","Que tipo de permisos requeriría cada persona/empleado del campo?
+Peón, veterinario, agrónomo, encargado, etc..   [agrónomo]","Que tipo de permisos requeriría cada persona/empleado del campo?
+Peón, veterinario, agrónomo, encargado, etc..   [encargado]","Hasta cuántos empleados/categorías hay? Describir: Nombre, que accesos deberían de tener","Que tan probable es que use este esquema?
+(Permisos, asignados a categorías)","En caso contrario, signaría independientemente a cada persona un acceso específico?","En la venta, que registraría?","Etapas de crecimiento del ganado deberían de ser determinadas automáticamente mediante la fecha de nacimiento? o se modifican manualmente?","Elabore cualquier otra inquietud, consulta, etc..."
+"2025/05/15 8:06:47 p.m. GMT-3","registrar tipo de producto que compra (nombre, precio, fecha_compra);registrar tipo de producto que vende (nombre, precio, fecha_venta)","Fecha, nombre, tipo, factura, cantidad aplicacion/ha, lote aplicado","tipo de semillas;fecha_inicio;fecha_fin;tierra;origen;Nombre semillera, humedad, registro de lluvias","tipo de animal;especie;dieta;fecha_nacimiento;peso;Peso inicial, peso final, fecha destete","Fecha de siempra, tipo de siembra, distancia de siembra, fertilizantes, fecha de cosecha, humedad del grano, qq/ha, fumigacion(detalles)","Sanidad Animal: Numero caravana, fecha de nacimiento, peso, sexo, vacunas, peso de venta, ","","Usuario","Usuario","Usuario","Usuario","Encargado, peon","7","Si","O ambas?","Manualmente por fecha y peso","Registros de herramientas, maquinarias, repuestos, ubicacion, fechas de adquisición, precio, cantidad, destino.
+Ficha de mantenimiento maquinarias
+Mantenimiento de alambrado, gastos, metros, varillas, alambre, insumos, etc"

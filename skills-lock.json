@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "mermaid-diagrams": {
+      "source": "softaworks/agent-toolkit",
+      "sourceType": "github",
+      "computedHash": "b6c206a3cab0333a1d3d3cf27114099d0d5f25eb07d86c8f12472b7aa7d59a4c"
+    },
+    "appgro-domain": {
+      "source": ".agents/skills/appgro-domain",
+      "sourceType": "local",
+      "description": "Agricultural domain language and business logic patterns"
+    },
+    "astro-fastapi-migration": {
+      "source": ".agents/skills/astro-fastapi-migration",
+      "sourceType": "local",
+      "description": "Migration guidance for Astro+FastAPI rewrite"
+    },
+    "astro-frontend-patterns": {
+      "source": ".agents/skills/astro-frontend-patterns",
+      "sourceType": "local",
+      "description": "Astro component architecture, islands, forms, state management"
+    },
+    "fastapi-backend-patterns": {
+      "source": ".agents/skills/fastapi-backend-patterns",
+      "sourceType": "local",
+      "description": "FastAPI routers, schemas, DI, services, error handling"
+    },
+    "appgro-data-model": {
+      "source": ".agents/skills/appgro-data-model",
+      "sourceType": "local",
+      "description": "Complete database schema with agricultural entities"
+    },
+    "appgro-auth-permissions": {
+      "source": ".agents/skills/appgro-auth-permissions",
+      "sourceType": "local",
+      "description": "JWT auth, RBAC, multi-tenant isolation, audit logging"
+    },
+    "offline-field-operations": {
+      "source": ".agents/skills/offline-field-operations",
+      "sourceType": "local",
+      "description": "Offline-first architecture, sync queues, field-friendly UX"
+    },
+    "rewrite-documentation-specs": {
+      "source": ".agents/skills/rewrite-documentation-specs",
+      "sourceType": "local",
+      "description": "Technical specs, ADRs, Mermaid diagrams"
+    }
+  }
+}
