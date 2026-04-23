@@ -59,7 +59,9 @@ sequenceDiagram
 ## Open questions
 
 - Is refresh-token support required in the first release?
+  - May not be necessary if token expiration is reasonably long and users log in daily, could be optionally implemented with "remember me" functionality.
 - Will specialist roles need distinct UI behavior beyond shared RBAC roles?
+  -  This could be a nice-to-have for future iterations, but initially we can focus on core RBAC and add UI nuances later.
 
 ## Testability notes
 

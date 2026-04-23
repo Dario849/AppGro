@@ -1,3 +1,17 @@
+## Planned timeline and next tasks:
+- [x] Week 1: Build new documentation and specifications for the new stack and project.
+- [x] Week 2: QA and review new documentation, make changes, and add more steps and details as needed.
+- [ ] Week 3: Prepare DB, present old DB schema, build new DB schema for the new stack and update core-entity-model if needed.
+- [ ] Week 4: Re-review whole documentation paired with the new DB schema, and make changes as needed.
+- [ ] Week 5: Scaffold the intended stack (Astrojs + Python/FastAPI).
+- [ ] Week 6: Build preliminary backend and frontend for testing main functions.
+- [ ] Week 7: Verify that the preliminary backend and frontend meet the requirements, and make improvements as needed.
+- [ ] Week 8: Build UI/UX experience for the web-app.
+- [ ] Week 9: QA testing for the web-app, and make changes as needed.
+- [ ] Week 10: Send the web-app to production, and monitor for any issues or bugs.
+- [ ] Week 11: Start building mobile app for the web-app, using React Native or Flutter, while maintaining the same backend and DB, all acording to the new documentation and specifications.
+- [ ] Week 12: Last and final QA testing for the mobile and web app.
+
 ## this is a rewriting project for the main branch for this gh repo "AppGro"
 * AppGro is a web-app for management and stats analysis of the agricultural sector.
 * Original documentation is found inside the `OLD\` directory.

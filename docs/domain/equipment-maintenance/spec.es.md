@@ -47,7 +47,9 @@ flowchart TD
 ## Preguntas abiertas
 
 - ¿El mantenimiento preventivo calendarizado entra en la primera versión?
+  - Tareas como mantenimiento preventivo calendarizado sería una feature útil pero no crítica para el seguimiento operativo inicial, y podría añadirse en una fase posterior una vez que se establezca el registro de activos y mantenimiento correctivo.
 - ¿Se deben detallar cantidades de inventario para herramientas pequeñas y consumibles?
+  - Sí, detallar las cantidades de inventario para herramientas pequeñas y consumibles puede ayudar a gestionar los niveles de stock y asegurar la disponibilidad cuando sea necesario.
 
 ## Notas de testabilidad
 

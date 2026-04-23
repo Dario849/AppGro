@@ -52,7 +52,9 @@ flowchart LR
 ## Preguntas abiertas
 
 - ¿Se necesitan registros de reproducción en la primera ola?
+  - No son críticos para el seguimiento operativo inicial y pueden añadirse en una fase posterior una vez que se establezca el seguimiento del ciclo de vida y la salud.
 - ¿La dieta debe modelarse como eventos o como resumen en la ficha principal?
+  - Resumir la dieta en la ficha principal permite un acceso más fácil a la información de alimentación actual, mientras que el seguimiento basado en eventos proporciona un historial más detallado. La elección depende del nivel de detalle necesario para las decisiones operativas y el reporting.
 
 ## Notas de testabilidad
 

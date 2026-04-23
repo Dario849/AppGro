@@ -59,7 +59,9 @@ sequenceDiagram
 ## Preguntas abiertas
 
 - ¿Se requiere refresh token en la primera versión?
+  - Quiza no sea necesario si la expiración del token es razonablemente larga y los usuarios inician sesión diariamente, podría implementarse opcionalmente con funcionalidad de "recordarme".
 - ¿Los roles especialistas necesitan comportamiento de UI propio además del RBAC compartido?
+  - Esto podría ser un nice-to-have para iteraciones futuras, pero inicialmente podemos enfocarnos en el RBAC central y agregar matices de UI después.
 
 ## Notas de testabilidad
 

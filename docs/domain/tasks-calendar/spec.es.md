@@ -51,7 +51,9 @@ flowchart TD
 ## Preguntas abiertas
 
 - ¿La primera versión necesita tareas recurrentes?
+  - Tareas recurrentes serían útiles para rutinas diarias o semanales, pero podrían añadirse en una fase posterior para enfocarse primero en la gestión de tareas únicas y su integración con el calendario.
 - ¿Debe incluirse asignación masiva por sector desde el inicio?
+  - Para primer versión no es requisito, pero la asignación masiva por sector podría ser una funcionalidad valiosa para operaciones que gestionan grandes áreas o múltiples lotes, y podría planificarse para una fase posterior una vez que la funcionalidad básica de tareas esté establecida.
 
 ## Notas de testabilidad
 

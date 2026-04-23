@@ -45,11 +45,14 @@ flowchart LR
 - Los cultivos cancelados deben seguir siendo auditables.
 - Un sector puede alojar cultivos secuenciales en diferentes períodos.
 - La falta de fecha estimada de cosecha no debe bloquear el seguimiento activo.
+- Los productos usados en tratamientos deben registrarse aunque no estén vinculados a un sistema formal de inventario.
 
 ## Preguntas abiertas
 
 - ¿La primera versión necesita planificación de rotación?
+  - No necesariamente, la planificación de rotación es una característica valiosa para la estrategia agronómica a largo plazo, pero puede posponerse hasta que se establezca el seguimiento del ciclo de vida del cultivo.
 - ¿La lluvia debe vivir solo en weather o también resumirse en la ficha del cultivo?
+  - Los datos de lluvia deben almacenarse en los registros meteorológicos y pueden referenciarse en los resúmenes de cultivos para análisis, pero la duplicación debe minimizarse para evitar inconsistencias.
 
 ## Notas de testabilidad
 

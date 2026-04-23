@@ -153,7 +153,11 @@ erDiagram
 ## Preguntas abiertas
 
 - ¿Los activos de mantenimiento deben soportar stock de repuestos y cantidades en el mismo modelo?
+  - Esto podría ser una mejora futura, pero inicialmente podemos mantenerlo simple con un solo modelo de activo y considerar las características de gestión de inventario en iteraciones posteriores.
 - ¿Los comentarios y adjuntos de tareas entran en la primera ola de esquema?
+  - Dado que se planea que las tareas estén vinculadas al historial operativo, podría ser beneficioso incluir tanto comentarios como adjuntos en el diseño inicial para asegurar que capturamos toda la información relevante desde el principio, pero también podríamos considerar agregar estas características en una iteración posterior si queremos centrarnos primero en la funcionalidad principal de las tareas.
+- ¿Deberíamos modelar las etapas de crecimiento de los cultivos o la fenología explícitamente, o inferirlas a partir del historial de tratamientos y observaciones?
+  - El modelado explícito de las etapas de crecimiento podría proporcionar información valiosa y capacidades de reporte, pero también añade complejidad. Podríamos comenzar infiriendo las etapas de crecimiento a partir del historial de tratamientos y observaciones y considerar agregar el seguimiento fenológico explícito en iteraciones futuras basándonos en los comentarios y necesidades de los usuarios.
 
 ## Notas de testabilidad
 

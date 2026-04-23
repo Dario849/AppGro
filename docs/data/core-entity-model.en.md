@@ -153,7 +153,11 @@ erDiagram
 ## Open questions
 
 - Should maintenance assets support quantity-on-hand and spare-part stock in the same model?
+  - This could be a future enhancement, but initially we can keep it simple with a single asset model and consider inventory management features in later iterations.
 - Will task comments and attachments be part of the first schema wave?
+  - Since tasks are planned to be linked to operational history, it might be beneficial to include both comments and attachments in the initial design to ensure we capture all relevant information from the start, but we could also consider adding these features in a subsequent iteration if we want to focus on core task functionality first.
+- Should we model crop growth stages or phenology explicitly, or infer from treatment and observation history?
+  - Explicit modeling of growth stages could provide valuable insights and reporting capabilities, but it also adds complexity. We might start with inferring growth stages from treatment and observation history and consider adding explicit phenology tracking in future iterations based on user feedback and needs.
 
 ## Testability notes
 

@@ -13,6 +13,7 @@ Primary references:
 - `docs/projectPlan.md`
 - `OLD/MainDocumentation/NewTraditionsSolutions.docx.html`
 - `OLD/MainDocumentation/Survey/2025 APP-CAMPO.csv`
+- `OLD/MainDocumentation/DB_DROP_TABLE_INSERT2026-04-23 00_34_38.sql`
 
 ## Non-Negotiables
 

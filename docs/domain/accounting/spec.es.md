@@ -49,7 +49,11 @@ flowchart TD
 ## Preguntas abiertas
 
 - ¿Se necesita soporte multi-moneda en la primera versión?
+  - Muy probablemente sí, ya que la moneda local puede no ser la única utilizada para transacciones, especialmente para ventas o compras que involucren proveedores o clientes externos.
+- ¿Deberíamos soportar reversos parciales o ajustes, o solo reversos completos de transacciones?
+  - Los ajustes parciales podrían ser útiles para corregir errores sin perder el historial original de transacciones, pero añaden complejidad. Podríamos comenzar con reversos completos y considerar ajustes parciales en iteraciones futuras.
 - ¿Los períodos contables se generan automáticamente o se cierran manualmente?
+  - Esto depende del flujo de trabajo deseado por el usuario, esta funcionalidad debería permitir ambas opciones, con generación automática de períodos basada en fechas del calendario y la capacidad de que los usuarios cierren manualmente los períodos cuando estén listos.
 
 ## Notas de testabilidad
 

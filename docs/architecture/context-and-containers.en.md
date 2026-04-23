@@ -37,6 +37,14 @@ C4Container
     Rel(api, queue, "Schedules async work")
     Rel(queue, db, "Reads pending work and writes results")
     Rel(api, weather, "Reads weather context")
+
+    UpdateLayoutConfig($c4ShapeInRow="2")
+    UpdateRelStyle(user, web, $offsetY="-40")
+    UpdateRelStyle(web, api, $offsetX="-40", $offsetY="-35")
+    UpdateRelStyle(api, db, $offsetX="-25")
+    UpdateRelStyle(api, queue, $offsetX="-25", $offsetY="25")
+    UpdateRelStyle(api, weather, $offsetY="-15", $offsetX="10")
+    UpdateRelStyle(queue, db, $offsetX="-60", $offsetY="40")
 ```
 
 ## Container responsibilities
@@ -57,4 +65,6 @@ C4Container
 ## Open questions
 
 - Does the first release need a dedicated queue technology, or can background execution start in-process?
+  - Given the expected load and simplicity of initial background tasks, an in-process execution model could be sufficient for the first release. However, we should design the background job abstraction layer to allow for easy migration to a dedicated solution like Celery or RQ in the future without significant changes to business logic.
 - Which reporting outputs require precomputation versus live query generation?
+  - Specific sections could benefit from precomputation to improve performance, while more ad-hoc or infrequently used reports could be generated live. We should analyze the specific use cases and expected load for each type of report to make informed decisions about what should be precomputed.

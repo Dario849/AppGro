@@ -37,6 +37,14 @@ C4Container
     Rel(api, queue, "Programa trabajo asíncrono")
     Rel(queue, db, "Lee trabajo pendiente y escribe resultados")
     Rel(api, weather, "Consulta contexto climático")
+
+    UpdateLayoutConfig($c4ShapeInRow="2")
+    UpdateRelStyle(user, web, $offsetY="-40")
+    UpdateRelStyle(web, api, $offsetX="-40", $offsetY="-35")
+    UpdateRelStyle(api, db, $offsetX="-25")
+    UpdateRelStyle(api, queue, $offsetX="-25", $offsetY="25")
+    UpdateRelStyle(api, weather, $offsetY="-15", $offsetX="10")
+    UpdateRelStyle(queue, db, $offsetX="-60", $offsetY="40")
 ```
 
 ## Responsabilidades por contenedor
@@ -57,4 +65,6 @@ C4Container
 ## Preguntas abiertas
 
 - ¿La primera versión necesita una tecnología de cola dedicada o puede empezar con ejecución en proceso?
+  - Dicha implementación inicial podría ser suficiente para manejar la carga esperada, pero debemos diseñar la capa de abstracción de trabajos en segundo plano para que podamos migrar a una solución dedicada como Celery o RQ en el futuro sin cambios significativos en la lógica de negocio.
 - ¿Qué salidas de reporting requieren pre-cálculo versus consulta en vivo?
+  - Secciones específicas podrían beneficiarse de pre-cálculo para mejorar el rendimiento, mientras que los reportes más ad-hoc o con baja frecuencia de uso podrían generarse en vivo. Deberíamos analizar los casos de uso específicos y la carga esperada para cada tipo de reporte para tomar decisiones informadas sobre qué debe pre-calcularse. 

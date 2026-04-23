@@ -15,16 +15,14 @@ Developers implementing weather ingestion and contextual display.
 
 ## Design summary
 
-Weather should inform tasks, crops, and alerts. The first version should support externally sourced observations and optionally manual observations. Weather context is advisory unless later rules explicitly automate decisions.
-
+Weather should inform over relevant sectors, with clear source attribution and timestamps.
+Data normalization is prioritized to facilitate decision-making, but actions should not be automated without explicit rules.
+Information should be accessible to most users, but integration configuration remains administrative.
 ## Diagram
 
 ```mermaid
 flowchart TD
-    A[Read weather source] --> B[Normalize observation]
-    B --> C[Store by date and sector]
-    C --> D[Expose in dashboards and workflows]
-    D --> E[Trigger advisory alerts when rules match]
+    A[Read weather source] --> B[Normalize observation] --> C[Expose in dashboards and workflows] --> D[Trigger advisory alerts when rules match]
 ```
 
 ## Business rules and constraints

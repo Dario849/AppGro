@@ -50,7 +50,11 @@ flowchart TD
 ## Preguntas abiertas
 
 - ¿La edición de polígonos es obligatoria en la primera versión o alcanza con metadatos estructurados?
-- ¿La ubicación del ganado debe modelarse punto en el tiempo o solo por estado actual de sector?
+  - Metadatos estructurados permiten asignar tareas y cultivos a sectores sin necesidad de geometría, lo que puede ser suficiente para la mayoría de casos operativos iniciales.
+  - La edición de polígonos puede ser una funcionalidad valiosa para visualización y análisis espacial, pero podría posponerse para una versión posterior si no es crítica para las operaciones diarias. 
+- ¿La ubicación del ganado debe modelarse por punto en el tiempo o solo por estado actual de sector?
+  -  La ubicación del ganado por punto en el tiempo permitiría un seguimiento más detallado y análisis de movimientos, pero también requeriría una implementación más compleja.
+  - Modelar solo el estado actual de sector es más sencillo y puede ser suficiente para muchas decisiones operativas, especialmente si el movimiento del ganado no es tan frecuente o crítico para las operaciones diarias.
 
 ## Notas de testabilidad
 

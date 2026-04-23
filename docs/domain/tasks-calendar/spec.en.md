@@ -51,7 +51,9 @@ flowchart TD
 ## Open questions
 
 - Does the first release need recurring tasks?
+  - Recurring tasks would be useful for daily or weekly routines, but they could be added in a later phase to focus first on managing unique tasks and their integration with the calendar.
 - Should sector-level bulk assignment be included from the start?
+  - For the first release, it is not a requirement, but sector-level bulk assignment could be a valuable feature for operations managing large areas or multiple lots, and could be planned for a later phase once the basic task functionality is established.
 
 ## Testability notes
 

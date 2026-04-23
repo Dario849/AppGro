@@ -27,13 +27,19 @@ The platform centers on agricultural operations: tasks, livestock, crops, accoun
 ## Diagram
 
 ```mermaid
-C4Context
+C4Context 
     title AppGro Rewrite - System Context
+
+    Boundary(appgro, "AppGro") {
+        System(appgro, "AppGro", "Agricultural operations platform")
+        Container(web, "Web Frontend", "Astro", "User interface for field and office users")
+        Container(api, "API Backend", "FastAPI", "Business logic and data access layer")
+        ContainerDb(db, "Database", "PostgreSQL", "Stores operational data, history, and configuration")
+    }
 
     Person(fieldUser, "Field user", "Operator, encargado, agronomist, veterinarian")
     Person(adminUser, "Administrative user", "Admin or manager reviewing data and configuring access")
 
-    System(appgro, "AppGro", "Agricultural operations platform")
     System_Ext(weather, "Weather provider", "External weather observations or forecast source")
     System_Ext(email, "Notification channel", "Email or future outbound notification transport")
 
@@ -41,6 +47,18 @@ C4Context
     Rel(adminUser, appgro, "Configures users, reviews summaries, manages operations")
     Rel(appgro, weather, "Reads weather context")
     Rel(appgro, email, "Sends reminders and alerts")
+    Rel(appgro,web,"")
+    Rel(web,api,"")
+    Rel(api,db,"")
+    Rel(db,api,"")
+    Rel(api,web,"")
+    
+    UpdateLayoutConfig($c4ShapeInRow="2", $c4BoundaryInRow="1")
+    UpdateRelStyle(adminUser, appgro, $offsetY="-150", $offsetX="0")
+    UpdateRelStyle(appgro, email, $offsetY="-50", $offsetX="50")
+    UpdateRelStyle(appgro, weather, $offsetY="-15", $offsetX="10")
+    UpdateRelStyle(fieldUser, appgro, $offsetY="-125", $offsetX="-100")
+
 ```
 
 ## Architectural principles
@@ -61,8 +79,11 @@ C4Context
 ## Open questions
 
 - Which notification channels are required in the first production release?
+  - Email is likely the only required channel for the initial release, as it is widely used and can cover critical notifications. However, we should design the notification system to be extensible so that we can easily add additional channels like SMS or in-app notifications in future iterations based on user feedback and needs.
 - How much map editing must be available in the first delivery versus later phases?
+  - A basic map editing capability that allows users to define and edit sectors/lotes should be included in the first delivery, as it is fundamental to many operational flows. More advanced features like geofencing, integration with external GIS data, or collaborative editing could be considered for later phases once we have validated the core functionality and gathered user feedback on the initial implementation.
 - What external weather source should be treated as authoritative?
+  - WeatherAPI is a popular choice for agricultural applications due to its comprehensive data and ease of integration, but we should evaluate it against other providers based on factors like data accuracy in our target regions, cost, and API reliability. We may also want to design the system to support multiple weather providers in case we need to switch or aggregate data from different sources in the future.
 
 ## Testability notes
 

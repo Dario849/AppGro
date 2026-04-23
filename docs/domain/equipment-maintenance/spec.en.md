@@ -47,7 +47,9 @@ flowchart TD
 ## Open questions
 
 - Is preventive maintenance scheduling required in the first release?
+  - Yes, preventive maintenance scheduling would be a useful feature but not critical for initial operational tracking, and could be added in a later phase once asset registration and corrective maintenance are established.
 - Should inventory quantities be detailed for small tools and consumables?
+  - Yes, tracking inventory quantities for small tools and consumables can help manage stock levels and ensure availability when needed.
 
 ## Testability notes
 

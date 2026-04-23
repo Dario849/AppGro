@@ -52,7 +52,9 @@ flowchart LR
 ## Open questions
 
 - Are breeding and reproduction records needed in the first wave?
+  - They are not critical for initial operational tracking and can be added in a later phase once core lifecycle and health tracking is established.
 - Should diet tracking be event-based or summarized on the main record?
+  - Summarizing diet on the main record allows for easier access to current feeding information, while event-based tracking provides a more detailed history. The choice depends on the level of detail needed for operational decisions and reporting.
 
 ## Testability notes
 

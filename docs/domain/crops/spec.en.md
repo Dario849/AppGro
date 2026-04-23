@@ -45,11 +45,14 @@ flowchart LR
 - Cancelled crops must remain auditable.
 - A sector may host sequential crop records across different periods.
 - Missing estimated harvest dates should not block active tracking.
+- Products used in treatments should be recorded even if not linked to a formal inventory system.
 
 ## Open questions
 
 - Does the first version require rotation planning?
+  - Not necessarily, rotation planning is a valuable feature for long-term agronomic strategy but may be deferred until core crop lifecycle tracking is established.
 - Should rainfall be stored only in weather records or duplicated in crop summaries?
+  - Rainfall data should be stored in weather records and can be referenced in crop summaries for analysis, but duplication should be minimized to avoid inconsistencies.
 
 ## Testability notes
 

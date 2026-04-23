@@ -49,7 +49,11 @@ flowchart TD
 ## Open questions
 
 - Is multi-currency support needed in the first release?
+  - Very likely yes, since local currency may not be the only one used for transactions, especially for sales or purchases involving external suppliers or customers.
+- Should we support partial reversals or adjustments, or only full transaction reversals?
+  - Partial adjustments could be useful for correcting mistakes without losing the original transaction history, but they add complexity. We may start with full reversals and consider partial adjustments in future iterations.
 - Should accounting periods be generated automatically or manually closed?
+  - This depends on the desired workflow of the user, this functionality should allow for both options, with automatic generation of periods based on calendar dates and the ability for users to manually close periods when they are ready.
 
 ## Testability notes
 

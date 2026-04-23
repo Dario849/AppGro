@@ -50,7 +50,11 @@ flowchart TD
 ## Open questions
 
 - Is polygon editing required in the first release, or is structured metadata enough?
+  - Polygon editing can be a valuable feature for visualization and spatial analysis, but it could be postponed to a later release if it's not critical for daily operations.
 - Should livestock placement be point-in-time or only sector-level current state?
+  - Point-in-time livestock placement would allow for more detailed tracking and movement analysis, but it would also require a more complex implementation.
+  - Modeling only the current state at the sector level is simpler and may be sufficient for many operational decisions, especially if livestock movement is not frequent or critical for daily operations.
+
 
 ## Testability notes
 

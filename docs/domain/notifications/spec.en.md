@@ -51,7 +51,14 @@ sequenceDiagram
 ## Open questions
 
 - Which outbound channels are needed after in-app delivery?
+     ```Mermaid
+    flowchart TD
+        A[Notificacion in-app] --> B[Email]
+        A --> C[SMS]
+        A --> D[Push]
+    ```
 - Should escalation rules be time-based in the first release?
+   - Other: After X hours without being marked as read, escalate to secondary channel. This should be configurable by the admin within their panel.
 
 ## Testability notes
 

@@ -15,16 +15,15 @@ Desarrolladores que implementan ingestión climática y visualización contextua
 
 ## Resumen de diseño
 
-El clima debe informar tareas, cultivos y alertas. La primera versión debería soportar observaciones de fuente externa y, opcionalmente, observaciones manuales. El contexto climático es asesor, salvo que reglas futuras automaticen decisiones de manera explícita.
+El clima debe informarse sobre los sectores relevantes, con atribución clara de fuente y timestamp.
+Se prioriza la normalización de datos para facilitar la toma de decisiones, pero no se automatizan acciones sin reglas explícitas.
+La información debe ser accesible para la mayoría de usuarios, pero la configuración de integraciones queda en manos administrativas.
 
 ## Diagrama
 
 ```mermaid
 flowchart TD
-    A[Leer fuente climatica] --> B[Normalizar observacion]
-    B --> C[Guardar por fecha y sector]
-    C --> D[Exponer en tableros y workflows]
-    D --> E[Disparar alertas asesoras si aplican reglas]
+    A[Leer fuente climatica] --> B[Normalizar observacion] --> C[Exponer en tableros y workflows] --> D[Disparar alertas asesoras si aplican reglas]
 ```
 
 ## Reglas y restricciones

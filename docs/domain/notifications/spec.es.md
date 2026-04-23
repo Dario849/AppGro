@@ -51,7 +51,15 @@ sequenceDiagram
 ## Preguntas abiertas
 
 - ¿Qué canales salientes se necesitan después del canal in-app?
-- ¿Las reglas de escalamiento por tiempo entran en la primera versión?
+   ```Mermaid
+    flowchart TD
+        A[Notificacion in-app] --> B[Email]
+        A --> C[SMS]
+        A --> D[Push]
+    ```
+- ¿Las reglas de escalamiento deberían de ser por tiempo en la primera versión?
+  - Otro: Después de X horas sin marcar como leído, escalar a canal secundario. Esto debería de ser configurable por el administrador dentro de su panel.
+  
 
 ## Notas de testabilidad
 
