@@ -44,7 +44,9 @@ flowchart TD
 ## Open questions
 
 - Which provider or station source is preferred?
+  - Users could choose among multiple sources, but initially we could integrate with a popular and reliable provider to ensure quality data from launch (WeatherAPI).
 - Is forecast support required at launch, or only observations?
+  - Depending on the provider, we could include basic forecasts for the next few days, but initially we could focus on current observations to validate functionality before adding forecasts.
 
 ## Testability notes
 

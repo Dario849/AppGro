@@ -15,6 +15,7 @@ Legacy discovery and requirements are in:
 - `OLD/MainDocumentation/NewTraditionsSolutions.docx.html`
 - `OLD/MainDocumentation/Survey/2025 APP-CAMPO.csv`
 - `docs/projectPlan.md`
+- `OLD/MainDocumentation/DB_DROP_TABLE_INSERT2026-04-23 00_34_38.sql`
 
 ## Product Scope (from legacy discovery)
 

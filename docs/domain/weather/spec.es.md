@@ -45,7 +45,9 @@ flowchart TD
 ## Preguntas abiertas
 
 - ¿Qué proveedor o estación será la fuente preferida?
+  - Usuario podría elegir entre varias fuentes, pero inicialmente podríamos integrar con un proveedor popular y confiable para asegurar datos de calidad desde el lanzamiento (WeatherAPI).
 - ¿Se necesita pronóstico al lanzamiento o solo observaciones?
+  - Dependiendo del proveedor, podríamos incluir pronósticos básicos para los próximos días, pero inicialmente podríamos enfocarnos en observaciones actuales para validar la funcionalidad antes de agregar pronósticos.
 
 ## Notas de testabilidad
 
